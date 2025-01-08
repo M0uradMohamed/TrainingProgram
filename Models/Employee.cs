@@ -11,12 +11,14 @@ namespace Models
         public int Id { get; set; }
         public string? TraineeId { get; set; }
         public string? Name { get; set; }
+        //enum
         public string? Gender { get; set; }
         public string? Job { get; set; }
         public string? Department { get; set; }
         public string? Major { get; set; }
         public string? WorkPlace { get; set; }
         public string? PhoneNumber { get; set; }
+        //enum
         public string? Belong  { get; set; }
         public string? CompanyNameForForeign  { get; set; }
 
