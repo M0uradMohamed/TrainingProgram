@@ -35,6 +35,7 @@ namespace Models
         public string? Code { get; set; }
         //enum
         public string? Check {  get; set; }
+        public string? PdfFile { get; set; }
         public string? Notes {  get; set; }
         //user.name
         public string? EnterName { get; set; }
