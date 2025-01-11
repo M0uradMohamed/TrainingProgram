@@ -16,5 +16,9 @@ namespace Models
         public DateOnly MajorDegreeDate { get; set; }
         public string? Email { get; set; }
         public string? OtherPhoneNumber { get; set; }
+
+        public Employee? Employee { get; set; }
+        public Foreign? Foreign { get; set; }
+        public ICollection<Course> Courses { get; set; }
     }
 }

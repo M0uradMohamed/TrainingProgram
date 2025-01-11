@@ -25,6 +25,7 @@ namespace Models
 
         public int? SectorId { get; set; }
         public int? DegreeId { get; set; }
+        public ICollection<Course>  Courses { get; set; }
 
     }
 }

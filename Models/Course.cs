@@ -40,8 +40,11 @@ namespace Models
         //user.name
         public string? EnterName { get; set; }
 
-        public int PrimaryInstructorId { get; set; }
-        public int CourseNatureId { get; set; }
-        public int TrainingSpecialistId { get; set; }
+        public int? PrimaryInstructorId { get; set; }
+        public int? CourseNatureId { get; set; }
+        public int? TrainingSpecialistId { get; set; }
+        public Instructor PrimaryInstructor { get; set; }
+        public ICollection<Instructor> Instructors { get; set; }
+        public ICollection<Employee> Employees { get; set; }
     }
 }
