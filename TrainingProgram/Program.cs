@@ -1,4 +1,6 @@
 using DataAccess;
+using DataAccess.Repository;
+using DataAccess.Repository.IRepository;
 using Microsoft.EntityFrameworkCore;
 
 namespace TrainingProgram
@@ -15,6 +17,16 @@ namespace TrainingProgram
 
             builder.Services.AddDbContext<ApplicationDbContext>(options => options
 .UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
+
+            builder.Services.AddScoped<ICourseInstructorRepository, CourseInstructorRepository>();
+            builder.Services.AddScoped<ICourseNatureRepository, CourseNatureRepository>();
+            builder.Services.AddScoped<ICourseRepository, CourseRepository>();
+            builder.Services.AddScoped<IDegreeRepository, DegreeRepository>();
+            builder.Services.AddScoped<IEmployeeRepository, EmployeeRepository>();
+            builder.Services.AddScoped<IInstructorRepository, InstructorRepository>();
+            builder.Services.AddScoped<ISectorRepository, SectorRepository>();
+            builder.Services.AddScoped<ITraineeRepository, TraineeRepository>();
+            builder.Services.AddScoped<ITrainingSpecialistRepository, TrainingSpecialistRepository>();
 
             var app = builder.Build();
 
