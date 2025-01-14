@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace DataAccess.Repository.IRepository
 {
-    public interface ITrainee : IRepository<Trainee>
+    public interface ITraineeRepository : IRepository<Trainee>
     {
     }
 }

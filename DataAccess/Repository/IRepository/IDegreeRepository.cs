@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace DataAccess.Repository.IRepository
 {
-    public interface IDegree : IRepository<Degree>
+    public interface IDegreeRepository : IRepository<Degree>
     {
     }
 }

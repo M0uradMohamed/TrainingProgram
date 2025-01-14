@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace DataAccess.Repository.IRepository
 {
-    public interface ISector : IRepository<Sector>
+    public interface ISectorRepository : IRepository<Sector>
     {
     }
 }
