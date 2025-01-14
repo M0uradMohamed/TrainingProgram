@@ -1,5 +1,5 @@
 ﻿using DataAccess.Repository.IRepository;
-using ETickets.Repository;
+using DataAccess.Repository;
 using Models;
 using System;
 using System.Collections.Generic;

@@ -5,7 +5,7 @@ using System.Linq;
 using DataAccess.Repository.IRepository;
 using DataAccess;
 
-namespace ETickets.Repository
+namespace DataAccess.Repository
 {
     public class Repository<T> : IRepository<T> where T : class 
     {

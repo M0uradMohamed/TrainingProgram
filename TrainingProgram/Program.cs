@@ -2,6 +2,8 @@ using DataAccess;
 using DataAccess.Repository;
 using DataAccess.Repository.IRepository;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.AspNetCore.Identity;
+using Models;
 
 namespace TrainingProgram
 {
@@ -13,11 +15,20 @@ namespace TrainingProgram
 
             // Add services to the container.
             builder.Services.AddControllersWithViews();
-
+            builder.Services.AddRazorPages();
 
             builder.Services.AddDbContext<ApplicationDbContext>(options => options
 .UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
 
+
+
+            builder.Services.AddDefaultIdentity<ApplicationUser>(options => options.SignIn.RequireConfirmedAccount = false)
+    .AddRoles<IdentityRole>().AddEntityFrameworkStores<ApplicationDbContext>();
+
+            //  builder.Services.AddDefaultIdentity<IdentityUser>(options => options.SignIn.RequireConfirmedAccount = true).AddEntityFrameworkStores<ApplicationDbContext>();
+
+
+            builder.Services.AddScoped(typeof(IRepository<>), typeof(Repository<>));
             builder.Services.AddScoped<ICourseInstructorRepository, CourseInstructorRepository>();
             builder.Services.AddScoped<ICourseNatureRepository, CourseNatureRepository>();
             builder.Services.AddScoped<ICourseRepository, CourseRepository>();
@@ -30,14 +41,23 @@ namespace TrainingProgram
 
             var app = builder.Build();
 
-            // Configure the HTTP request pipeline.
+            //// Configure the HTTP request pipeline.
+            //if (!app.Environment.IsDevelopment())
+            //{
+            //    app.UseExceptionHandler("/Home/Error");
+            //}
+
             if (!app.Environment.IsDevelopment())
             {
                 app.UseExceptionHandler("/Home/Error");
+                app.UseHsts();
             }
+
+            app.UseHttpsRedirection();
             app.UseStaticFiles();
 
             app.UseRouting();
+            app.MapRazorPages();
 
             app.UseAuthorization();
 
