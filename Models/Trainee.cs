@@ -12,10 +12,11 @@ namespace Models
         public int EmployeeId { get; set; }
         //enum
         public string? Estimate {  get; set; }
-        public double TestMark {  get; set; }
+        public double? TestMark {  get; set; }
         public string? TotalMarks {  get; set; }
         public string? Notes {  get; set; }
         public string? File { get; set; }
+        public int? AttendanceDays { get; set; }
 
 
         public Employee Employee { get; set; }
