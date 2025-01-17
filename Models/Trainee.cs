@@ -11,15 +11,26 @@ namespace Models
         public int CourseId { get; set; }
         public int EmployeeId { get; set; }
         //enum
-        public string? Estimate {  get; set; }
-        public double? TestMark {  get; set; }
-        public string? TotalMarks {  get; set; }
+        public Estimate? Estimate {  get; set; }
         public string? Notes {  get; set; }
         public string? File { get; set; }
-        public int? AttendanceDays { get; set; }
+
+        //--------------------------\\
+        public int? AbsenceDays { get; set; }
+        public int? AttendanceAndDeparture { get; set; }
+        public int? AdherenceMark { get; set; }
+        public int? InteractionMark { get; set; }
+        public int? ActivitiesMark { get; set; }
+        public int? TotalEvaluation { get; set; }
+        public double? WrittenExam { get; set; }
+        public double? TotalMarks {  get; set; }
 
 
         public Employee Employee { get; set; }
         public Course Course { get; set; }
+    }
+    public enum Estimate
+    {
+
     }
 }

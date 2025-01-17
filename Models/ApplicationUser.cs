@@ -9,5 +9,6 @@ namespace Models
 {
     public class ApplicationUser : IdentityUser
     {
+        public string ArabicName { get; set; }
     }
 }

@@ -18,12 +18,12 @@ namespace TrainingProgram
             builder.Services.AddRazorPages();
 
             builder.Services.AddDbContext<ApplicationDbContext>(options => options
-.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
+            .UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
 
 
 
             builder.Services.AddDefaultIdentity<ApplicationUser>(options => options.SignIn.RequireConfirmedAccount = false)
-    .AddRoles<IdentityRole>().AddEntityFrameworkStores<ApplicationDbContext>();
+            .AddRoles<IdentityRole>().AddEntityFrameworkStores<ApplicationDbContext>();
 
             //  builder.Services.AddDefaultIdentity<IdentityUser>(options => options.SignIn.RequireConfirmedAccount = true).AddEntityFrameworkStores<ApplicationDbContext>();
 
@@ -63,7 +63,8 @@ namespace TrainingProgram
 
             app.MapControllerRoute(
                 name: "default",
-                pattern: "{controller=Home}/{action=Index}/{id?}");
+                pattern: "{area=Manage}/{controller=Home}/{action=Index}/{id?}");
+
 
             app.Run();
         }
