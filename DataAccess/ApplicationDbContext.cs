@@ -20,6 +20,8 @@ namespace DataAccess
         public DbSet<Sector> Sectors { get; set; }
         public DbSet<CourseNature> CourseNatures { get; set; }
         public DbSet<TrainingSpecialist> TrainingSpecialists { get; set; }
+        public DbSet<ImplementationType> ImplementationTypes { get; set; }
+        public DbSet<TotalImplementation> TotalImplementations { get; set; }
 
 
         public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options)
