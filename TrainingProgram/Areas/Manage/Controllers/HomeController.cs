@@ -4,6 +4,7 @@ using Models;
 
 namespace TrainingProgram.Areas.Manage.Controllers
 {
+    [Area("Manage")]
     public class HomeController : Controller
     {
         private readonly ILogger<HomeController> _logger;
@@ -27,6 +28,10 @@ namespace TrainingProgram.Areas.Manage.Controllers
         public IActionResult Error()
         {
             return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
+        }
+        public IActionResult Notfound()
+        {
+            return View();
         }
     }
 }
