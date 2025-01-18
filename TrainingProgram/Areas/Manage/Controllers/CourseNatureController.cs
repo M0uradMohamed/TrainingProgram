@@ -14,74 +14,74 @@ using Models.ViewModels;
 namespace TrainingProgram.Areas.Manage.Controllers
 {
     [Area("Manage")]
-    public class DegreeController : Controller
+    public class CourseNatureController : Controller
     {
-        private readonly IDegreeRepository degreeRepository;
+        private readonly ICourseNatureRepository courseNatureRepository;
 
-        public DegreeController( IDegreeRepository degreeRepository)
+        public CourseNatureController(ICourseNatureRepository courseNatureRepository)
         {
-            this.degreeRepository = degreeRepository;
+            this.courseNatureRepository = courseNatureRepository;
         }
 
-        // GET: Manage/Degree
+        // GET: Manage/CourseNature
         public IActionResult Index()
         {
-            return View(degreeRepository.Get().ToList());
+            return View(courseNatureRepository.Get().ToList());
         }
 
-        // GET: Manage/Degree/Details/5
-        public IActionResult Details(int? id)
+        // GET: Manage/CourseNature/Details/5
+        public ActionResult Details(int? id)
         {
             if (id == null)
             {
                 return RedirectToAction("Notfound", "Home");
             }
 
-            var degree = degreeRepository.Get(expression: m => m.Id == id)
+            var courseNature = courseNatureRepository.Get(expression: m => m.Id == id)
                 .FirstOrDefault();
-            if (degree == null)
+            if (courseNature == null)
             {
                 return RedirectToAction("Notfound", "Home");
             }
-            var degreeVM = new DegreeVM()
+            var courseNatureVM = new CourseNatureVM()
             {
-                Id = degree.Id,
-                Name = degree.Name
+                Id = courseNature.Id,
+                Name = courseNature.Name
             };
 
 
-            return View(degreeVM);
+            return View(courseNatureVM);
         }
 
-        // GET: Manage/Degree/Create
+        // GET: Manage/CourseNature/Create
         public IActionResult Create()
         {
             return View();
         }
 
-        // POST: Manage/Degree/Create
+        // POST: Manage/CourseNature/Create
         // To protect from overposting attacks, enable the specific properties you want to bind to.
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public IActionResult Create(DegreeVM degreeVM)
+        public IActionResult Create(CourseNatureVM courseNatureVM)
         {
             if (ModelState.IsValid)
             {
-                var degree = new Degree()
+                var courseNature = new CourseNature()
                 {
-                    Id = degreeVM.Id,
-                    Name = degreeVM.Name
+                    Id = courseNatureVM.Id,
+                    Name = courseNatureVM.Name
                 };
 
-                degreeRepository.Create(degree);
-                degreeRepository.Commit();
+                courseNatureRepository.Create(courseNature);
+                courseNatureRepository.Commit();
                 return RedirectToAction(nameof(Index));
             }
-            return View(degreeVM);
+            return View(courseNatureVM);
         }
 
-        // GET: Manage/Degree/Edit/5
+        // GET: Manage/CourseNature/Edit/5
         public IActionResult Edit(int? id)
         {
             if (id == null)
@@ -89,29 +89,29 @@ namespace TrainingProgram.Areas.Manage.Controllers
                 return RedirectToAction("Notfound", "Home");
             }
 
-            var degree = degreeRepository.Get(expression: e => e.Id == id).FirstOrDefault();
-            if (degree == null)
+            var courseNature = courseNatureRepository.Get(expression: e => e.Id == id).FirstOrDefault();
+            if (courseNature == null)
             {
                 return RedirectToAction("Notfound", "Home");
             }
-            var degreeVM = new DegreeVM()
+            var courseNatureVM = new CourseNatureVM()
             {
-                Id = degree.Id,
-                Name = degree.Name
+                Id = courseNature.Id,
+                Name = courseNature.Name
             };
 
 
-            return View(degreeVM);
+            return View(courseNatureVM);
         }
 
-        // POST: Manage/Degree/Edit/5
+        // POST: Manage/CourseNature/Edit/5
         // To protect from overposting attacks, enable the specific properties you want to bind to.
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public IActionResult Edit(int id, DegreeVM degreeVM)
+        public IActionResult Edit(int id, CourseNatureVM courseNatureVM)
         {
-            if (id != degreeVM.Id)
+            if (id != courseNatureVM.Id)
             {
                 return RedirectToAction("Notfound", "Home");
             }
@@ -120,18 +120,18 @@ namespace TrainingProgram.Areas.Manage.Controllers
             {
                 try
                 {
-                    var degree = new Degree()
+                    var courseNature = new CourseNature()
                     {
-                        Id = degreeVM.Id,
-                        Name = degreeVM.Name
+                        Id = courseNatureVM.Id,
+                        Name = courseNatureVM.Name
                     };
 
-                    degreeRepository.Edit(degree);
-                    degreeRepository.Commit();
+                    courseNatureRepository.Edit(courseNature);
+                    courseNatureRepository.Commit();
                 }
                 catch (DbUpdateConcurrencyException)
                 {
-                    if (!DegreeExists(degreeVM.Id))
+                    if (!CourseNatureExists(courseNatureVM.Id))
                     {
                         return RedirectToAction("Notfound", "Home");
                     }
@@ -142,26 +142,28 @@ namespace TrainingProgram.Areas.Manage.Controllers
                 }
                 return RedirectToAction(nameof(Index));
             }
-            return View(degreeVM);
+            return View(courseNatureVM);
         }
 
-        // POST: Manage/Degree/Delete/5
+
+
+        // POST: Manage/CourseNature/Delete/5
         [HttpPost]
         public IActionResult Delete(int id)
         {
-            var degree = degreeRepository.Get(expression: m => m.Id == id).FirstOrDefault();
-            if (degree != null)
+            var courseNature = courseNatureRepository.Get(expression: m => m.Id == id).FirstOrDefault();
+            if (courseNature != null)
             {
-                degreeRepository.Delete(degree);
+                courseNatureRepository.Delete(courseNature);
             }
 
-            degreeRepository.Commit();
+            courseNatureRepository.Commit();
             return RedirectToAction(nameof(Index));
         }
 
-        private bool DegreeExists(int id)
+        private bool CourseNatureExists(int id)
         {
-            return degreeRepository.Get().Any(e => e.Id == id);
+            return courseNatureRepository.Get().Any(e => e.Id == id);
         }
     }
 }
