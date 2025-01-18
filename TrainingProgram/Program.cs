@@ -39,6 +39,7 @@ namespace TrainingProgram
             builder.Services.AddScoped<ITraineeRepository, TraineeRepository>();
             builder.Services.AddScoped<ITrainingSpecialistRepository, TrainingSpecialistRepository>();
             builder.Services.AddScoped<IImplementationTypeRepository, ImplementationTypeRepository>();
+            builder.Services.AddScoped<ITotalImplementationRepository, TotalImplementationRepository>();
 
             var app = builder.Build();
 
