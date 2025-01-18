@@ -8,80 +8,80 @@ using Microsoft.EntityFrameworkCore;
 using DataAccess;
 using Models;
 using DataAccess.Repository.IRepository;
+using DataAccess.Repository;
 using Models.ViewModels;
-using System.Xml.Linq;
 
 namespace TrainingProgram.Areas.Manage.Controllers
 {
     [Area("Manage")]
-    public class SectorController : Controller
+    public class DegreeController : Controller
     {
-        private readonly ISectorRepository sectorRepository;
+        private readonly IDegreeRepository degreeRepository;
 
-        public SectorController(ISectorRepository sectorRepository)
+        public DegreeController( IDegreeRepository degreeRepository)
         {
-            this.sectorRepository = sectorRepository;
+            this.degreeRepository = degreeRepository;
         }
 
-        // GET: Manage/Sector
+        // GET: Manage/Degree
         public IActionResult Index()
         {
-            return View(sectorRepository.Get().ToList());
+            return View(degreeRepository.Get().ToList());
         }
 
-        // GET: Manage/Sector/Details/5
-        public ActionResult Details(int? id)
+        // GET: Manage/Degree/Details/5
+        public IActionResult Details(int? id)
         {
             if (id == null)
             {
                 return RedirectToAction("Notfound", "Home");
             }
 
-            var sector = sectorRepository.Get(expression: m => m.Id == id)
+            var degree = degreeRepository.Get(expression: m => m.Id == id)
                 .FirstOrDefault();
-            if (sector == null)
+            if (degree == null)
             {
-                return RedirectToAction ("Notfound", "Home");
+                return RedirectToAction("Notfound", "Home");
             }
-            var sectorVM = new SectorVM()
+            var degreeVM = new DegreeVM()
             {
-                Id= sector.Id,
-                Name = sector.Name
+                Id = degree.Id,
+                Name = degree.Name
             };
-     
 
-            return View(sectorVM);
+
+            return View(degreeVM);
         }
 
-        // GET: Manage/Sector/Create
+        // GET: Manage/Degree/Create
         public IActionResult Create()
         {
             return View();
         }
 
-        // POST: Manage/Sector/Create
+        // POST: Manage/Degree/Create
         // To protect from overposting attacks, enable the specific properties you want to bind to.
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public IActionResult Create(SectorVM sectorVM)
+        public IActionResult Create(DegreeVM degreeVM)
         {
             if (ModelState.IsValid)
             {
-                var sector = new Sector()
+                var degree = new Degree()
                 {
-                    Id = sectorVM.Id,
-                    Name = sectorVM.Name
+                    Id = degreeVM.Id,
+                    Name = degreeVM.Name
                 };
 
-                sectorRepository.Create(sector);
-               sectorRepository.Commit();
+                degreeRepository.Create(degree);
+                degreeRepository.Commit();
                 return RedirectToAction(nameof(Index));
             }
-            return View(sectorVM);
+            return View(degreeVM);
         }
 
-        // GET: Manage/Sector/Edit/5
+        // GET: Manage/Degree/Edit/5
         public IActionResult Edit(int? id)
         {
             if (id == null)
@@ -89,29 +89,29 @@ namespace TrainingProgram.Areas.Manage.Controllers
                 return RedirectToAction("Notfound", "Home");
             }
 
-            var sector = sectorRepository.Get(expression:e=>e.Id== id).FirstOrDefault();
-            if (sector == null)
+            var degree = degreeRepository.Get(expression: e => e.Id == id).FirstOrDefault();
+            if (degree == null)
             {
                 return RedirectToAction("Notfound", "Home");
             }
-            var sectorVM = new SectorVM()
+            var degreeVM = new DegreeVM()
             {
-                Id = sector.Id,
-                Name = sector.Name
+                Id = degree.Id,
+                Name = degree.Name
             };
 
 
-            return View(sectorVM);
+            return View(degreeVM);
         }
 
-        // POST: Manage/Sector/Edit/5
+        // POST: Manage/Degree/Edit/5
         // To protect from overposting attacks, enable the specific properties you want to bind to.
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public  IActionResult  Edit(int id, SectorVM sectorVM)
+        public IActionResult Edit(int id, DegreeVM degreeVM)
         {
-            if (id != sectorVM.Id)
+            if (id != degreeVM.Id)
             {
                 return RedirectToAction("Notfound", "Home");
             }
@@ -120,18 +120,18 @@ namespace TrainingProgram.Areas.Manage.Controllers
             {
                 try
                 {
-                    var sector = new Sector()
+                    var degree = new Degree()
                     {
-                        Id = sectorVM.Id,
-                        Name = sectorVM.Name
+                        Id = degreeVM.Id,
+                        Name = degreeVM.Name
                     };
 
-                    sectorRepository.Edit(sector);
-                    sectorRepository.Commit();
+                    degreeRepository.Edit(degree);
+                    degreeRepository.Commit();
                 }
                 catch (DbUpdateConcurrencyException)
                 {
-                    if (!SectorExists(sectorVM.Id))
+                    if (!DegreeExists(degreeVM.Id))
                     {
                         return RedirectToAction("Notfound", "Home");
                     }
@@ -142,28 +142,26 @@ namespace TrainingProgram.Areas.Manage.Controllers
                 }
                 return RedirectToAction(nameof(Index));
             }
-            return View(sectorVM);
+            return View(degreeVM);
         }
 
-    
-
-        // POST: Manage/Sector/Delete/5
-        [HttpPost]
+        // POST: Manage/Degree/Delete/5
+        [HttpPost, ActionName("Delete")]
         public IActionResult Delete(int id)
         {
-            var sector = sectorRepository.Get(expression: m => m.Id == id).FirstOrDefault();
-            if (sector != null)
+            var degree = degreeRepository.Get(expression: m => m.Id == id).FirstOrDefault();
+            if (degree != null)
             {
-                sectorRepository.Delete(sector);
+                degreeRepository.Delete(degree);
             }
 
-            sectorRepository.Commit();
+            degreeRepository.Commit();
             return RedirectToAction(nameof(Index));
         }
 
-        private bool SectorExists(int id)
+        private bool DegreeExists(int id)
         {
-            return sectorRepository.Get().Any(e => e.Id == id);
+            return degreeRepository.Get().Any(e => e.Id == id);
         }
     }
 }

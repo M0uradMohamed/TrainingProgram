@@ -7,12 +7,12 @@ using System.Threading.Tasks;
 
 namespace Models.ViewModels
 {
-    public class SectorVM
+    public class DegreeVM
     {
         public int Id { get; set; }
         [Required]
         [MinLength(3)]
-        [Display(Name = "Sector Name")]
+        [Display(Name = "Degree Name")]
         public string Name { get; set; }
     }
 }
