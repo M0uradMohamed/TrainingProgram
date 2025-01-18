@@ -1,4 +1,4 @@
-﻿@model Models.Sector
+﻿@model Models.ViewModels.SectorVM
 
 @{
     ViewData["Title"] = "Details";
@@ -12,7 +12,7 @@
     <hr />
     <dl class="row">
         <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Name)
+            اسم القطاع
         </dt>
         <dd class = "col-sm-10">
             @Html.DisplayFor(model => model.Name)

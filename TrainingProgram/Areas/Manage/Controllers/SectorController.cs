@@ -8,6 +8,8 @@ using Microsoft.EntityFrameworkCore;
 using DataAccess;
 using Models;
 using DataAccess.Repository.IRepository;
+using Models.ViewModels;
+using System.Xml.Linq;
 
 namespace TrainingProgram.Areas.Manage.Controllers
 {
@@ -41,8 +43,14 @@ namespace TrainingProgram.Areas.Manage.Controllers
             {
                 return RedirectToAction ("Notfound", "Home");
             }
+            var sectorVM = new SectorVM()
+            {
+                Id= sector.Id,
+                Name = sector.Name
+            };
+     
 
-            return View(sector);
+            return View(sectorVM);
         }
 
         // GET: Manage/Sector/Create
@@ -56,15 +64,21 @@ namespace TrainingProgram.Areas.Manage.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public IActionResult Create(Sector sector)
+        public IActionResult Create(SectorVM sectorVM)
         {
             if (ModelState.IsValid)
             {
+                var sector = new Sector()
+                {
+                    Id = sectorVM.Id,
+                    Name = sectorVM.Name
+                };
+
                 sectorRepository.Create(sector);
                sectorRepository.Commit();
                 return RedirectToAction(nameof(Index));
             }
-            return View(sector);
+            return View(sectorVM);
         }
 
         // GET: Manage/Sector/Edit/5
@@ -80,7 +94,14 @@ namespace TrainingProgram.Areas.Manage.Controllers
             {
                 return RedirectToAction("Notfound", "Home");
             }
-            return View(sector);
+            var sectorVM = new SectorVM()
+            {
+                Id = sector.Id,
+                Name = sector.Name
+            };
+
+
+            return View(sectorVM);
         }
 
         // POST: Manage/Sector/Edit/5
@@ -88,9 +109,9 @@ namespace TrainingProgram.Areas.Manage.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public  IActionResult  Edit(int id, Sector sector)
+        public  IActionResult  Edit(int id, SectorVM sectorVM)
         {
-            if (id != sector.Id)
+            if (id != sectorVM.Id)
             {
                 return RedirectToAction("Notfound", "Home");
             }
@@ -99,12 +120,18 @@ namespace TrainingProgram.Areas.Manage.Controllers
             {
                 try
                 {
+                    var sector = new Sector()
+                    {
+                        Id = sectorVM.Id,
+                        Name = sectorVM.Name
+                    };
+
                     sectorRepository.Edit(sector);
                     sectorRepository.Commit();
                 }
                 catch (DbUpdateConcurrencyException)
                 {
-                    if (!SectorExists(sector.Id))
+                    if (!SectorExists(sectorVM.Id))
                     {
                         return RedirectToAction("Notfound", "Home");
                     }
@@ -115,7 +142,7 @@ namespace TrainingProgram.Areas.Manage.Controllers
                 }
                 return RedirectToAction(nameof(Index));
             }
-            return View(sector);
+            return View(sectorVM);
         }
 
     
