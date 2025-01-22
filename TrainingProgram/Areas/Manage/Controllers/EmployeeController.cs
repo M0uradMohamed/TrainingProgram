@@ -10,6 +10,7 @@ using DataAccess;
 using Models;
 using DataAccess.Repository.IRepository;
 using Models.StaticData;
+using Models.ViewModels;
 
 namespace TrainingProgram.Areas.Manage.Controllers
 {
@@ -73,10 +74,27 @@ namespace TrainingProgram.Areas.Manage.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public IActionResult Create(Employee employee)
+        public IActionResult Create(EmployeeVM employeeVM)
         {
             if (ModelState.IsValid)
             {
+                var employee = new Employee()
+                {
+                    FoundationId = MethodsCheck.chechName(employeeVM.FoundationId),
+                    Name= MethodsCheck.chechName(employeeVM.Name),
+                    Gender = employeeVM.Gender,
+                    Major = MethodsCheck.chechName(employeeVM.Major),
+                    Job = MethodsCheck.chechName(employeeVM.Job),
+                    Department = MethodsCheck.chechName(employeeVM.Department),
+                    SectorId = employeeVM.SectorId,
+                    DegreeId = employeeVM.DegreeId,
+                    WorkPlace = MethodsCheck.chechName(employeeVM.WorkPlace),
+                    PhoneNumber = employeeVM.PhoneNumber,
+                    Belong = employeeVM.Belong,
+                    CompanyNameForForeign = MethodsCheck.chechName(employeeVM.CompanyNameForForeign)
+
+                };
+
                 employeeRepository.Create(employee);
                  employeeRepository.Commit();
                 return RedirectToAction(nameof(Index));
@@ -85,7 +103,7 @@ namespace TrainingProgram.Areas.Manage.Controllers
             ViewBag.Sector = sectorRepository.Get().ToList();
             ViewBag.Gender = GenderData.gender;
             ViewBag.Belong = BelongData.belong;
-            return View(employee);
+            return View(employeeVM);
         }
 
         // GET: Manage/Employee/Edit/5
