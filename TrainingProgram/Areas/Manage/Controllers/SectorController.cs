@@ -43,14 +43,9 @@ namespace TrainingProgram.Areas.Manage.Controllers
             {
                 return RedirectToAction ("Notfound", "Home");
             }
-            var sectorVM = new SectorVM()
-            {
-                Id= sector.Id,
-                Name = sector.Name
-            };
      
 
-            return View(sectorVM);
+            return View(sector);
         }
 
         // GET: Manage/Sector/Create

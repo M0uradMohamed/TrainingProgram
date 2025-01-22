@@ -43,14 +43,10 @@ namespace TrainingProgram.Areas.Manage.Controllers
             {
                 return RedirectToAction("Notfound", "Home");
             }
-            var courseNatureVM = new CourseNatureVM()
-            {
-                Id = courseNature.Id,
-                Name = courseNature.Name
-            };
+ 
 
 
-            return View(courseNatureVM);
+            return View(courseNature);
         }
 
         // GET: Manage/CourseNature/Create

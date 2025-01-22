@@ -42,14 +42,9 @@ namespace TrainingProgram.Areas.Manage.Controllers
             {
                 return RedirectToAction("Notfound", "Home");
             }
-            var implementationTypeVM = new ImplementationTypeVM()
-            {
-                Id = implementationType.Id,
-                Name = implementationType.Name
-            };
 
 
-            return View(implementationTypeVM);
+            return View(implementationType);
         }
 
         // GET: Manage/ImplementationType/Create

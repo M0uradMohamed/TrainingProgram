@@ -42,14 +42,9 @@ namespace TrainingProgram.Areas.Manage.Controllers
             {
                 return RedirectToAction("Notfound", "Home");
             }
-            var trainingSpecialistVM = new TrainingSpecialistVM()
-            {
-                Id = trainingSpecialist.Id,
-                Name = trainingSpecialist.Name
-            };
 
 
-            return View(trainingSpecialistVM);
+            return View(trainingSpecialist);
         }
 
         // GET: Manage/TrainingSpecialist/Create

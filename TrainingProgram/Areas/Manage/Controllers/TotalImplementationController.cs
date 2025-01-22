@@ -42,14 +42,9 @@ namespace TrainingProgram.Areas.Manage.Controllers
             {
                 return RedirectToAction("Notfound", "Home");
             }
-            var totalImplementationVM = new TotalImplementationVM()
-            {
-                Id = totalImplementation.Id,
-                Name = totalImplementation.Name
-            };
 
 
-            return View(totalImplementationVM);
+            return View(totalImplementation);
         }
 
         // GET: Manage/TotalImplementation/Create

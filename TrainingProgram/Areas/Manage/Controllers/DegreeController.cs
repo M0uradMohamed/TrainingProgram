@@ -43,14 +43,8 @@ namespace TrainingProgram.Areas.Manage.Controllers
             {
                 return RedirectToAction("Notfound", "Home");
             }
-            var degreeVM = new DegreeVM()
-            {
-                Id = degree.Id,
-                Name = degree.Name
-            };
 
-
-            return View(degreeVM);
+            return View(degree);
         }
 
         // GET: Manage/Degree/Create

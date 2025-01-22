@@ -32,5 +32,6 @@ namespace Models
         public ICollection<Trainee> Trainees { get; set; } = new List<Trainee>();
 
     }
+
  
 }
