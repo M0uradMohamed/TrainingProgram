@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Models.EnumClasses;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
@@ -13,7 +14,7 @@ namespace Models
         public string? FoundationId { get; set; }
         public string? Name { get; set; }
         //enum
-        public bool? Gender { get; set; }
+        public Gender? Gender { get; set; }
         public string? Major { get; set; }
         public string? Job { get; set; }
         public string? Department { get; set; }
@@ -22,7 +23,7 @@ namespace Models
         public string? WorkPlace { get; set; }
         public string? PhoneNumber { get; set; }
         //enum
-        public bool? Belong  { get; set; }
+        public Belong? Belong  { get; set; }
         public string? CompanyNameForForeign  { get; set; }
 
         public Instructor? instructor { get; set; }

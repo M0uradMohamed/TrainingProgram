@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Models.EnumClasses;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -55,21 +56,5 @@ namespace Models
         public ImplementationType? implementationType { get; set; }
         public TotalImplementation? TotalImplementation { get; set; }
         public CourseNature? CourseNature { get; set; }
-    }
-    public enum Material
-    {
-
-    }
-    public enum courseType
-    {
-
-    }
-    public enum ImplementationMonth
-    {
-
-    }
-    public enum Check
-    {
-
     }
 }
