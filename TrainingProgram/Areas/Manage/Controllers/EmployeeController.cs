@@ -22,8 +22,8 @@ namespace TrainingProgram.Areas.Manage.Controllers
         private readonly IDegreeRepository degreeRepository;
         private readonly ISectorRepository sectorRepository;
 
-        public EmployeeController(ApplicationDbContext context , IEmployeeRepository employeeRepository ,
-            IDegreeRepository degreeRepository , ISectorRepository sectorRepository) 
+        public EmployeeController(ApplicationDbContext context, IEmployeeRepository employeeRepository,
+            IDegreeRepository degreeRepository, ISectorRepository sectorRepository)
         {
             _context = context;
             this.employeeRepository = employeeRepository;
@@ -43,17 +43,17 @@ namespace TrainingProgram.Areas.Manage.Controllers
         {
             if (id == null)
             {
-                return NotFound();
+                return RedirectToAction("Notfound", "Home");
             }
 
-            var employee = employeeRepository.Get(includeProps: 
+            var employee = employeeRepository.Get(includeProps:
                [ e => e.Degree,
                 e => e.Sector]
-                ,expression: m => m.Id == id)
+                , expression: m => m.Id == id)
                 .FirstOrDefault();
             if (employee == null)
             {
-                return NotFound();
+                return RedirectToAction("Notfound", "Home");
             }
 
             return View(employee);
@@ -65,7 +65,7 @@ namespace TrainingProgram.Areas.Manage.Controllers
             ViewBag.Degree = degreeRepository.Get().ToList();
             ViewBag.Sector = sectorRepository.Get().ToList();
             ViewBag.Gender = GenderData.gender;
-            ViewBag.Belong = BelongData.belong ;
+            ViewBag.Belong = BelongData.belong;
             return View();
         }
 
@@ -81,7 +81,7 @@ namespace TrainingProgram.Areas.Manage.Controllers
                 var employee = new Employee()
                 {
                     FoundationId = MethodsCheck.chechName(employeeVM.FoundationId),
-                    Name= MethodsCheck.chechName(employeeVM.Name),
+                    Name = MethodsCheck.chechName(employeeVM.Name),
                     Gender = employeeVM.Gender,
                     Major = MethodsCheck.chechName(employeeVM.Major),
                     Job = MethodsCheck.chechName(employeeVM.Job),
@@ -94,9 +94,22 @@ namespace TrainingProgram.Areas.Manage.Controllers
                     CompanyNameForForeign = MethodsCheck.chechName(employeeVM.CompanyNameForForeign)
 
                 };
+                if (employee.FoundationId.All(char.IsDigit))
+                {
+                    if (employeeRepository.Get().Any(e => e.FoundationId == employee.FoundationId))
+                    {
+                        ModelState.AddModelError("FoundationId", "رقم المؤسسة موجود بالفعل");
 
+                        ViewBag.Degree = degreeRepository.Get().ToList();
+                        ViewBag.Sector = sectorRepository.Get().ToList();
+                        ViewBag.Gender = GenderData.gender;
+                        ViewBag.Belong = BelongData.belong;
+                        return View(employeeVM);
+                    }
+
+                }
                 employeeRepository.Create(employee);
-                 employeeRepository.Commit();
+                employeeRepository.Commit();
                 return RedirectToAction(nameof(Index));
             }
             ViewBag.Degree = degreeRepository.Get().ToList();
@@ -107,23 +120,45 @@ namespace TrainingProgram.Areas.Manage.Controllers
         }
 
         // GET: Manage/Employee/Edit/5
-        public async Task<IActionResult> Edit(int? id)
+        public IActionResult Edit(int? id)
         {
             if (id == null)
             {
-                return NotFound();
+                return RedirectToAction("Notfound", "Home");
             }
 
-            var employee = await _context.Employees.FindAsync(id);
+            var employee = employeeRepository.Get(includeProps:
+              [ e => e.Degree,
+                e => e.Sector]
+              , expression: m => m.Id == id)
+             .FirstOrDefault();
             if (employee == null)
             {
-                return NotFound();
+                return RedirectToAction("Notfound", "Home");
             }
+
+            var employeeVM = new EmployeeVM()
+            {
+                Id = employee.Id,
+                FoundationId = employee.FoundationId,
+                Name = employee.Name,
+                Gender = employee.Gender,
+                Major = employee.Major,
+                Job = employee.Job,
+                Department = employee.Department,
+                SectorId = employee.SectorId,
+                DegreeId = employee.DegreeId,
+                WorkPlace = employee.WorkPlace,
+                PhoneNumber = employee.PhoneNumber,
+                Belong = employee.Belong,
+                CompanyNameForForeign = employee.CompanyNameForForeign
+            };
+
             ViewBag.Degree = degreeRepository.Get().ToList();
             ViewBag.Sector = sectorRepository.Get().ToList();
             ViewBag.Gender = GenderData.gender;
             ViewBag.Belong = BelongData.belong;
-            return View(employee);
+            return View(employeeVM);
         }
 
         // POST: Manage/Employee/Edit/5
@@ -131,70 +166,76 @@ namespace TrainingProgram.Areas.Manage.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("Id,FoundationId,Name,Gender,Major,Job,Department,SectorId,DegreeId,WorkPlace,PhoneNumber,Belong,CompanyNameForForeign")] Employee employee)
+        public IActionResult Edit(int id, EmployeeVM employeeVM)
         {
-            if (id != employee.Id)
+            if (id != employeeVM.Id)
             {
-                return NotFound();
+                return RedirectToAction("Notfound", "Home");
             }
 
             if (ModelState.IsValid)
             {
-                try
+
+                if (!EmployeeExists(employeeVM.Id))
                 {
-                    _context.Update(employee);
-                    await _context.SaveChangesAsync();
+                    return RedirectToAction("Notfound", "Home");
                 }
-                catch (DbUpdateConcurrencyException)
+                var employee = new Employee()
                 {
-                    if (!EmployeeExists(employee.Id))
+                    Id = employeeVM.Id,
+                    FoundationId = MethodsCheck.chechName(employeeVM.FoundationId),
+                    Name = MethodsCheck.chechName(employeeVM.Name),
+                    Gender = employeeVM.Gender,
+                    Major = MethodsCheck.chechName(employeeVM.Major),
+                    Job = MethodsCheck.chechName(employeeVM.Job),
+                    Department = MethodsCheck.chechName(employeeVM.Department),
+                    SectorId = employeeVM.SectorId,
+                    DegreeId = employeeVM.DegreeId,
+                    WorkPlace = MethodsCheck.chechName(employeeVM.WorkPlace),
+                    PhoneNumber = employeeVM.PhoneNumber,
+                    Belong = employeeVM.Belong,
+                    CompanyNameForForeign = MethodsCheck.chechName(employeeVM.CompanyNameForForeign)
+
+                };
+                if (employee.FoundationId.All(char.IsDigit))
+                {
+                    if (employeeRepository.Get(expression: e => e.FoundationId == employee.FoundationId 
+                    && e.Id!=employee.Id).FirstOrDefault() != null )
                     {
-                        return NotFound();
+                        ModelState.AddModelError("FoundationId", "رقم المؤسسة موجود بالفعل");
+
+                        ViewBag.Degree = degreeRepository.Get().ToList();
+                        ViewBag.Sector = sectorRepository.Get().ToList();
+                        ViewBag.Gender = GenderData.gender;
+                        ViewBag.Belong = BelongData.belong;
+                        return View(employeeVM);
                     }
-                    else
-                    {
-                        throw;
-                    }
+
                 }
-                return RedirectToAction(nameof(Index));
+                    employeeRepository.Edit(employee);
+                    employeeRepository.Commit();
+
+                    return RedirectToAction(nameof(Index));
             }
-            ViewData["DegreeId"] = new SelectList(_context.Degrees, "Id", "Name", employee.DegreeId);
-            ViewData["SectorId"] = new SelectList(_context.Sectors, "Id", "Name", employee.SectorId);
-            return View(employee);
+            ViewBag.Degree = degreeRepository.Get().ToList();
+            ViewBag.Sector = sectorRepository.Get().ToList();
+            ViewBag.Gender = GenderData.gender;
+            ViewBag.Belong = BelongData.belong;
+            return View(employeeVM);
         }
 
-        // GET: Manage/Employee/Delete/5
-        public async Task<IActionResult> Delete(int? id)
-        {
-            if (id == null)
-            {
-                return NotFound();
-            }
-
-            var employee = await _context.Employees
-                .Include(e => e.Degree)
-                .Include(e => e.Sector)
-                .FirstOrDefaultAsync(m => m.Id == id);
-            if (employee == null)
-            {
-                return NotFound();
-            }
-
-            return View(employee);
-        }
 
         // POST: Manage/Employee/Delete/5
-        [HttpPost, ActionName("Delete")]
-        [ValidateAntiForgeryToken]
-        public async Task<IActionResult> DeleteConfirmed(int id)
+        [HttpPost]
+        public IActionResult Delete(int id)
         {
-            var employee = await _context.Employees.FindAsync(id);
+            var employee = employeeRepository.Get(expression: m => m.Id == id).FirstOrDefault();
             if (employee != null)
             {
-                _context.Employees.Remove(employee);
+                employeeRepository.Delete(employee);
             }
 
-            await _context.SaveChangesAsync();
+            employeeRepository.Commit();
             return RedirectToAction(nameof(Index));
         }
 
@@ -204,3 +245,4 @@ namespace TrainingProgram.Areas.Manage.Controllers
         }
     }
 }
+

@@ -94,7 +94,15 @@
                 @Html.DisplayFor(modelItem => item.PhoneNumber)
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.Belong)
+            @*     @Html.DisplayFor(modelItem => item.Belong) *@
+                    @{
+                        if (item.Belong.HasValue)
+                        {
+
+                            @BelongData.belong[item.Belong.Value];
+                        }
+
+                    }
             </td>
             <td>
                 @Html.DisplayFor(modelItem => item.CompanyNameForForeign)
@@ -106,11 +114,45 @@
                 @Html.DisplayFor(modelItem => item.Degree.Name)
             </td>
             <td>
-                <a asp-action="Edit" asp-route-id="@item.Id">Edit</a> |
-                <a asp-action="Details" asp-route-id="@item.Id">Details</a> |
-                <a asp-action="Delete" asp-route-id="@item.Id">Delete</a>
+                    <a asp-action="Edit" asp-route-id="@item.Id" type="button" class="btn btn-dark">Edit</a> |
+                    <a asp-action="Details" asp-route-id="@item.Id" type="button" class="btn btn-info ">Details</a> |
+                    <button type="button" class="btn btn-danger " data-bs-toggle="modal" data-bs-target="#deleteModal" data-employeeid="@item.Id">
+                        <i class="bi bi-trash3"></i> Delete
+                    </button>
             </td>
         </tr>
 }
     </tbody>
 </table>
+
+<!-- Modal -->
+<div class="modal fade" id="deleteModal" tabindex="-1" aria-labelledby="deleteModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="deleteModalLabel">Confirm Delete</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                Are you sure you want to delete this employee ?
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                <form id="deleteForm" method="post" action="/manage/employee/delete/">
+                    <input type="hidden" name="id" id="employeeIdInput" value="" />
+                    <button type="submit" class="btn btn-danger">Delete</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    var deleteModal = document.getElementById('deleteModal');
+    deleteModal.addEventListener('show.bs.modal', function (event) {
+        var button = event.relatedTarget;
+        var id = button.getAttribute('data-employeeid');
+        var input = document.getElementById('employeeIdInput');
+        input.value = id;
+    });
+</script>
