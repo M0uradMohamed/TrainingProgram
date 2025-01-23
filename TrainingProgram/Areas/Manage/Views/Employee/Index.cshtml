@@ -67,8 +67,8 @@
                     @{
                         if(item.Gender.HasValue)
                         {
-                            
-                    @GenderData.gender[item.Gender.Value]
+
+                            @StaticData.gender[item.Gender.Value]
                         }
 
                     }
@@ -99,7 +99,8 @@
                         if (item.Belong.HasValue)
                         {
 
-                            @BelongData.belong[item.Belong.Value];
+                            @StaticData.belong[item.Belong.Value]
+                            ;
                         }
 
                     }

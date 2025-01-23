@@ -64,8 +64,8 @@ namespace TrainingProgram.Areas.Manage.Controllers
         {
             ViewBag.Degree = degreeRepository.Get().ToList();
             ViewBag.Sector = sectorRepository.Get().ToList();
-            ViewBag.Gender = GenderData.gender;
-            ViewBag.Belong = BelongData.belong;
+            ViewBag.Gender = StaticData.gender;
+            ViewBag.Belong = StaticData.belong;
             return View();
         }
 
@@ -102,8 +102,8 @@ namespace TrainingProgram.Areas.Manage.Controllers
 
                         ViewBag.Degree = degreeRepository.Get().ToList();
                         ViewBag.Sector = sectorRepository.Get().ToList();
-                        ViewBag.Gender = GenderData.gender;
-                        ViewBag.Belong = BelongData.belong;
+                        ViewBag.Gender = StaticData.gender;
+                        ViewBag.Belong = StaticData.belong;
                         return View(employeeVM);
                     }
 
@@ -114,8 +114,8 @@ namespace TrainingProgram.Areas.Manage.Controllers
             }
             ViewBag.Degree = degreeRepository.Get().ToList();
             ViewBag.Sector = sectorRepository.Get().ToList();
-            ViewBag.Gender = GenderData.gender;
-            ViewBag.Belong = BelongData.belong;
+            ViewBag.Gender = StaticData.gender;
+            ViewBag.Belong = StaticData.belong;
             return View(employeeVM);
         }
 
@@ -156,8 +156,8 @@ namespace TrainingProgram.Areas.Manage.Controllers
 
             ViewBag.Degree = degreeRepository.Get().ToList();
             ViewBag.Sector = sectorRepository.Get().ToList();
-            ViewBag.Gender = GenderData.gender;
-            ViewBag.Belong = BelongData.belong;
+            ViewBag.Gender = StaticData.gender;
+            ViewBag.Belong = StaticData.belong;
             return View(employeeVM);
         }
 
@@ -206,8 +206,8 @@ namespace TrainingProgram.Areas.Manage.Controllers
 
                         ViewBag.Degree = degreeRepository.Get().ToList();
                         ViewBag.Sector = sectorRepository.Get().ToList();
-                        ViewBag.Gender = GenderData.gender;
-                        ViewBag.Belong = BelongData.belong;
+                        ViewBag.Gender = StaticData.gender;
+                        ViewBag.Belong = StaticData.belong;
                         return View(employeeVM);
                     }
 
@@ -219,8 +219,8 @@ namespace TrainingProgram.Areas.Manage.Controllers
             }
             ViewBag.Degree = degreeRepository.Get().ToList();
             ViewBag.Sector = sectorRepository.Get().ToList();
-            ViewBag.Gender = GenderData.gender;
-            ViewBag.Belong = BelongData.belong;
+            ViewBag.Gender = StaticData.gender;
+            ViewBag.Belong = StaticData.belong;
             return View(employeeVM);
         }
 
