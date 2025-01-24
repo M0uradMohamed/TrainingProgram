@@ -26,7 +26,7 @@ namespace Models
         public Belong? Belong  { get; set; }
         public string? CompanyNameForForeign  { get; set; }
 
-        public Instructor? instructor { get; set; }
+      //  public Instructor? instructor { get; set; }
         public Sector? Sector { get; set; }
         public Degree? Degree { get; set; }
         public ICollection<Course>  Courses { get; set; } = new List<Course>();

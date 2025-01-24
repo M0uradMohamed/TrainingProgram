@@ -61,8 +61,8 @@ namespace DataAccess
                 .WithMany(c => c.Trainees)
                 .HasForeignKey(ci => ci.CourseId).HasPrincipalKey(c => c.Id).OnDelete(DeleteBehavior.NoAction);
 
-            builder.Entity<Instructor>().HasOne(i => i.Employee).WithOne(e=>e.instructor)
-                .HasForeignKey<Instructor>(i => i.EmployeeId).HasPrincipalKey<Employee>(e => e.Id).IsRequired(false);
+            //builder.Entity<Instructor>().HasOne(i => i.Employee).WithOne(e=>e.instructor)
+            //    .HasForeignKey<Instructor>(i => i.EmployeeId).HasPrincipalKey<Employee>(e => e.Id).IsRequired(false);
 
             builder.Entity<Course>().HasOne(c => c.PrimaryInstructor).WithMany(i => i.PrimaryCourses).HasForeignKey(c => c.PrimaryInstructorId)
                 .HasPrincipalKey(i => i.Id).OnDelete(DeleteBehavior.NoAction);

@@ -17,15 +17,14 @@ namespace TrainingProgram.Areas.Manage.Controllers
     [Area("Manage")]
     public class EmployeeController : Controller
     {
-        private readonly ApplicationDbContext _context;
         private readonly IEmployeeRepository employeeRepository;
         private readonly IDegreeRepository degreeRepository;
         private readonly ISectorRepository sectorRepository;
 
-        public EmployeeController(ApplicationDbContext context, IEmployeeRepository employeeRepository,
+        public EmployeeController( IEmployeeRepository employeeRepository,
             IDegreeRepository degreeRepository, ISectorRepository sectorRepository)
         {
-            _context = context;
+
             this.employeeRepository = employeeRepository;
             this.degreeRepository = degreeRepository;
             this.sectorRepository = sectorRepository;
@@ -200,7 +199,7 @@ namespace TrainingProgram.Areas.Manage.Controllers
                 if (employee.FoundationId.All(char.IsDigit))
                 {
                     if (employeeRepository.Get(expression: e => e.FoundationId == employee.FoundationId 
-                    && e.Id!=employee.Id).FirstOrDefault() != null )
+                    && e.Id!=employee.Id, tracked:false).FirstOrDefault() != null )
                     {
                         ModelState.AddModelError("FoundationId", "رقم المؤسسة موجود بالفعل");
 
@@ -241,7 +240,7 @@ namespace TrainingProgram.Areas.Manage.Controllers
 
         private bool EmployeeExists(int id)
         {
-            return _context.Employees.Any(e => e.Id == id);
+            return employeeRepository.Get(tracked:false).Any(e => e.Id == id);
         }
     }
 }
