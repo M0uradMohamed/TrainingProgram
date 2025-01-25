@@ -1,0 +1,201 @@
+﻿@model IEnumerable<Models.Course>
+
+@{
+    ViewData["Title"] = "Index";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h1>Index</h1>
+
+<p>
+    <a asp-action="Create">Create New</a>
+</p>
+<table class="table table-bordered">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.Name)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.TargetSector)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Participants)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.ImplementationPlace)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.DaysCount)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.ImplementedDays)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.BeginningDate)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.EndingDate)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.TraineesNumber)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Cost)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.ImplementedCenter)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.HoursNumber)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.RoomNumber)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Material)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.courseType)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Rating)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.ImplementationMonth)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.ActualCost)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Code)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Check)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.PdfFile)
+            
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Notes)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.EnterName)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.PrimaryInstructor)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.implementationType)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.TotalImplementation)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.CourseNature)
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+@foreach (var item in Model) {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.Name)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.TargetSector)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Participants)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.ImplementationPlace)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.DaysCount)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.ImplementedDays)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.BeginningDate)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.EndingDate)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.TraineesNumber)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Cost)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.ImplementedCenter)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.HoursNumber)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.RoomNumber)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Material)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.courseType)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Rating)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.ImplementationMonth)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.ActualCost)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Code)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Check)
+            </td>
+            <td>
+                    @{
+                        if(item.PdfFile!=null)
+                        {
+                            
+                        <a href="@Url.Action("DownloadFile", "course", new { fileName = item.PdfFile })" class="btn btn-primary">
+                        <i class="bi bi-download"></i>
+                    </a>
+                        }
+                    }
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Notes)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.EnterName)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.PrimaryInstructor.Id)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.implementationType.Name)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.TotalImplementation.Name)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.CourseNature.Name)
+            </td>
+            <td>
+                <a asp-action="Edit" asp-route-id="@item.Id">Edit</a> |
+                <a asp-action="Details" asp-route-id="@item.Id">Details</a> |
+                <a asp-action="Delete" asp-route-id="@item.Id">Delete</a>
+            </td>
+        </tr>
+}
+    </tbody>
+</table>

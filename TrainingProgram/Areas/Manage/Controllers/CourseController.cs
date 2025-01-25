@@ -1,0 +1,456 @@
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Threading.Tasks;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Rendering;
+using Microsoft.EntityFrameworkCore;
+using DataAccess;
+using Models;
+using DataAccess.Repository.IRepository;
+using Models.ViewModels;
+using System.Numerics;
+using Models.StaticData;
+using System.Xml.Linq;
+
+namespace TrainingProgram.Areas.Manage.Controllers
+{
+    [Area("Manage")]
+    public class CourseController : Controller
+    {
+
+        private readonly ICourseRepository courseRepository;
+        private readonly IInstructorRepository instructorRepository;
+        private readonly ICourseNatureRepository courseNatureRepository;
+        private readonly ITotalImplementationRepository totalImplementationRepository;
+        private readonly IImplementationTypeRepository implementationTypeRepository;
+        private readonly ICourseInstructorRepository courseInstructorRepository;
+        private readonly ITrainingSpecialistRepository trainingSpecialistRepository;
+
+        public CourseController(ICourseRepository courseRepository, IInstructorRepository instructorRepository
+            , ICourseNatureRepository courseNatureRepository, ITotalImplementationRepository totalImplementationRepository
+            , IImplementationTypeRepository implementationTypeRepository, ICourseInstructorRepository courseInstructorRepository,
+            ITrainingSpecialistRepository trainingSpecialistRepository)
+        {
+
+            this.courseRepository = courseRepository;
+            this.instructorRepository = instructorRepository;
+            this.courseNatureRepository = courseNatureRepository;
+            this.totalImplementationRepository = totalImplementationRepository;
+            this.implementationTypeRepository = implementationTypeRepository;
+            this.courseInstructorRepository = courseInstructorRepository;
+            this.trainingSpecialistRepository = trainingSpecialistRepository;
+        }
+
+        // GET: Manage/Course
+        public IActionResult Index()
+        {
+            var courses = courseRepository.Get(includeProps: [c => c.CourseNature
+                ,c => c.PrimaryInstructor , c => c.TotalImplementation
+                ,c => c.implementationType]).ToList();
+            return View(courses);
+        }
+
+        // GET: Manage/Course/Details/5
+        public IActionResult Details(int? id)
+        {
+            if (id == null)
+            {
+                return RedirectToAction("Notfound", "Home");
+            }
+
+            var course = courseRepository.Get(includeProps: [
+                c => c.CourseNature
+                ,c => c.PrimaryInstructor
+                ,c => c.TotalImplementation
+                ,c => c.implementationType ]
+                , expression: m => m.Id == id).FirstOrDefault();
+            if (course == null)
+            {
+                return RedirectToAction("Notfound", "Home");
+            }
+
+            return View(course);
+        }
+
+        // GET: Manage/Course/Create
+        public IActionResult Create()
+        {
+            ViewBag.CourseNature = courseNatureRepository.Get().ToList();
+            ViewBag.Instructors = instructorRepository.Get().Select(e => new { e.Id, e.FoundationId, e.Name });
+            ViewBag.TotalImplementation = totalImplementationRepository.Get().ToList();
+            ViewBag.ImplementationType = implementationTypeRepository.Get().ToList();
+            ViewBag.Material = StaticData.material;
+            ViewBag.CourseType = StaticData.courseType;
+            ViewBag.ImplementationMonth = StaticData.implementationMonth;
+            ViewBag.TrainingSpecialist = trainingSpecialistRepository.Get().ToList();
+
+            return View();
+        }
+
+        // POST: Manage/Course/Create
+        // To protect from overposting attacks, enable the specific properties you want to bind to.
+        // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public IActionResult Create(CourseVM courseVM, IFormFile file, List<int> secondryInstructors)
+        {
+            ModelState.Remove(nameof(file));
+            ModelState.Remove(nameof(secondryInstructors));
+            if (ModelState.IsValid)
+            {
+                if (courseVM.BeginningDate! > courseVM.EndingDate)
+                {
+                    ModelState.AddModelError(string.Empty, "تاريخ البداية لا يمكن ان يكون بعد تاريخ النهاية");
+
+                    ViewBag.CourseNature = courseNatureRepository.Get().ToList();
+                    ViewBag.Instructors = instructorRepository.Get().Select(e => new { e.Id, e.FoundationId, e.Name });
+                    ViewBag.TotalImplementation = totalImplementationRepository.Get().ToList();
+                    ViewBag.ImplementationType = implementationTypeRepository.Get().ToList();
+                    ViewBag.Material = StaticData.material;
+                    ViewBag.CourseType = StaticData.courseType;
+                    ViewBag.ImplementationMonth = StaticData.implementationMonth;
+                    ViewBag.TrainingSpecialist = trainingSpecialistRepository.Get().ToList();
+
+                    return View();
+                }
+                var similerCourse = courseRepository.Get(expression: e => e.PrimaryInstructorId == courseVM.PrimaryInstructorId).ToList()
+                    .Any(e =>  courseVM.BeginningDate >= e.BeginningDate &&  courseVM.BeginningDate <= e.EndingDate || 
+                    courseVM.EndingDate >= e.BeginningDate && courseVM.EndingDate<= e.EndingDate ||
+                    courseVM.BeginningDate <= e.BeginningDate && courseVM.EndingDate >= e.EndingDate  );
+                if (similerCourse)
+                {
+                    ModelState.AddModelError(string.Empty, "لا يمكن تسجيل دورة بهذا المدرب في هذان الموعدان");
+
+                    ViewBag.CourseNature = courseNatureRepository.Get().ToList();
+                    ViewBag.Instructors = instructorRepository.Get().Select(e => new { e.Id, e.FoundationId, e.Name });
+                    ViewBag.TotalImplementation = totalImplementationRepository.Get().ToList();
+                    ViewBag.ImplementationType = implementationTypeRepository.Get().ToList();
+                    ViewBag.Material = StaticData.material;
+                    ViewBag.CourseType = StaticData.courseType;
+                    ViewBag.ImplementationMonth = StaticData.implementationMonth;
+                    ViewBag.TrainingSpecialist = trainingSpecialistRepository.Get().ToList();
+                    return View();
+                }
+                if (file != null)
+                {
+
+                    if (Path.GetExtension(file.FileName).ToLower() != ".pdf")
+                    {
+                        ModelState.AddModelError(nameof(courseVM.PdfFile), "يسمح برفع ملفات pdf فقط");
+
+                        ViewBag.CourseNature = courseNatureRepository.Get().ToList();
+                        ViewBag.Instructors = instructorRepository.Get().Select(e => new { e.Id, e.FoundationId, e.Name });
+                        ViewBag.TotalImplementation = totalImplementationRepository.Get().ToList();
+                        ViewBag.ImplementationType = implementationTypeRepository.Get().ToList();
+                        ViewBag.Material = StaticData.material;
+                        ViewBag.CourseType = StaticData.courseType;
+                        ViewBag.ImplementationMonth = StaticData.implementationMonth;
+                        ViewBag.TrainingSpecialist = trainingSpecialistRepository.Get().ToList();
+                        return View();
+                    }
+                }
+
+                var course = new Course()
+                {
+                    Name = courseVM.Name,
+                    DaysCount = courseVM.DaysCount,
+                    PrimaryInstructorId = courseVM.PrimaryInstructorId,
+                    courseType = courseVM.courseType,
+                    Check = courseVM.Check,
+                    Code = courseVM.Code,
+                    ImplementedDays = courseVM.ImplementedDays,
+                    ActualCost = courseVM.ActualCost,
+                    TargetSector = courseVM.TargetSector,
+                    Cost = courseVM.Cost,
+                    CourseNatureId = courseVM.CourseNatureId,
+                    TrainingSpecialistId = courseVM.TrainingSpecialistId,
+                    HoursNumber = courseVM.HoursNumber,
+                    Material = courseVM.Material,
+                    Notes = courseVM.Notes,
+                    RoomNumber = courseVM.RoomNumber,
+                    ImplementationMonth = courseVM.ImplementationMonth,
+                    ImplementationPlace = courseVM.ImplementationPlace,
+                    ImplementationTypeId = courseVM.ImplementationTypeId,
+                    Rating = courseVM.Rating,
+                    TotalImplementationId = courseVM.TotalImplementationId,
+                    TraineesNumber = courseVM.TraineesNumber,
+                    BeginningDate = courseVM.BeginningDate,
+                    EndingDate = courseVM.EndingDate,
+                    Participants = courseVM.Participants,
+
+                };
+
+
+                courseRepository.Create(course);
+                courseRepository.Commit();
+
+                if (secondryInstructors.Count > 0)
+                {
+                    foreach (var item in secondryInstructors)
+                    {
+                        courseInstructorRepository.Create(new CourseInstructor()
+                        { CourseId = course.Id, InstructorId = item });
+                        courseInstructorRepository.Commit();
+                    }
+                }
+
+
+                if (file != null)
+                {
+                    string fileName = $"pdf{course.Id}".ToString();
+                    string extension = Path.GetExtension(file.FileName);
+
+
+                    fileName += extension;
+                    string filePath = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot\\CouresFiles", fileName);
+
+                    string directoryPath = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot\\CouresFiles");
+
+
+                    if (!Directory.Exists(directoryPath))
+                    {
+                        Directory.CreateDirectory(directoryPath);
+                    }
+
+                    using (var stream = System.IO.File.Create(filePath))
+                    {
+                        file.CopyTo(stream);
+                    }
+                    course.PdfFile = fileName;
+
+                    courseRepository.Edit(course);
+                    courseRepository.Commit();
+                }
+
+
+                return RedirectToAction(nameof(Index));
+            }
+            ViewBag.CourseNature = courseNatureRepository.Get().ToList();
+            ViewBag.Instructors = instructorRepository.Get().Select(e => new { e.Id, e.FoundationId, e.Name });
+            ViewBag.TotalImplementation = totalImplementationRepository.Get().ToList();
+            ViewBag.ImplementationType = implementationTypeRepository.Get().ToList();
+            ViewBag.Material = StaticData.material;
+            ViewBag.CourseType = StaticData.courseType;
+            ViewBag.ImplementationMonth = StaticData.implementationMonth;
+            ViewBag.TrainingSpecialist = trainingSpecialistRepository.Get().ToList();
+            return View(courseVM);
+        }
+
+        // GET: Manage/Course/Edit/5
+        public IActionResult Edit(int? id)
+        {
+            if (id == null)
+            {
+                return RedirectToAction("Notfound", "Home");
+            }
+
+            var course = courseRepository.Get(includeProps: [
+                c => c.CourseNature
+                ,c => c.PrimaryInstructor
+                ,c => c.TotalImplementation
+                ,c => c.implementationType ]
+                , expression: m => m.Id == id).FirstOrDefault(); ;
+            if (course == null)
+            {
+                return RedirectToAction("Notfound", "Home");
+            }
+
+            var courseVM = new CourseVM()
+            {
+                Name = course.Name,
+                DaysCount = course.DaysCount,
+                PrimaryInstructorId = course.PrimaryInstructorId,
+                courseType = course.courseType,
+                Check = course.Check,
+                Code = course.Code,
+                ImplementedDays = course.ImplementedDays,
+                ActualCost = course.ActualCost,
+                TargetSector = course.TargetSector,
+                Cost = course.Cost,
+                CourseNatureId = course.CourseNatureId,
+                TrainingSpecialistId = course.TrainingSpecialistId,
+                HoursNumber = course.HoursNumber,
+                Material = course.Material,
+                Notes = course.Notes,
+                RoomNumber = course.RoomNumber,
+                ImplementationMonth = course.ImplementationMonth,
+                ImplementationPlace = course.ImplementationPlace,
+                ImplementationTypeId = course.ImplementationTypeId,
+                Rating = course.Rating,
+                TotalImplementationId = course.TotalImplementationId,
+                TraineesNumber = course.TraineesNumber,
+                BeginningDate = course.BeginningDate,
+                EndingDate = course.EndingDate,
+                PdfFile = course.PdfFile,
+                Participants = course.Participants
+            };
+            var couseInstructors = courseInstructorRepository.Get(expression: e => e.CourseId == course.Id, includeProps: [e => e.Instructor])
+                .Select(e => new { e.InstructorId, e.Instructor.FoundationId, e.Instructor.Name }).ToList();
+
+            ViewBag.CourseNature = courseNatureRepository.Get().ToList();
+            ViewBag.Instructors = instructorRepository.Get().Select(e => new { e.Id, e.FoundationId, e.Name });
+            ViewBag.TotalImplementation = totalImplementationRepository.Get().ToList();
+            ViewBag.ImplementationType = implementationTypeRepository.Get().ToList();
+            ViewBag.Material = StaticData.material;
+            ViewBag.CourseType = StaticData.courseType;
+            ViewBag.ImplementationMonth = StaticData.implementationMonth;
+            ViewBag.TrainingSpecialist = trainingSpecialistRepository.Get().ToList();
+
+            return View(courseVM);
+        }
+
+        // POST: Manage/Course/Edit/5
+        // To protect from overposting attacks, enable the specific properties you want to bind to.
+        // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public IActionResult Edit(int id, CourseVM courseVM, IFormFile file)
+        {
+            if (id != courseVM.Id)
+            {
+                return RedirectToAction("Notfound", "Home");
+            }
+
+            if (ModelState.IsValid)
+            {
+                if (courseVM.BeginningDate!> courseVM.EndingDate)
+                {
+                    ModelState.AddModelError(string.Empty, "تاريخ البداية لا يمكن ان يكون بعد تاريخ النهاية");
+
+                    ViewBag.CourseNature = courseNatureRepository.Get().ToList();
+                    ViewBag.Instructors = instructorRepository.Get().Select(e => new { e.Id, e.FoundationId, e.Name });
+                    ViewBag.TotalImplementation = totalImplementationRepository.Get().ToList();
+                    ViewBag.ImplementationType = implementationTypeRepository.Get().ToList();
+                    ViewBag.Material = StaticData.material;
+                    ViewBag.CourseType = StaticData.courseType;
+                    ViewBag.ImplementationMonth = StaticData.implementationMonth;
+                    ViewBag.TrainingSpecialist = trainingSpecialistRepository.Get().ToList();
+                    return View();
+                }
+                var similerCourse = courseRepository.Get(expression: e => e.PrimaryInstructorId == courseVM.PrimaryInstructorId).ToList()
+                    .Any(e => e.BeginningDate >= courseVM.BeginningDate && e.EndingDate <= courseVM.EndingDate);
+                if (similerCourse)
+                {
+                    ModelState.AddModelError(string.Empty, "لا يمكن تسجيل دورة بهذا المدرب في هذان الموعدان");
+
+                    ViewBag.CourseNature = courseNatureRepository.Get().ToList();
+                    ViewBag.Instructors = instructorRepository.Get().Select(e => new { e.Id, e.FoundationId, e.Name });
+                    ViewBag.TotalImplementation = totalImplementationRepository.Get().ToList();
+                    ViewBag.ImplementationType = implementationTypeRepository.Get().ToList();
+                    ViewBag.Material = StaticData.material;
+                    ViewBag.CourseType = StaticData.courseType;
+                    ViewBag.ImplementationMonth = StaticData.implementationMonth;
+                    ViewBag.TrainingSpecialist = trainingSpecialistRepository.Get().ToList();
+                    return View();
+                }
+                if (file != null)
+                {
+                    if (Path.GetExtension(file.FileName).ToLower() != ".pdf" )
+                    {
+                    ModelState.AddModelError(nameof(courseVM.PdfFile), "يسمح برفع ملفات pdf فقط");
+
+                    ViewBag.CourseNature = courseNatureRepository.Get().ToList();
+                    ViewBag.Instructors = instructorRepository.Get().Select(e => new { e.Id, e.FoundationId, e.Name });
+                    ViewBag.TotalImplementation = totalImplementationRepository.Get().ToList();
+                    ViewBag.ImplementationType = implementationTypeRepository.Get().ToList();
+                    ViewBag.Material = StaticData.material;
+                    ViewBag.CourseType = StaticData.courseType;
+                    ViewBag.ImplementationMonth = StaticData.implementationMonth;
+                    ViewBag.TrainingSpecialist = trainingSpecialistRepository.Get().ToList();
+                    return View();
+                    }
+                }
+
+                var course = new Course()
+                {
+                    Name = courseVM.Name,
+                    DaysCount = courseVM.DaysCount,
+                    PrimaryInstructorId = courseVM.PrimaryInstructorId,
+                    courseType = courseVM.courseType,
+                    Check = courseVM.Check,
+                    Code = courseVM.Code,
+                    ImplementedDays = courseVM.ImplementedDays,
+                    ActualCost = courseVM.ActualCost,
+                    TargetSector = courseVM.TargetSector,
+                    Cost = courseVM.Cost,
+                    CourseNatureId = courseVM.CourseNatureId,
+                    TrainingSpecialistId = courseVM.TrainingSpecialistId,
+                    HoursNumber = courseVM.HoursNumber,
+                    Material = courseVM.Material,
+                    Notes = courseVM.Notes,
+                    RoomNumber = courseVM.RoomNumber,
+                    ImplementationMonth = courseVM.ImplementationMonth,
+                    ImplementationPlace = courseVM.ImplementationPlace,
+                    ImplementationTypeId = courseVM.ImplementationTypeId,
+                    Rating = courseVM.Rating,
+                    TotalImplementationId = courseVM.TotalImplementationId,
+                    TraineesNumber = courseVM.TraineesNumber,
+                    BeginningDate = courseVM.BeginningDate,
+                    EndingDate = courseVM.EndingDate,
+                    Participants = courseVM.Participants,
+
+                };
+                courseRepository.Edit(course);
+                courseRepository.Commit();
+
+
+                if (!CourseExists(courseVM.Id))
+                {
+                    return RedirectToAction("Notfound", "Home");
+                }
+
+
+                return RedirectToAction(nameof(Index));
+            }
+
+            ViewBag.CourseNature = courseNatureRepository.Get().ToList();
+            ViewBag.Instructors = instructorRepository.Get().Select(e => new { e.Id, e.FoundationId, e.Name });
+            ViewBag.TotalImplementation = totalImplementationRepository.Get().ToList();
+            ViewBag.ImplementationType = implementationTypeRepository.Get().ToList();
+            ViewBag.Material = StaticData.material;
+            ViewBag.CourseType = StaticData.courseType;
+            ViewBag.ImplementationMonth = StaticData.implementationMonth;
+            ViewBag.TrainingSpecialist = trainingSpecialistRepository.Get().ToList();
+            return View(courseVM);
+        }
+
+
+
+        // POST: Manage/Course/Delete/5
+        [HttpPost]
+        public IActionResult Delete(int id)
+        {
+            var course = courseRepository.Get(expression: m => m.Id == id).FirstOrDefault();
+            if (course != null)
+            {
+                courseRepository.Delete(course);
+            }
+
+            courseRepository.Commit();
+            return RedirectToAction(nameof(Index));
+        }
+        public IActionResult DownloadFile(string fileName)
+        {
+            if (fileName != null)
+            {
+
+                var filePath = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot\\CouresFiles", fileName);
+                if (System.IO.File.Exists(filePath))
+                {
+                    byte[] fileBytes = System.IO.File.ReadAllBytes(filePath);
+                    return File(fileBytes, "application/pdf", fileName);
+                }
+            }
+            TempData["noFile"] = "there is no file to download";
+            return RedirectToAction("index");
+
+        }
+
+
+        private bool CourseExists(int id)
+        {
+            return courseRepository.Get().Any(e => e.Id == id);
+        }
+    }
+}

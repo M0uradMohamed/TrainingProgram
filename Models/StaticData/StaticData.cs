@@ -19,6 +19,46 @@ namespace Models.StaticData
             {Belong.BelongTo,"تابع" },
             {Belong.NotBelongTo,"غير تابع" },
         };
+        public static readonly Dictionary<Check, string> check = new Dictionary<Check, string>()
+        {
+            {Check.Ongoing,"قائم" },
+            {Check.Pending, "منتظر"},
+            {Check.Completed,"تمت" },
+            {Check.Canceled, "لاغي"},
+            {Check.Postponed, "مؤجل"}
+        };
+        public static readonly Dictionary<CourseType, string> courseType = new Dictionary<CourseType, string>()
+        {
+            {CourseType.Path,"مسار"},
+            {CourseType.NotPath,"غير مسار"}
+        };
+        public static readonly Dictionary<Estimate, string> estimate = new Dictionary<Estimate, string>()
+        {
+            {Estimate.Excellent,"ممتاز" },
+            {Estimate.VeryGood,"جيد جدا" },
+            {Estimate.Good,"جيد" },
+            {Estimate.Acceptable,"مقبول" }
+        };
+        public static readonly Dictionary<Material, string> material = new Dictionary<Material, string>()
+        {
+            {Material.Available,"متاحة" },
+            {Material.Unavailable,"غير متاحة" }
+        };
+        public static readonly Dictionary<ImplementationMonth, string> implementationMonth = new Dictionary<ImplementationMonth, string>()
+        {
+            {ImplementationMonth.January ,"يناير" },
+            {ImplementationMonth.February ,"فبراير" },
+            {ImplementationMonth.March ,"مارس" },
+            {ImplementationMonth.April ,"ابريل" },
+            {ImplementationMonth.May ,"مايو" },
+            {ImplementationMonth.June ,"يونيو" },
+            {ImplementationMonth.July ,"يوليو" },
+            {ImplementationMonth.August ,"اغسطس" },
+            {ImplementationMonth.September ,"سبتمبر" },
+            {ImplementationMonth.October ,"اكتوبر" },
+            {ImplementationMonth.November ,"نوفمبر" },
+            {ImplementationMonth.December ,"ديسمبر" }
+        };
 
     }
 }

@@ -2,6 +2,7 @@
 { 
     public enum Material
     {
-
+        Available,
+        Unavailable
     }
 }

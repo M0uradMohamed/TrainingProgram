@@ -1,7 +1,9 @@
 ﻿namespace Models.EnumClasses
 {
-    public enum courseType
+    public enum CourseType
     {
+        Path,
+        NotPath
 
     }
 }

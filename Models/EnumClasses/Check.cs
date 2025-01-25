@@ -2,6 +2,11 @@
 {
     public enum Check
     {
+        Ongoing,
+        Pending,
+        Completed,
+        Canceled,
+        Postponed
 
     }
 }

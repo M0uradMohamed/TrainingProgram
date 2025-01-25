@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Models.EnumClasses;
 
 namespace Models
 {
@@ -28,9 +29,5 @@ namespace Models
 
         public Employee Employee { get; set; }
         public Course Course { get; set; }
-    }
-    public enum Estimate
-    {
-
     }
 }

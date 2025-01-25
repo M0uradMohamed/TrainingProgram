@@ -30,7 +30,7 @@ namespace Models
         //enum #
         public Material? Material { get; set; }
         //enum #
-        public courseType? courseType { get; set; }
+        public CourseType? courseType { get; set; }
         public double? Rating { get; set; }
         //edit , enum #
         public ImplementationMonth? ImplementationMonth { get; set; }
