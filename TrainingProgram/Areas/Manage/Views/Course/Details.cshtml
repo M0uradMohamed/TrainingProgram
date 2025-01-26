@@ -153,8 +153,43 @@
             @Html.DisplayNameFor(model => model.PrimaryInstructor)
         </dt>
         <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.PrimaryInstructor.Id)
+            @Html.DisplayFor(model => model.PrimaryInstructor.Name)
         </dd>
+
+        <dt class="col-sm-2">
+            <span>المدرب الثاني </span>
+        </dt>
+        <dd class="col-sm-10">
+            @{
+                if(Model.Instructors.Count()>=1)
+                {     
+            <span>@Model.Instructors.ToList()[0].Name</span>
+                }
+            }
+        </dd>
+        <dt class="col-sm-2">
+            <span>المدرب الثالث </span>
+        </dt>
+        <dd class="col-sm-10">
+            @{
+                if (Model.Instructors.Count() >= 2)
+                {
+                    <span>@Model.Instructors.ToList()[1].Name</span>
+                }
+            }
+        </dd>
+        <dt class="col-sm-2">
+            <span>المدرب الرابع </span>
+        </dt>
+        <dd class="col-sm-10">
+            @{
+                if (Model.Instructors.Count() >= 3)
+                {
+                    <span>@Model.Instructors.ToList()[2].Name</span>
+                }
+            }
+        </dd>
+
         <dt class = "col-sm-2">
             @Html.DisplayNameFor(model => model.implementationType)
         </dt>

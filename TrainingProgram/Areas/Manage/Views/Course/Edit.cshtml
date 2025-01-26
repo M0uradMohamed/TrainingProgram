@@ -76,13 +76,57 @@
             </div>
             <div class="form-group">
                 <label asp-for="ImplementationTypeId" class="control-label"></label>
-                <select asp-for="ImplementationTypeId" class="form-control" asp-items="ViewBag.ImplementationTypeId"></select>
-                <span asp-validation-for="ImplementationTypeId" class="text-danger"></span>
+                <select class="form-select" name="ImplementationTypeId">
+                    @{
+                        if (Model.ImplementationTypeId == null)
+                        {
+                            <option value="" selected>غير محدد</option>
+                        }
+                        else
+                        {
+                            <option value="">غير محدد</option>
+                        }
+                        foreach (var item in ViewBag.ImplementationType)
+                        {
+                            if (Model.ImplementationTypeId == item.Id)
+                            {
+                                <option value="@item.Id" selected>@item.Name</option>
+                            }
+                            else
+                            {
+                                <option value="@item.Id">@item.Name</option>
+                            }
+
+                        }
+                    }
+                </select>
             </div>
             <div class="form-group">
                 <label asp-for="TotalImplementationId" class="control-label"></label>
-                <select asp-for="TotalImplementationId" class="form-control" asp-items="ViewBag.TotalImplementationId"></select>
-                <span asp-validation-for="TotalImplementationId" class="text-danger"></span>
+                <select class="form-select" name="TotalImplementationId">
+                    @{
+                        if (Model.TotalImplementationId == null)
+                        {
+                            <option value="" selected>غير محدد</option>
+                        }
+                        else
+                        {
+                            <option value="">غير محدد</option>
+                        }
+                        foreach (var item in ViewBag.TotalImplementation)
+                        {
+                            if (Model.TotalImplementationId == item.Id)
+                            {
+                                <option value="@item.Id" selected>@item.Name</option>
+                            }
+                            else
+                            {
+                                <option value="@item.Id">@item.Name</option>
+                            }
+
+                        }
+                    }
+                </select>
             </div>
             <div class="form-group">
                 <label asp-for="RoomNumber" class="control-label"></label>
@@ -91,13 +135,59 @@
             </div>
             <div class="form-group">
                 <label asp-for="Material" class="control-label"></label>
-                <input asp-for="Material" class="form-control" />
-                <span asp-validation-for="Material" class="text-danger"></span>
+                <select class="form-select" name="Material">
+                    @{
+
+                        if (Model.Material == null)
+                        {
+                            <option value="" selected>غير محدد</option>
+                        }
+                        else
+                        {
+                            <option value="">غير محدد</option>
+                        }
+                        foreach (var item in ViewBag.Material)
+                        {
+                            if (Model.Material == item.Key)
+                            {
+                                <option value="@item.Key" selected>@item.Value</option>
+                            }
+                            else
+                            {
+                                <option value="@item.Key">@item.Value</option>
+                            }
+
+                        }
+                    }
+                </select>
             </div>
             <div class="form-group">
                 <label asp-for="courseType" class="control-label"></label>
-                <input asp-for="courseType" class="form-control" />
-                <span asp-validation-for="courseType" class="text-danger"></span>
+                <select class="form-select" name="courseType">
+                    @{
+
+                        if (Model.courseType == null)
+                        {
+                            <option value="" selected>غير محدد</option>
+                        }
+                        else
+                        {
+                            <option value="">غير محدد</option>
+                        }
+                        foreach (var item in ViewBag.CourseType)
+                        {
+                            if (Model.courseType == item.Key)
+                            {
+                                <option value="@item.Key" selected>@item.Value</option>
+                            }
+                            else
+                            {
+                                <option value="@item.Key">@item.Value</option>
+                            }
+
+                        }
+                    }
+                </select>
             </div>
             <div class="form-group">
                 <label asp-for="Rating" class="control-label"></label>
@@ -106,8 +196,31 @@
             </div>
             <div class="form-group">
                 <label asp-for="ImplementationMonth" class="control-label"></label>
-                <input asp-for="ImplementationMonth" class="form-control" />
-                <span asp-validation-for="ImplementationMonth" class="text-danger"></span>
+                <select class="form-select" name="ImplementationMonth">
+                    @{
+
+                        if (Model.ImplementationMonth == null)
+                        {
+                            <option value="" selected>غير محدد</option>
+                        }
+                        else
+                        {
+                            <option value="">غير محدد</option>
+                        }
+                        foreach (var item in ViewBag.ImplementationMonth)
+                        {
+                            if (Model.ImplementationMonth == item.Key)
+                            {
+                                <option value="@item.Key" selected>@item.Value</option>
+                            }
+                            else
+                            {
+                                <option value="@item.Key">@item.Value</option>
+                            }
+
+                        }
+                    }
+                </select>
             </div>
             <div class="form-group">
                 <label asp-for="ActualCost" class="control-label"></label>
@@ -121,12 +234,36 @@
             </div>
             <div class="form-group">
                 <label asp-for="Check" class="control-label"></label>
-                <input asp-for="Check" class="form-control" />
-                <span asp-validation-for="Check" class="text-danger"></span>
+                <select class="form-select" name="Check">
+                    @{
+
+                        if (Model.Check == null)
+                        {
+                            <option value="" selected>غير محدد</option>
+                        }
+                        else
+                        {
+                            <option value="">غير محدد</option>
+                        }
+                        foreach (var item in ViewBag.Check)
+                        {
+                            if (Model.Check == item.Key)
+                            {
+                                <option value="@item.Key" selected>@item.Value</option>
+                            }
+                            else
+                            {
+                                <option value="@item.Key">@item.Value</option>
+                            }
+
+                        }
+                    }
+                </select>
             </div>
             <div class="form-group">
                 <label asp-for="PdfFile" class="control-label"></label>
-                <input asp-for="PdfFile" class="form-control" />
+                <span >, Pdf file name : @Model.PdfFile</span>
+                <input asp-for="PdfFile" name="file" class="form-control" type="file" />
                 <span asp-validation-for="PdfFile" class="text-danger"></span>
             </div>
             <div class="form-group">
@@ -137,18 +274,96 @@
 
             <div class="form-group">
                 <label asp-for="PrimaryInstructorId" class="control-label"></label>
-                <select asp-for="PrimaryInstructorId" class="form-control" asp-items="ViewBag.PrimaryInstructorId"></select>
-                <span asp-validation-for="PrimaryInstructorId" class="text-danger"></span>
+                <select asp-for="PrimaryInstructorId" id="select-PrimaryInstructor" class="form-control" placeholder="Search for a instructor...">
+                    @{
+                        foreach (var item in ViewBag.Instructors)
+                        {
+                            if (Model.PrimaryInstructorId == item.Id)
+                            {
+                                <option value="@item.Id" selected> @item.FoundationId | @item.Name </option>
+                            }
+                            else
+                            {
+                                <option value="@item.Id"> @item.FoundationId | @item.Name </option>
+                            }
+
+                        }
+                    }
+                </select>
+            </div>
+            <div class="form-group">
+                <label asp-for="secondryInstructors" class="control-label"></label>
+                <select asp-for="secondryInstructors" id="select-secondryInstructors" class="form-control" multiple placeholder="Search for a instructor...">
+
+ @*                    @{
+                        foreach (var item in ViewBag.Instructors)
+                        {
+                            if (Model.secondryInstructors == item.Id)
+                            {
+                                <option value="@item.Id" selected> @item.FoundationId | @item.Name </option>
+                            }
+                            else
+                            {
+                                <option value="@item.Id" > @item.FoundationId | @item.Name </option>
+                            }
+
+                        }
+                    } *@
+                </select>
             </div>
             <div class="form-group">
                 <label asp-for="CourseNatureId" class="control-label"></label>
-                <select asp-for="CourseNatureId" class="form-control" asp-items="ViewBag.CourseNatureId"></select>
-                <span asp-validation-for="CourseNatureId" class="text-danger"></span>
+                <select class="form-select" name="CourseNatureId">
+                    @{
+                        if (Model.CourseNatureId == null)
+                        {
+                            <option value="" selected>غير محدد</option>
+                        }
+                        else
+                        {
+                            <option value="">غير محدد</option>
+                        }
+                        foreach (var item in ViewBag.CourseNature)
+                        {
+                            if (Model.CourseNatureId == item.Id)
+                            {
+                                <option value="@item.Id" selected>@item.Name</option>
+                            }
+                            else
+                            {
+                                <option value="@item.Id">@item.Name</option>
+                            }
+
+                        }
+                    }
+                </select>
             </div>
             <div class="form-group">
                 <label asp-for="TrainingSpecialistId" class="control-label"></label>
-                <select asp-for="TrainingSpecialistId" class="form-control" asp-items="ViewBag.TrainingSpecialistId"></select>
-                <span asp-validation-for="TrainingSpecialistId" class="text-danger"></span>
+                <select class="form-select" name="TrainingSpecialistId">
+                    @{
+                        if (Model.TrainingSpecialistId == null)
+                        {
+                            <option value="" selected>غير محدد</option>
+                        }
+                        else
+                        {
+                            <option value="">غير محدد</option>
+                        }
+                        foreach (var item in ViewBag.TrainingSpecialist)
+                        {
+                            if (Model.TrainingSpecialistId == item.Id)
+                            {
+                                <option value="@item.Id" selected>@item.Name</option>
+                            }
+                            else
+                            {
+                                <option value="@item.Id">@item.Name</option>
+                            }
+
+                        }
+                    }
+                </select>
             </div>
             <div class="form-group">
                 <input type="submit" value="Save" class="btn btn-primary" />
@@ -164,3 +379,8 @@
 @section Scripts {
     @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
 }
+<script>
+    new TomSelect("#select-PrimaryInstructor", { create: false, sortField: { field: "text", direction: "asc" }, maxOptions: false });
+    new TomSelect("#select-secondryInstructors", { create: false, sortField: { field: "text", direction: "asc" }, maxOptions: false, maxItems: 3, allowEmptyOption: true });
+
+</script>

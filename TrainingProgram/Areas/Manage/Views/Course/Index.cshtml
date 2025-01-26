@@ -75,7 +75,7 @@
             </th>
             <th>
                 @Html.DisplayNameFor(model => model.PdfFile)
-            
+
             </th>
             <th>
                 @Html.DisplayNameFor(model => model.Notes)
@@ -87,6 +87,15 @@
                 @Html.DisplayNameFor(model => model.PrimaryInstructor)
             </th>
             <th>
+                <span>المدرب الثاني </span>
+            </th>
+            <th>
+                <span>المدرب الثالث </span>
+            </th>
+            <th>
+                <span>المدرب الرابع </span>
+            </th>
+            <th>
                 @Html.DisplayNameFor(model => model.implementationType)
             </th>
             <th>
@@ -95,107 +104,151 @@
             <th>
                 @Html.DisplayNameFor(model => model.CourseNature)
             </th>
-            <th></th>
         </tr>
     </thead>
     <tbody>
-@foreach (var item in Model) {
-        <tr>
-            <td>
-                @Html.DisplayFor(modelItem => item.Name)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.TargetSector)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Participants)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.ImplementationPlace)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.DaysCount)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.ImplementedDays)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.BeginningDate)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.EndingDate)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.TraineesNumber)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Cost)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.ImplementedCenter)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.HoursNumber)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.RoomNumber)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Material)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.courseType)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Rating)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.ImplementationMonth)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.ActualCost)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Code)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Check)
-            </td>
-            <td>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Name)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.TargetSector)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Participants)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.ImplementationPlace)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.DaysCount)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.ImplementedDays)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.BeginningDate)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.EndingDate)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.TraineesNumber)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Cost)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.ImplementedCenter)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.HoursNumber)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.RoomNumber)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Material)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.courseType)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Rating)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.ImplementationMonth)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.ActualCost)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Code)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Check)
+                </td>
+                <td>
                     @{
-                        if(item.PdfFile!=null)
+                        if (item.PdfFile != null)
                         {
-                            
-                        <a href="@Url.Action("DownloadFile", "course", new { fileName = item.PdfFile })" class="btn btn-primary">
-                        <i class="bi bi-download"></i>
-                    </a>
+
+                            <a href="@Url.Action("DownloadFile", "course", new { fileName = item.PdfFile })" class="btn btn-primary">
+                                <i class="bi bi-download"></i>
+                            </a>
                         }
                     }
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Notes)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.EnterName)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.PrimaryInstructor.Id)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.implementationType.Name)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.TotalImplementation.Name)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.CourseNature.Name)
-            </td>
-            <td>
-                <a asp-action="Edit" asp-route-id="@item.Id">Edit</a> |
-                <a asp-action="Details" asp-route-id="@item.Id">Details</a> |
-                <a asp-action="Delete" asp-route-id="@item.Id">Delete</a>
-            </td>
-        </tr>
-}
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Notes)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.EnterName)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.PrimaryInstructor.Name)
+                </td>
+                @{
+                    foreach(var instructor in item.Instructors)
+                    {
+                        <td><span>@instructor.Name</span></td>
+                    }
+                    for(int i=1; i <= 3 - item.Instructors.Count(); i++)
+                    {
+                        <td></td>
+                    }
+                }
+
+                <td>
+                    @Html.DisplayFor(modelItem => item.implementationType.Name)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.TotalImplementation.Name)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.CourseNature.Name)
+                </td>
+                <td>
+                    <a asp-action="Edit" asp-route-id="@item.Id" type="button" class="btn btn-dark">Edit</a> |
+                    <a asp-action="Details" asp-route-id="@item.Id" type="button" class="btn btn-info ">Details</a> |
+                    <button type="button" class="btn btn-danger " data-bs-toggle="modal" data-bs-target="#deleteModal" data-courseid="@item.Id">
+                        <i class="bi bi-trash3"></i> Delete
+                    </button>
+                </td>
+            </tr>
+        }
     </tbody>
 </table>
+<!-- Modal -->
+<div class="modal fade" id="deleteModal" tabindex="-1" aria-labelledby="deleteModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="deleteModalLabel">Confirm Delete</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                Are you sure you want to delete this course ?
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                <form id="deleteForm" method="post" action="/manage/course/delete/">
+                    <input type="hidden" name="id" id="courseIdInput" value="" />
+                    <button type="submit" class="btn btn-danger">Delete</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    var deleteModal = document.getElementById('deleteModal');
+    deleteModal.addEventListener('show.bs.modal', function (event) {
+        var button = event.relatedTarget;
+        var id = button.getAttribute('data-courseid');
+        var input = document.getElementById('courseIdInput');
+        input.value = id;
+    });
+</script>

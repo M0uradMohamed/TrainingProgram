@@ -47,7 +47,7 @@ namespace TrainingProgram.Areas.Manage.Controllers
         {
             var courses = courseRepository.Get(includeProps: [c => c.CourseNature
                 ,c => c.PrimaryInstructor , c => c.TotalImplementation
-                ,c => c.implementationType]).ToList();
+                ,c => c.implementationType,c=>c.Instructors]).ToList();
             return View(courses);
         }
 
@@ -63,7 +63,8 @@ namespace TrainingProgram.Areas.Manage.Controllers
                 c => c.CourseNature
                 ,c => c.PrimaryInstructor
                 ,c => c.TotalImplementation
-                ,c => c.implementationType ]
+                ,c => c.implementationType
+                ,c=>c.Instructors]
                 , expression: m => m.Id == id).FirstOrDefault();
             if (course == null)
             {
@@ -84,6 +85,8 @@ namespace TrainingProgram.Areas.Manage.Controllers
             ViewBag.CourseType = StaticData.courseType;
             ViewBag.ImplementationMonth = StaticData.implementationMonth;
             ViewBag.TrainingSpecialist = trainingSpecialistRepository.Get().ToList();
+            ViewBag.Check = StaticData.check;
+
 
             return View();
         }
@@ -111,6 +114,8 @@ namespace TrainingProgram.Areas.Manage.Controllers
                     ViewBag.CourseType = StaticData.courseType;
                     ViewBag.ImplementationMonth = StaticData.implementationMonth;
                     ViewBag.TrainingSpecialist = trainingSpecialistRepository.Get().ToList();
+                    ViewBag.Check = StaticData.check;
+
 
                     return View();
                 }
@@ -130,6 +135,8 @@ namespace TrainingProgram.Areas.Manage.Controllers
                     ViewBag.CourseType = StaticData.courseType;
                     ViewBag.ImplementationMonth = StaticData.implementationMonth;
                     ViewBag.TrainingSpecialist = trainingSpecialistRepository.Get().ToList();
+                    ViewBag.Check = StaticData.check;
+
                     return View();
                 }
                 if (file != null)
@@ -147,6 +154,8 @@ namespace TrainingProgram.Areas.Manage.Controllers
                         ViewBag.CourseType = StaticData.courseType;
                         ViewBag.ImplementationMonth = StaticData.implementationMonth;
                         ViewBag.TrainingSpecialist = trainingSpecialistRepository.Get().ToList();
+                        ViewBag.Check = StaticData.check;
+
                         return View();
                     }
                 }
@@ -234,6 +243,8 @@ namespace TrainingProgram.Areas.Manage.Controllers
             ViewBag.CourseType = StaticData.courseType;
             ViewBag.ImplementationMonth = StaticData.implementationMonth;
             ViewBag.TrainingSpecialist = trainingSpecialistRepository.Get().ToList();
+            ViewBag.Check = StaticData.check;
+
             return View(courseVM);
         }
 
@@ -296,6 +307,8 @@ namespace TrainingProgram.Areas.Manage.Controllers
             ViewBag.CourseType = StaticData.courseType;
             ViewBag.ImplementationMonth = StaticData.implementationMonth;
             ViewBag.TrainingSpecialist = trainingSpecialistRepository.Get().ToList();
+            ViewBag.Check = StaticData.check;
+
 
             return View(courseVM);
         }
@@ -326,6 +339,8 @@ namespace TrainingProgram.Areas.Manage.Controllers
                     ViewBag.CourseType = StaticData.courseType;
                     ViewBag.ImplementationMonth = StaticData.implementationMonth;
                     ViewBag.TrainingSpecialist = trainingSpecialistRepository.Get().ToList();
+                    ViewBag.Check = StaticData.check;
+
                     return View();
                 }
                 var similerCourse = courseRepository.Get(expression: e => e.PrimaryInstructorId == courseVM.PrimaryInstructorId).ToList()
@@ -342,6 +357,8 @@ namespace TrainingProgram.Areas.Manage.Controllers
                     ViewBag.CourseType = StaticData.courseType;
                     ViewBag.ImplementationMonth = StaticData.implementationMonth;
                     ViewBag.TrainingSpecialist = trainingSpecialistRepository.Get().ToList();
+                    ViewBag.Check = StaticData.check;
+
                     return View();
                 }
                 if (file != null)
@@ -358,7 +375,9 @@ namespace TrainingProgram.Areas.Manage.Controllers
                     ViewBag.CourseType = StaticData.courseType;
                     ViewBag.ImplementationMonth = StaticData.implementationMonth;
                     ViewBag.TrainingSpecialist = trainingSpecialistRepository.Get().ToList();
-                    return View();
+                        ViewBag.Check = StaticData.check;
+
+                        return View();
                     }
                 }
 
@@ -412,6 +431,8 @@ namespace TrainingProgram.Areas.Manage.Controllers
             ViewBag.CourseType = StaticData.courseType;
             ViewBag.ImplementationMonth = StaticData.implementationMonth;
             ViewBag.TrainingSpecialist = trainingSpecialistRepository.Get().ToList();
+            ViewBag.Check = StaticData.check;
+
             return View(courseVM);
         }
 
