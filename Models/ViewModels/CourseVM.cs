@@ -95,6 +95,8 @@ namespace Models.ViewModels
         public int? TrainingSpecialistId { get; set; }
         [ValidateNever]
         [Display(Name = "المدربين الثانويين")]
-        public List<int>? secondryInstructors { get; set; }
+        public ICollection<int>? instuctorsIds { get; set; }
+        [ValidateNever]
+        public ICollection<Instructor>? SecondryInstructors { get; set; }
     }
 }

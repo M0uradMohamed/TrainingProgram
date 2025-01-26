@@ -262,7 +262,16 @@
             </div>
             <div class="form-group">
                 <label asp-for="PdfFile" class="control-label"></label>
-                <span >, Pdf file name : @Model.PdfFile</span>
+                <span>, Pdf file name : @Model.PdfFile</span>
+                @{
+                    if (Model.PdfFile != null)
+                    {
+
+                        <a href="@Url.Action("DownloadFile", "course", new { fileName = Model.PdfFile })" class="btn btn-primary">
+                            <i class="bi bi-download"></i>
+                        </a>
+                    }
+                }
                 <input asp-for="PdfFile" name="file" class="form-control" type="file" />
                 <span asp-validation-for="PdfFile" class="text-danger"></span>
             </div>
@@ -292,23 +301,59 @@
                 </select>
             </div>
             <div class="form-group">
-                <label asp-for="secondryInstructors" class="control-label"></label>
-                <select asp-for="secondryInstructors" id="select-secondryInstructors" class="form-control" multiple placeholder="Search for a instructor...">
+                <label asp-for="instuctorsIds" class="control-label"></label>
+                <select asp-for="instuctorsIds" id="select-secondryInstructors" class="form-control" multiple placeholder="Search for a instructor...">
 
- @*                    @{
+    @*                 @{
                         foreach (var item in ViewBag.Instructors)
                         {
-                            if (Model.secondryInstructors == item.Id)
+                            
+                            foreach (var secInstructor in ViewBag.CoursInstructors)
+                            {
+                                <option>  
+                                <span>hllo</span>
+                                </option>
+                              /*  if (item.Id == secInstructor.InstructorId)
+                                {
+                                    <option value="@item.Id" selected> @item.FoundationId | @item.Name </option>
+                                    ViewBag.CoursInstructors.Remove(secInstructor);
+                                }
+                                else
+                                {
+                                    <option value="@item.Id"> @item.FoundationId | @item.Name </option>
+                                }*/
+                            }
+
+                        }
+                    } *@
+                    @{
+                        foreach (var item in ViewBag.Instructors)
+                        {
+                            bool isIn = false;
+                            if (Model.SecondryInstructors != null)
+                            {
+
+                                foreach (var inst in Model.SecondryInstructors)
+                                {
+                                    if (inst.Id == item.Id)
+                                    {
+                                        isIn = true;
+                                        Model.SecondryInstructors.Remove(inst);
+                                        break;
+                                    }
+                                }
+                            }
+                            if (isIn == true)
                             {
                                 <option value="@item.Id" selected> @item.FoundationId | @item.Name </option>
                             }
                             else
                             {
-                                <option value="@item.Id" > @item.FoundationId | @item.Name </option>
+                                <option value="@item.Id"> @item.FoundationId | @item.Name </option>
                             }
-
                         }
-                    } *@
+                    }
+
                 </select>
             </div>
             <div class="form-group">
@@ -325,6 +370,7 @@
                         }
                         foreach (var item in ViewBag.CourseNature)
                         {
+                           
                             if (Model.CourseNatureId == item.Id)
                             {
                                 <option value="@item.Id" selected>@item.Name</option>
@@ -377,7 +423,9 @@
 </div>
 
 @section Scripts {
-    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
 }
 <script>
     new TomSelect("#select-PrimaryInstructor", { create: false, sortField: { field: "text", direction: "asc" }, maxOptions: false });
