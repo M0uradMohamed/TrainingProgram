@@ -77,10 +77,10 @@
                 <label asp-for="ImplementationTypeId" class="control-label"></label>
                 <select class="form-select" name="ImplementationTypeId">
                     @{
-                            <option value="">غير محدد</option>
+                        <option value="">غير محدد</option>
                         foreach (var item in ViewBag.ImplementationType)
                         {
-                                <option value="@item.Id">@item.Name</option>
+                            <option value="@item.Id">@item.Name</option>
                         }
                     }
                 </select>
@@ -89,10 +89,10 @@
                 <label asp-for="TotalImplementationId" class="control-label"></label>
                 <select class="form-select" name="TotalImplementationId">
                     @{
-                            <option value="">غير محدد</option>
+                        <option value="">غير محدد</option>
                         foreach (var item in ViewBag.TotalImplementation)
                         {
-                                <option value="@item.Id">@item.Name</option>
+                            <option value="@item.Id">@item.Name</option>
                         }
                     }
                 </select>
@@ -106,10 +106,10 @@
                 <label asp-for="Material" class="control-label"></label>
                 <select class="form-select" name="Material">
                     @{
-                            <option value="">غير محدد</option>
+                        <option value="">غير محدد</option>
                         foreach (var item in ViewBag.Material)
                         {
-                                <option value="@item.Key">@item.Value</option>
+                            <option value="@item.Key">@item.Value</option>
                         }
                     }
                 </select>
@@ -118,10 +118,10 @@
                 <label asp-for="courseType" class="control-label"></label>
                 <select class="form-select" name="Material">
                     @{
-                            <option value="">غير محدد</option>
+                        <option value="">غير محدد</option>
                         foreach (var item in ViewBag.CourseType)
                         {
-                                <option value="@item.Key">@item.Value</option>
+                            <option value="@item.Key">@item.Value</option>
                         }
                     }
                 </select>
@@ -135,10 +135,10 @@
                 <label asp-for="ImplementationMonth" class="control-label"></label>
                 <select class="form-select" name="ImplementationMonth">
                     @{
-                            <option value="">غير محدد</option>
+                        <option value="">غير محدد</option>
                         foreach (var item in ViewBag.ImplementationMonth)
                         {
-                                <option value="@item.Key">@item.Value</option>
+                            <option value="@item.Key">@item.Value</option>
                         }
                     }
                 </select>
@@ -167,7 +167,7 @@
             </div>
             <div class="form-group">
                 <label asp-for="PdfFile" class="control-label"></label>
-                <input asp-for="PdfFile" name="file" class="form-control" type="file"/>
+                <input asp-for="PdfFile" name="file" class="form-control" type="file" />
                 <span asp-validation-for="PdfFile" class="text-danger"></span>
             </div>
             <div class="form-group">
@@ -198,10 +198,10 @@
                 <label asp-for="CourseNatureId" class="control-label"></label>
                 <select class="form-select" name="CourseNatureId">
                     @{
-                            <option value="">غير محدد</option>
+                        <option value="">غير محدد</option>
                         foreach (var item in ViewBag.CourseNature)
                         {
-                                <option value="@item.Id">@item.Name</option>
+                            <option value="@item.Id">@item.Name</option>
                         }
                     }
                 </select>
@@ -210,10 +210,10 @@
                 <label asp-for="TrainingSpecialistId" class="control-label"></label>
                 <select class="form-select" name="TrainingSpecialistId">
                     @{
-                            <option value="">غير محدد</option>
+                        <option value="">غير محدد</option>
                         foreach (var item in ViewBag.TrainingSpecialist)
                         {
-                                <option value="@item.Id">@item.Name</option>
+                            <option value="@item.Id">@item.Name</option>
                         }
                     }
                 </select>
@@ -230,10 +230,11 @@
 </div>
 
 @section Scripts {
-    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
 }
 <script>
     new TomSelect("#select-PrimaryInstructor", { create: false, sortField: { field: "text", direction: "asc" }, maxOptions: false });
     new TomSelect("#select-secondryInstructors", { create: false, sortField: { field: "text", direction: "asc" }, maxOptions: false, maxItems: 3, allowEmptyOption: true });
-
 </script>

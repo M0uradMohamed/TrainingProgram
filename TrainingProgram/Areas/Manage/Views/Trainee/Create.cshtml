@@ -17,8 +17,14 @@
                 <input hidden value="ViewBag.CourseId" />
             </div>
             <div class="form-group">
-                <label  class="control-label">موظف</label>
-                <select  class ="form-control" asp-items="ViewBag.EmployeeId"></select>
+                <label asp-for="EmployeeId" class="control-label">الموظف</label>
+                <select asp-for="EmployeeId" id="select-Employee" autocomplete="off" placeholder=" اسم المتدرب | رقم المؤسسة | الوظيفة | مكان العمل">
+                  <option value=""> none</option>
+                    @foreach (var item in ViewBag.Employees)
+                    {
+                        <option value="@item.Id">   @item.Name | @item.FoundationId | @(item.Job ?? "لا يوجد")  | @(item.WorkPlace ?? "لا يوجد")   </option>
+                    }
+                </select>
             </div>
             <div class="form-group">
                 <label asp-for="Estimate" class="control-label"></label>
@@ -47,7 +53,7 @@
             </div>
             <div class="form-group">
                 <label asp-for="AdherenceMark" class="control-label"></label>
-                <input asp-for="AdherenceMark" class="form-control" />
+                <input asp-for="AdherenceMark" class="form-control" min="0" />
                 <span asp-validation-for="AdherenceMark" class="text-danger"></span>
             </div>
             <div class="form-group">
@@ -89,3 +95,6 @@
 @section Scripts {
     @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
 }
+<script>
+    new TomSelect("#select-Employee", { create: false, sortField: { field: "text", direction: "asc" }, maxOptions: false });
+</script>

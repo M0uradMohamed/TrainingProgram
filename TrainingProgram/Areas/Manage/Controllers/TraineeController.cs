@@ -41,26 +41,26 @@ namespace TrainingProgram.Areas.Manage.Controllers
 
             ViewBag.Course = course;
 
-            //var trainees = traineeRepository.Get(expression: e => e.CourseId == id
-            //, includeProps: [e => e.Employee])
-            //    .Select(e => new
-            //    {
-            //        EmployeeFoundationId =e.Employee.FoundationId,
-            //        EmployeeName = e.Employee.Name,
-            //        e.Employee.Job,
-            //        e.Employee.WorkPlace,
-            //        e.Estimate,
-            //        e.Notes,
-            //        e.File,
-            //        e.AbsenceDays,
-            //        e.AttendanceAndDeparture,
-            //        e.AdherenceMark,
-            //        e.InteractionMark,
-            //        e.ActivitiesMark,
-            //        e.TotalEvaluation,
-            //        e.WrittenExam,
-            //        e.TotalMarks
-            //    }).ToList();
+       /*    var trainees = traineeRepository.Get(expression: e => e.CourseId == id
+            , includeProps: [e => e.Employee])
+                .Select(e => new
+                {
+                    EmployeeFoundationId = e.Employee.FoundationId,
+                    EmployeeName = e.Employee.Name,
+                    e.Employee.Job,
+                    e.Employee.WorkPlace,
+                    e.Estimate,
+                    e.Notes,
+                    e.File,
+                    e.AbsenceDays,
+                    e.AttendanceAndDeparture,
+                    e.AdherenceMark,
+                    e.InteractionMark,
+                    e.ActivitiesMark,
+                    e.TotalEvaluation,
+                    e.WrittenExam,
+                    e.TotalMarks
+                }).ToList();*/
 
             var trainees = traineeRepository.Get(expression: e => e.CourseId == id, includeProps: [e => e.Employee])
        .Select(e => new TraineeVM
@@ -97,6 +97,7 @@ namespace TrainingProgram.Areas.Manage.Controllers
             var employees = employeeRepository.Get().Select(e => new
             {
                 e.Id,
+                e.FoundationId,
                 e.Name,
                 e.Job,
                 e.WorkPlace

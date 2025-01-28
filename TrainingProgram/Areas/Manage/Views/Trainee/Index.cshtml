@@ -1,5 +1,5 @@
-﻿ @model ICollection<Models.ViewModels.TraineeVM>
- @{
+﻿ @model IEnumerable<Models.ViewModels.TraineeVM>
+@{
     ViewData["Title"] = "Index";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
@@ -49,49 +49,50 @@
     <thead>
         <tr>
             <th>
-                رقم المؤسسة
+                @Html.DisplayNameFor(model => model.EmployeeFoundationId)
             </th>
             <th>
-                اسم المتدرب
+                @Html.DisplayNameFor(model => model.EmployeeName)
             </th>
             <th>
-                الوظيفة
+                @Html.DisplayNameFor(model => model.Job)
             </th>
             <th>
-                التقدير
-            </th>
-
-            <th>
-                الملاحظات
+                @Html.DisplayNameFor(model => model.WorkPlace)
             </th>
             <th>
-                pdf ملف
+                @Html.DisplayNameFor(model => model.Estimate)
             </th>
             <th>
-                AbsenceDays
+                @Html.DisplayNameFor(model => model.Notes)
             </th>
             <th>
-                AttendanceAndDeparture
+                @Html.DisplayNameFor(model => model.File)
             </th>
             <th>
-                AdherenceMark
+                @Html.DisplayNameFor(model => model.AbsenceDays)
             </th>
             <th>
-                InteractionMark
+                @Html.DisplayNameFor(model => model.AttendanceAndDeparture)
             </th>
             <th>
-                ActivitiesMark
+                @Html.DisplayNameFor(model => model.AdherenceMark)
             </th>
             <th>
-                TotalEvaluation
+                @Html.DisplayNameFor(model => model.InteractionMark)
             </th>
             <th>
-                WrittenExam
+                @Html.DisplayNameFor(model => model.ActivitiesMark)
             </th>
             <th>
-                TotalMarks
+                @Html.DisplayNameFor(model => model.TotalEvaluation)
             </th>
-
+            <th>
+                @Html.DisplayNameFor(model => model.WrittenExam)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.TotalMarks)
+            </th>
             <th></th>
         </tr>
     </thead>
@@ -100,14 +101,16 @@
         {
             <tr>
                 <td>
-                   @item.EmployeeFoundationId
+                    @item.EmployeeFoundationId
                 </td>
                 <td>
                     @item.EmployeeName
                 </td>
                 <td>
                     @item.Job
-
+                </td>
+                <td>
+                    @item.WorkPlace
                 </td>
                 <td>
                     @item.Estimate
