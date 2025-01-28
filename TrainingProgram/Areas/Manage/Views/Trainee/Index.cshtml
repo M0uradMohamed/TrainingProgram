@@ -1,0 +1,153 @@
+﻿ @model ICollection<Models.ViewModels.TraineeVM>
+ @{
+    ViewData["Title"] = "Index";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h1>Index</h1>
+
+<div>
+
+    <dl class="row">
+        <dt class="col-sm-2">
+            اسم البرنامج :
+        </dt>
+        <dd class="col-sm-10">
+            @ViewBag.Course.Name
+        </dd>
+        <dt class="col-sm-2">
+            تاريخ البداية :
+        </dt>
+        <dd class="col-sm-10">
+            @ViewBag.Course.BeginningDate
+        </dd>
+        <dt class="col-sm-2">
+            تاريخ النهاية :
+        </dt>
+        <dd class="col-sm-10">
+            @ViewBag.Course.EndingDate
+        </dd>
+        <dt class="col-sm-2">
+            المدرب الاساسي :
+        </dt>
+        <dd class="col-sm-10">
+            @ViewBag.Course.PrimaryInstructorName
+        </dd>
+        <dt class="col-sm-2">
+            مكان التنفيذ :
+        </dt>
+        <dd class="col-sm-10">
+            @ViewBag.Course.ImplementationPlace
+        </dd>
+    </dl>
+</div>
+
+<p>
+    <a asp-action="Create" asp-route-id="@ViewBag.Course.Id">Create New</a>
+</p>
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                رقم المؤسسة
+            </th>
+            <th>
+                اسم المتدرب
+            </th>
+            <th>
+                الوظيفة
+            </th>
+            <th>
+                التقدير
+            </th>
+
+            <th>
+                الملاحظات
+            </th>
+            <th>
+                pdf ملف
+            </th>
+            <th>
+                AbsenceDays
+            </th>
+            <th>
+                AttendanceAndDeparture
+            </th>
+            <th>
+                AdherenceMark
+            </th>
+            <th>
+                InteractionMark
+            </th>
+            <th>
+                ActivitiesMark
+            </th>
+            <th>
+                TotalEvaluation
+            </th>
+            <th>
+                WrittenExam
+            </th>
+            <th>
+                TotalMarks
+            </th>
+
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>
+                   @item.EmployeeFoundationId
+                </td>
+                <td>
+                    @item.EmployeeName
+                </td>
+                <td>
+                    @item.Job
+
+                </td>
+                <td>
+                    @item.Estimate
+                </td>
+                <td>
+                    @item.Notes
+                </td>
+                <td>
+                    @item.File
+                </td>
+                <td>
+                    @item.AbsenceDays
+                </td>
+                <td>
+                    @item.AttendanceAndDeparture
+                </td>
+                <td>
+                    @item.AdherenceMark
+                </td>
+                <td>
+                    @item.InteractionMark
+                </td>
+                <td>
+                    @item.ActivitiesMark
+                </td>
+                <td>
+                    @item.TotalEvaluation
+                </td>
+                <td>
+                    @item.WrittenExam
+                </td>
+                <td>
+                    @item.TotalMarks
+                </td>
+                <td>
+                    @Html.ActionLink("Edit", "Edit", new { /* id=item.PrimaryKey */ }) |
+                    @Html.ActionLink("Details", "Details", new { /* id=item.PrimaryKey */ }) |
+                    @Html.ActionLink("Delete", "Delete", new { /* id=item.PrimaryKey */ })
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>

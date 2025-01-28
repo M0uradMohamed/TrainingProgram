@@ -544,6 +544,12 @@ namespace TrainingProgram.Areas.Manage.Controllers
             var course = courseRepository.Get(expression: m => m.Id == id).FirstOrDefault();
             if (course != null)
             {
+                string filePath = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot\\CouresFiles",course.PdfFile);
+                if (System.IO.File.Exists(filePath))
+                {
+                    System.IO.File.Delete(filePath); 
+                }
+
                 courseRepository.Delete(course);
             }
 
