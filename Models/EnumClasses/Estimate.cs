@@ -5,6 +5,7 @@
         Excellent,
         VeryGood,
         Good,
-        Acceptable
+        Acceptable,
+        Failed
     }
 }

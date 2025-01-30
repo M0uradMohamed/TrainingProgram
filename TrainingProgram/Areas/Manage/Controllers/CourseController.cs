@@ -119,10 +119,11 @@ namespace TrainingProgram.Areas.Manage.Controllers
 
                     return View(courseVM);
                 }
+
                 var similerCourse = courseRepository.Get(expression: e => e.PrimaryInstructorId == courseVM.PrimaryInstructorId).ToList()
-                    .Any(e =>  courseVM.BeginningDate >= e.BeginningDate &&  courseVM.BeginningDate <= e.EndingDate || 
-                    courseVM.EndingDate >= e.BeginningDate && courseVM.EndingDate<= e.EndingDate ||
-                    courseVM.BeginningDate <= e.BeginningDate && courseVM.EndingDate >= e.EndingDate  );
+                    .Any(e => courseVM.BeginningDate <= e.EndingDate &&
+                                  courseVM.EndingDate >= e.BeginningDate);
+               
                 if (similerCourse)
                 {
                     ModelState.AddModelError(string.Empty, "لا يمكن تسجيل دورة بهذا المدرب في هذان الموعدان");

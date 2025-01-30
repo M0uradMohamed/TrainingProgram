@@ -1,6 +1,8 @@
 ﻿using DataAccess.Repository.IRepository;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.ModelBinding;
 using Models;
+using Models.StaticData;
 using Models.ViewModels;
 
 namespace TrainingProgram.Areas.Manage.Controllers
@@ -41,26 +43,26 @@ namespace TrainingProgram.Areas.Manage.Controllers
 
             ViewBag.Course = course;
 
-       /*    var trainees = traineeRepository.Get(expression: e => e.CourseId == id
-            , includeProps: [e => e.Employee])
-                .Select(e => new
-                {
-                    EmployeeFoundationId = e.Employee.FoundationId,
-                    EmployeeName = e.Employee.Name,
-                    e.Employee.Job,
-                    e.Employee.WorkPlace,
-                    e.Estimate,
-                    e.Notes,
-                    e.File,
-                    e.AbsenceDays,
-                    e.AttendanceAndDeparture,
-                    e.AdherenceMark,
-                    e.InteractionMark,
-                    e.ActivitiesMark,
-                    e.TotalEvaluation,
-                    e.WrittenExam,
-                    e.TotalMarks
-                }).ToList();*/
+            /*    var trainees = traineeRepository.Get(expression: e => e.CourseId == id
+                 , includeProps: [e => e.Employee])
+                     .Select(e => new
+                     {
+                         EmployeeFoundationId = e.Employee.FoundationId,
+                         EmployeeName = e.Employee.Name,
+                         e.Employee.Job,
+                         e.Employee.WorkPlace,
+                         e.Estimate,
+                         e.Notes,
+                         e.File,
+                         e.AbsenceDays,
+                         e.AttendanceAndDeparture,
+                         e.AdherenceMark,
+                         e.InteractionMark,
+                         e.ActivitiesMark,
+                         e.TotalEvaluation,
+                         e.WrittenExam,
+                         e.TotalMarks
+                     }).ToList();*/
 
             var trainees = traineeRepository.Get(expression: e => e.CourseId == id, includeProps: [e => e.Employee])
        .Select(e => new TraineeVM
@@ -95,18 +97,135 @@ namespace TrainingProgram.Areas.Manage.Controllers
             int courseId = id;
 
             var employees = employeeRepository.Get().Select(e => new
-            {
-                e.Id,
-                e.FoundationId,
-                e.Name,
-                e.Job,
-                e.WorkPlace
-            }).ToList();
+            { e.Id, e.FoundationId, e.Name, e.Job, e.WorkPlace }).ToList();
 
-            ViewBag.Employees=employees;
-            ViewBag.CourseId= courseId;
+            ViewBag.Employees = employees;
+            ViewBag.CourseId = courseId;
+            ViewBag.Estimate = StaticData.estimate;
 
             return View();
+        }
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public IActionResult Create(int id, TraineeVM traineeVM, IFormFile file)
+        {
+            ModelState.Remove(nameof(file));
+            if (employeeRepository.Get(expression: e => e.Id == traineeVM.EmployeeId).Any()
+                && courseRepository.Get(expression: e => e.Id == id).Any())
+            {
+
+
+                if (traineeRepository.Get(expression: e => e.CourseId == id && e.EmployeeId == traineeVM.EmployeeId).Any())
+                {
+                    ModelState.AddModelError(nameof(traineeVM.EmployeeId), "هذا المتدرب موجود بالفعل في هذا البرنامج");
+
+                    ViewBag.Employees = employeeRepository.Get().Select(e => new
+                    { e.Id, e.FoundationId, e.Name, e.Job, e.WorkPlace }).ToList();
+                    ViewBag.Estimate = StaticData.estimate;
+                    ViewBag.CourseId = id;
+
+                    return View(traineeVM);
+                }
+                var course = courseRepository.Get(expression: e => e.Id == id, tracked: false)
+                    .Select(e => new { e.BeginningDate, e.EndingDate }).FirstOrDefault();
+
+                var similarTrinee = traineeRepository.Get(includeProps: [e => e.Course], e => e.EmployeeId == traineeVM.EmployeeId)
+                    .Any(e =>  course.BeginningDate <= e.Course.EndingDate &&
+                                  course.EndingDate >= e.Course.BeginningDate);
+
+                if (similarTrinee)
+                {
+                    ModelState.AddModelError(nameof(traineeVM.EmployeeId), "هذا المتدرب موجود بالفعل في برنامج يتعارض  موعده مع برنامج اخر");
+
+                    ViewBag.Employees = employeeRepository.Get().Select(e => new
+                    { e.Id, e.FoundationId, e.Name, e.Job, e.WorkPlace }).ToList();
+                    ViewBag.Estimate = StaticData.estimate;
+                    ViewBag.CourseId = id;
+
+                    return View(traineeVM);
+                }
+
+                if (file != null)
+                {
+
+                    if (Path.GetExtension(file.FileName).ToLower() != ".pdf" && Path.GetExtension(file.FileName).ToLower() != ".jpg"
+                      && Path.GetExtension(file.FileName).ToLower() != ".png")
+                    {
+                        ModelState.AddModelError(nameof(traineeVM.File), "هذا الملف غير مدعوم");
+
+                        ViewBag.Employees = employeeRepository.Get().Select(e => new
+                        { e.Id, e.FoundationId, e.Name, e.Job, e.WorkPlace }).ToList();
+                        ViewBag.Estimate = StaticData.estimate;
+                        ViewBag.CourseId = id;
+
+                        return View(traineeVM);
+                    }
+                }
+                var trainee = new Trainee()
+                {
+                    CourseId = id,
+                    EmployeeId = traineeVM.EmployeeId,
+                    Estimate = traineeVM.Estimate,
+                    Notes = traineeVM.Notes,
+                    AbsenceDays = traineeVM.AbsenceDays ?? 0,
+                    AttendanceAndDeparture = traineeVM.AttendanceAndDeparture ?? 0,
+                    AdherenceMark = traineeVM.AdherenceMark ?? 0,
+                    InteractionMark = traineeVM.InteractionMark ?? 0,
+                    ActivitiesMark = traineeVM.ActivitiesMark ?? 0,
+                    TotalEvaluation = traineeVM.TotalEvaluation ?? 0,
+                    WrittenExam = traineeVM.WrittenExam ?? 0,
+                    TotalMarks = traineeVM.TotalMarks ?? 0
+                };
+
+                traineeRepository.Create(trainee);
+                traineeRepository.Commit();
+
+                if (file != null)
+                {
+                    string fileName = $"pdf{trainee.CourseId}{trainee.EmployeeId}".ToString();
+                    string extension = Path.GetExtension(file.FileName);
+
+
+                    fileName += extension;
+                    string filePath = Path.Combine(Directory.GetCurrentDirectory(), $"wwwroot\\TraineesFiles\\Coure{trainee.CourseId}", fileName);
+
+                    string directoryPath = Path.Combine(Directory.GetCurrentDirectory(), $"wwwroot\\TraineesFiles\\Coure{trainee.CourseId}");
+
+
+                    if (!Directory.Exists(directoryPath))
+                    {
+                        Directory.CreateDirectory(directoryPath);
+                    }
+
+                    using (var stream = System.IO.File.Create(filePath))
+                    {
+                        file.CopyTo(stream);
+                    }
+                    trainee.File = fileName;
+
+                    traineeRepository.Edit(trainee);
+                    traineeRepository.Commit();
+                }
+
+                TempData["success"] = "تم اضافة المتدرب بنجاح";
+
+                ViewBag.Employees = employeeRepository.Get().Select(e => new
+                { e.Id, e.FoundationId, e.Name, e.Job, e.WorkPlace }).ToList();
+                ViewBag.Estimate = StaticData.estimate;
+                ViewBag.CourseId = id;
+                ModelState.Clear();
+                return View();
+
+
+            }
+            ModelState.AddModelError(nameof(traineeVM.EmployeeId), "employee is requied");
+
+            ViewBag.Employees = employeeRepository.Get().Select(e => new
+            { e.Id, e.FoundationId, e.Name, e.Job, e.WorkPlace }).ToList();
+            ViewBag.Estimate = StaticData.estimate;
+            ViewBag.CourseId = id;
+
+            return View(traineeVM);
         }
     }
 }

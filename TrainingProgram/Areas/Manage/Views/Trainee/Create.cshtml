@@ -4,6 +4,18 @@
     ViewData["Title"] = "Create";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
+@if (TempData["success"] != null)
+{
+    <div id="successToast" class="toast">
+        <strong>@TempData["success"]</strong>
+    </div>
+}
+@if (TempData["success"] != null)
+{
+    <div id="boughtToast" class="toastorange">
+        <h1>@TempData["success"]</h1>
+    </div>
+}
 
 <h1>Create</h1>
 
@@ -11,7 +23,7 @@
 <hr />
 <div class="row">
     <div class="col-md-4">
-        <form asp-action="Create" >
+        <form asp-action="Create" asp-route-id="@ViewBag.CourseId" enctype="multipart/form-data">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
             <div class="form-group">
                 <input hidden value="ViewBag.CourseId" />
@@ -19,18 +31,15 @@
             <div class="form-group">
                 <label asp-for="EmployeeId" class="control-label">الموظف</label>
                 <select asp-for="EmployeeId" id="select-Employee" autocomplete="off" placeholder=" اسم المتدرب | رقم المؤسسة | الوظيفة | مكان العمل">
-                  <option value=""> none</option>
+                    <option value=""> none</option>
                     @foreach (var item in ViewBag.Employees)
                     {
                         <option value="@item.Id">   @item.Name | @item.FoundationId | @(item.Job ?? "لا يوجد")  | @(item.WorkPlace ?? "لا يوجد")   </option>
                     }
                 </select>
+                <span asp-validation-for="EmployeeId" class="text-danger"></span>
             </div>
-            <div class="form-group">
-                <label asp-for="Estimate" class="control-label"></label>
-                <input asp-for="Estimate" class="form-control" />
-                <span asp-validation-for="Estimate" class="text-danger"></span>
-            </div>
+
             <div class="form-group">
                 <label asp-for="Notes" class="control-label"></label>
                 <input asp-for="Notes" class="form-control" />
@@ -38,48 +47,53 @@
             </div>
             <div class="form-group">
                 <label asp-for="File" class="control-label"></label>
-                <input asp-for="File" class="form-control" />
+                <input asp-for="File" class="form-control" type="file" />
                 <span asp-validation-for="File" class="text-danger"></span>
             </div>
             <div class="form-group">
                 <label asp-for="AbsenceDays" class="control-label"></label>
-                <input asp-for="AbsenceDays" class="form-control" />
+                <input asp-for="AbsenceDays" class="form-control" placeholder="0" />
                 <span asp-validation-for="AbsenceDays" class="text-danger"></span>
             </div>
             <div class="form-group">
                 <label asp-for="AttendanceAndDeparture" class="control-label"></label>
-                <input asp-for="AttendanceAndDeparture" class="form-control" />
+                <input asp-for="AttendanceAndDeparture" class="form-control" placeholder="0" />
                 <span asp-validation-for="AttendanceAndDeparture" class="text-danger"></span>
             </div>
             <div class="form-group">
                 <label asp-for="AdherenceMark" class="control-label"></label>
-                <input asp-for="AdherenceMark" class="form-control" min="0" />
+                <input asp-for="AdherenceMark" class="form-control" min="0" placeholder="0" />
                 <span asp-validation-for="AdherenceMark" class="text-danger"></span>
             </div>
             <div class="form-group">
                 <label asp-for="InteractionMark" class="control-label"></label>
-                <input asp-for="InteractionMark" class="form-control" />
+                <input asp-for="InteractionMark" class="form-control" placeholder="0" />
                 <span asp-validation-for="InteractionMark" class="text-danger"></span>
             </div>
             <div class="form-group">
                 <label asp-for="ActivitiesMark" class="control-label"></label>
-                <input asp-for="ActivitiesMark" class="form-control" />
+                <input asp-for="ActivitiesMark" class="form-control" placeholder="0" />
                 <span asp-validation-for="ActivitiesMark" class="text-danger"></span>
             </div>
             <div class="form-group">
                 <label asp-for="TotalEvaluation" class="control-label"></label>
-                <input asp-for="TotalEvaluation" class="form-control" />
+                <input asp-for="TotalEvaluation" class="form-control" disabled placeholder="0" />
                 <span asp-validation-for="TotalEvaluation" class="text-danger"></span>
             </div>
             <div class="form-group">
                 <label asp-for="WrittenExam" class="control-label"></label>
-                <input asp-for="WrittenExam" class="form-control" />
+                <input asp-for="WrittenExam" class="form-control" placeholder="0" />
                 <span asp-validation-for="WrittenExam" class="text-danger"></span>
             </div>
             <div class="form-group">
                 <label asp-for="TotalMarks" class="control-label"></label>
-                <input asp-for="TotalMarks" class="form-control" />
+                <input asp-for="TotalMarks" class="form-control" disabled placeholder="0" />
                 <span asp-validation-for="TotalMarks" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Estimate" class="control-label"></label>
+                <input id="EstimateText" class="form-control" type="text" disabled />
+                <input id="EstimateHidden" name="Estimate" type="hidden" />
             </div>
             <div class="form-group">
                 <input type="submit" value="Create" class="btn btn-primary" />
@@ -93,8 +107,67 @@
 </div>
 
 @section Scripts {
-    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
 }
 <script>
     new TomSelect("#select-Employee", { create: false, sortField: { field: "text", direction: "asc" }, maxOptions: false });
+</script>
+<script>
+    document.addEventListener("DOMContentLoaded", function () {
+        // تعريف القاموس الذي يطابق التقديرات مع القيم النصية
+        const estimateDictionary = {
+            "Excellent": "ممتاز",
+            "VeryGood": "جيد جدا",
+            "Good": "جيد",
+            "Acceptable": "مقبول",
+            "Failed": "راسب"
+        };
+
+        function calculateTotals() {
+            // جلب القيم من الحقول
+            let adherence = parseInt(document.getElementById("AdherenceMark").value) || 0;
+            let interaction = parseInt(document.getElementById("InteractionMark").value) || 0;
+            let activities = parseInt(document.getElementById("ActivitiesMark").value) || 0;
+            let writtenExam = parseFloat(document.getElementById("WrittenExam").value) || 0;
+            let attendance = parseInt(document.getElementById("AttendanceAndDeparture").value) || 0;
+
+            // حساب TotalEvaluation
+            let totalEvaluation = adherence + interaction + activities;
+            document.getElementById("TotalEvaluation").value = totalEvaluation;
+
+            // حساب TotalMarks
+            let totalMarks = totalEvaluation + writtenExam + attendance;
+            document.getElementById("TotalMarks").value = totalMarks;
+
+            // تحديد التقدير المناسب بناءً على TotalMarks
+            let estimateKey = "Failed"; // الافتراضي
+            if (totalMarks >= 90) {
+                estimateKey = "Excellent";
+            } else if (totalMarks >= 75) {
+                estimateKey = "VeryGood";
+            } else if (totalMarks >= 65) {
+                estimateKey = "Good";
+            } else if (totalMarks >= 60) {
+                estimateKey = "Acceptable";
+            }
+
+            // تحديث حقل التقدير النصي
+            document.getElementById("EstimateText").value = estimateDictionary[estimateKey];
+
+            // تحديث الحقل المخفي لإرسال Enum Key إلى السيرفر
+            document.getElementById("EstimateHidden").value = estimateKey;
+        }
+
+        // إضافة الحدث لكل الحقول المؤثرة على العملية الحسابية
+        document.getElementById("AdherenceMark").addEventListener("input", calculateTotals);
+        document.getElementById("InteractionMark").addEventListener("input", calculateTotals);
+        document.getElementById("ActivitiesMark").addEventListener("input", calculateTotals);
+        document.getElementById("WrittenExam").addEventListener("input", calculateTotals);
+        document.getElementById("AttendanceAndDeparture").addEventListener("input", calculateTotals);
+
+        // تشغيل الحسابات فور تحميل الصفحة
+        calculateTotals();
+    });
 </script>

@@ -24,38 +24,39 @@ namespace Models.ViewModels
         [ValidateNever]
         [Display(Name = "مكان العمل")]
         public string? WorkPlace { get; set; }
+        [ValidateNever]
         [Display(Name = "التقدير")]
-        [ValidateNever]
         public Estimate? Estimate { get; set; }
+        [ValidateNever]
         [Display(Name = "الملاحظات")]
-        [ValidateNever]
         public string? Notes { get; set; }
+        [ValidateNever]
         [Display(Name = "ملف")]
-        [ValidateNever]
         public string? File { get; set; }
+        [ValidateNever] 
         [Display(Name = "عدد ايام الغياب")]
-        [ValidateNever]
         public int? AbsenceDays { get; set; }
+        [ValidateNever]
         [Display(Name = "الحضور والانصراف")]
-        [ValidateNever]
         public int? AttendanceAndDeparture { get; set; }
+        [ValidateNever]
         [Display(Name = "الالتزام ")]
-        [ValidateNever]
         public int? AdherenceMark { get; set; }
+        [ValidateNever]
         [Display(Name = "التفاعل")]
-        [ValidateNever]
         public int? InteractionMark { get; set; }
+        [ValidateNever]
         [Display(Name = "اداء الانشطة")]
-        [ValidateNever]
         public int? ActivitiesMark { get; set; }
+        [ValidateNever]
         [Display(Name = "اجمالي التقييم")]
-        [ValidateNever]
         public int? TotalEvaluation { get; set; }
+        [ValidateNever]
         [Display(Name = "درجة الامتحان التحريري")]
-        [ValidateNever]
         public double? WrittenExam { get; set; }
-        [Display(Name = "النتيجة الاجمالة")]
         [ValidateNever]
+        [Display(Name = "النتيجة الاجمالة")]
         public double? TotalMarks { get; set; }
+
     }
 }
