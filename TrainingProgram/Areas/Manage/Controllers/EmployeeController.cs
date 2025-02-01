@@ -232,10 +232,11 @@ namespace TrainingProgram.Areas.Manage.Controllers
             if (employee != null)
             {
                 employeeRepository.Delete(employee);
-            }
 
             employeeRepository.Commit();
             return RedirectToAction(nameof(Index));
+            }
+            return RedirectToAction("Notfound", "Home");
         }
 
         private bool EmployeeExists(int id)

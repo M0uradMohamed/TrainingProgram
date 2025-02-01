@@ -67,7 +67,7 @@ namespace TrainingProgram.Areas.Manage.Controllers
             var trainees = traineeRepository.Get(expression: e => e.CourseId == id, includeProps: [e => e.Employee])
        .Select(e => new TraineeVM
        {
-           EmployeeId= e.EmployeeId,
+           EmployeeId = e.EmployeeId,
            EmployeeFoundationId = e.Employee.FoundationId,
            EmployeeName = e.Employee.Name,
            Job = e.Employee.Job,
@@ -184,14 +184,14 @@ namespace TrainingProgram.Areas.Manage.Controllers
 
                 if (file != null)
                 {
-                    string fileName = $"pdf{trainee.CourseId}{trainee.EmployeeId}".ToString();
+                    string fileName = $"file{trainee.EmployeeId}".ToString();
                     string extension = Path.GetExtension(file.FileName);
 
 
                     fileName += extension;
-                    string filePath = Path.Combine(Directory.GetCurrentDirectory(), $"wwwroot\\TraineesFiles\\Coure{trainee.CourseId}", fileName);
+                    string filePath = Path.Combine(Directory.GetCurrentDirectory(), $"wwwroot\\TraineesFiles\\Course{trainee.CourseId}", fileName);
 
-                    string directoryPath = Path.Combine(Directory.GetCurrentDirectory(), $"wwwroot\\TraineesFiles\\Coure{trainee.CourseId}");
+                    string directoryPath = Path.Combine(Directory.GetCurrentDirectory(), $"wwwroot\\TraineesFiles\\Course{trainee.CourseId}");
 
 
                     if (!Directory.Exists(directoryPath))
@@ -229,7 +229,7 @@ namespace TrainingProgram.Areas.Manage.Controllers
 
             return View(traineeVM);
         }
-        public IActionResult Edit(int id , int EmployeeId)
+        public IActionResult Edit(int id, int EmployeeId)
         {
 
             var IsTrainee = traineeRepository.Get(expression: e => e.CourseId == id && e.EmployeeId == EmployeeId).Any();
@@ -240,25 +240,25 @@ namespace TrainingProgram.Areas.Manage.Controllers
 
             }
 
-            var employee = employeeRepository.Get(expression:e=>e.Id == EmployeeId).Select(e => new
+            var employee = employeeRepository.Get(expression: e => e.Id == EmployeeId).Select(e => new
             { e.FoundationId, e.Name, e.Job, e.WorkPlace }).FirstOrDefault();
 
-            var traineeVM = traineeRepository.Get(expression:e=>e.CourseId == id && e.EmployeeId == EmployeeId,
-                 includeProps: [e=>e.Course , e=>e.Employee]).Select(e=> new TraineeVM
+            var traineeVM = traineeRepository.Get(expression: e => e.CourseId == id && e.EmployeeId == EmployeeId,
+                 includeProps: [e => e.Course, e => e.Employee]).Select(e => new TraineeVM
                  {
-                      CourseId = e.CourseId,
-                      EmployeeId = e.EmployeeId,
-                      Estimate = e.Estimate,
-                      AbsenceDays = e.AbsenceDays,
-                      AttendanceAndDeparture = e.AttendanceAndDeparture,
-                      ActivitiesMark = e.ActivitiesMark,
-                      AdherenceMark = e.AdherenceMark,
-                      InteractionMark = e.InteractionMark,
-                      Notes = e.Notes,
-                      File=e.File,
-                      TotalMarks = e.TotalMarks,
-                      WrittenExam=e.WrittenExam,
-                      TotalEvaluation=e.TotalEvaluation
+                     CourseId = e.CourseId,
+                     EmployeeId = e.EmployeeId,
+                     Estimate = e.Estimate,
+                     AbsenceDays = e.AbsenceDays,
+                     AttendanceAndDeparture = e.AttendanceAndDeparture,
+                     ActivitiesMark = e.ActivitiesMark,
+                     AdherenceMark = e.AdherenceMark,
+                     InteractionMark = e.InteractionMark,
+                     Notes = e.Notes,
+                     File = e.File,
+                     TotalMarks = e.TotalMarks,
+                     WrittenExam = e.WrittenExam,
+                     TotalEvaluation = e.TotalEvaluation
 
                  }).FirstOrDefault();
 
@@ -270,17 +270,17 @@ namespace TrainingProgram.Areas.Manage.Controllers
         }
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public IActionResult Edit(int id, TraineeVM traineeVM, IFormFile file)
+        public IActionResult Edit(int id, TraineeVM traineeVM, IFormFile uploadedFile)
         {
-            ModelState.Remove(nameof(file));
+            ModelState.Remove(nameof(uploadedFile));
             if (traineeRepository.Get(expression: e => e.EmployeeId == traineeVM.EmployeeId && e.CourseId == id, tracked: false).Any())
             {
 
-                if (file != null)
+                if (uploadedFile != null)
                 {
 
-                    if (Path.GetExtension(file.FileName).ToLower() != ".pdf" && Path.GetExtension(file.FileName).ToLower() != ".jpg"
-                      && Path.GetExtension(file.FileName).ToLower() != ".png")
+                    if (Path.GetExtension(uploadedFile.FileName).ToLower() != ".pdf" && Path.GetExtension(uploadedFile.FileName).ToLower() != ".jpg"
+                      && Path.GetExtension(uploadedFile.FileName).ToLower() != ".png")
                     {
                         ModelState.AddModelError(nameof(traineeVM.File), "هذا الملف غير مدعوم");
 
@@ -293,6 +293,7 @@ namespace TrainingProgram.Areas.Manage.Controllers
                     EmployeeId = traineeVM.EmployeeId,
                     Estimate = traineeVM.Estimate,
                     Notes = traineeVM.Notes,
+                    File=traineeVM.File,
                     AbsenceDays = traineeVM.AbsenceDays ?? 0,
                     AttendanceAndDeparture = traineeVM.AttendanceAndDeparture ?? 0,
                     AdherenceMark = traineeVM.AdherenceMark ?? 0,
@@ -302,20 +303,20 @@ namespace TrainingProgram.Areas.Manage.Controllers
                 };
                 trainee.TotalEvaluation = (trainee.AdherenceMark + trainee.InteractionMark + trainee.ActivitiesMark);
                 trainee.TotalMarks = (trainee.TotalEvaluation + trainee.WrittenExam + trainee.AttendanceAndDeparture);
-              
+
                 traineeRepository.Edit(trainee);
                 traineeRepository.Commit();
 
-                if (file != null)
+                if (uploadedFile != null)
                 {
-                    string fileName = $"pdf{trainee.EmployeeId}".ToString();
-                    string extension = Path.GetExtension(file.FileName);
+                    string fileName = $"file{trainee.EmployeeId}".ToString();
+                    string extension = Path.GetExtension(uploadedFile.FileName);
 
 
                     fileName += extension;
-                    string filePath = Path.Combine(Directory.GetCurrentDirectory(), $"wwwroot\\TraineesFiles\\Coure{trainee.CourseId}", fileName);
+                    string filePath = Path.Combine(Directory.GetCurrentDirectory(), $"wwwroot\\TraineesFiles\\Course{trainee.CourseId}", fileName);
 
-                    string directoryPath = Path.Combine(Directory.GetCurrentDirectory(), $"wwwroot\\TraineesFiles\\Coure{trainee.CourseId}");
+                    string directoryPath = Path.Combine(Directory.GetCurrentDirectory(), $"wwwroot\\TraineesFiles\\Course{trainee.CourseId}");
 
 
                     if (!Directory.Exists(directoryPath))
@@ -323,9 +324,21 @@ namespace TrainingProgram.Areas.Manage.Controllers
                         Directory.CreateDirectory(directoryPath);
                     }
 
+                    if(traineeVM.File != null)
+                    {
+
+                        string oldFilePath = Path.Combine(Directory.GetCurrentDirectory(), $"wwwroot\\TraineesFiles\\Course{id}", traineeVM.File);
+
+                        if (System.IO.File.Exists(oldFilePath))
+                        {
+                            System.IO.File.Delete(oldFilePath);
+                        }
+                    }
+                    
+
                     using (var stream = System.IO.File.Create(filePath))
                     {
-                        file.CopyTo(stream);
+                        uploadedFile.CopyTo(stream);
                     }
                     trainee.File = fileName;
 
@@ -333,11 +346,50 @@ namespace TrainingProgram.Areas.Manage.Controllers
                     traineeRepository.Commit();
                 }
 
-              return RedirectToAction("index");
+                return RedirectToAction("index", new { id = $"{id}" });
 
 
             }
             return RedirectToAction("Notfound", "Home");
+
+        }
+        [HttpPost]
+        public IActionResult Delete(int id, int EmployeeId)
+        {
+            var trainee = traineeRepository.Get(expression: m => m.CourseId == id && m.EmployeeId == EmployeeId).FirstOrDefault();
+            if (trainee != null)
+            {
+                if (trainee.File != null)
+                {
+
+                    string filePath = Path.Combine(Directory.GetCurrentDirectory(), $"wwwroot\\TraineesFiles\\Course{trainee.CourseId}", trainee.File);
+
+                    if (System.IO.File.Exists(filePath))
+                    {
+                        System.IO.File.Delete(filePath);
+                    }
+                }
+
+                traineeRepository.Delete(trainee);
+                traineeRepository.Commit();
+                return RedirectToAction("index", new { id = $"{id}" });
+            }
+            return RedirectToAction("Notfound", "Home");
+        }
+        public IActionResult DownloadFile(string fileName , int id)
+        {
+            if (fileName != null)
+            {
+
+                string filePath = Path.Combine(Directory.GetCurrentDirectory(), $"wwwroot\\TraineesFiles\\Course{id}", fileName);
+                if (System.IO.File.Exists(filePath))
+                {
+                    byte[] fileBytes = System.IO.File.ReadAllBytes(filePath);
+                    return File(fileBytes, "application/pdf", fileName);
+                }
+            }
+            TempData["noFile"] = "there is no file to download";
+            return View();
 
         }
     }

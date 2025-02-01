@@ -123,7 +123,7 @@ namespace TrainingProgram.Areas.Manage.Controllers
                 var similerCourse = courseRepository.Get(expression: e => e.PrimaryInstructorId == courseVM.PrimaryInstructorId).ToList()
                     .Any(e => courseVM.BeginningDate <= e.EndingDate &&
                                   courseVM.EndingDate >= e.BeginningDate);
-               
+
                 if (similerCourse)
                 {
                     ModelState.AddModelError(string.Empty, "لا يمكن تسجيل دورة بهذا المدرب في هذان الموعدان");
@@ -142,9 +142,9 @@ namespace TrainingProgram.Areas.Manage.Controllers
                 }
                 if (courseVM.instuctorsIds != null)
                 {
-                    foreach(var item in courseVM.instuctorsIds)
+                    foreach (var item in courseVM.instuctorsIds)
                     {
-                        if(item==courseVM.PrimaryInstructorId)
+                        if (item == courseVM.PrimaryInstructorId)
                         {
                             ModelState.AddModelError(string.Empty, "لا يمكن اختيار نفس المدرب كا مدرب اساسي و ثانوي معا");
 
@@ -163,7 +163,7 @@ namespace TrainingProgram.Areas.Manage.Controllers
                     }
                 }
 
-                    if (file != null)
+                if (file != null)
                 {
 
                     if (Path.GetExtension(file.FileName).ToLower() != ".pdf")
@@ -284,7 +284,7 @@ namespace TrainingProgram.Areas.Manage.Controllers
                 c => c.CourseNature
                 ,c => c.PrimaryInstructor
                 ,c => c.TotalImplementation
-                ,c => c.implementationType  
+                ,c => c.implementationType
                 ,c=>c.Instructors ]
                 , expression: m => m.Id == id).FirstOrDefault(); ;
             if (course == null)
@@ -294,7 +294,7 @@ namespace TrainingProgram.Areas.Manage.Controllers
 
             var courseVM = new CourseVM()
             {
-                Id=course.Id,
+                Id = course.Id,
                 Name = course.Name,
                 DaysCount = course.DaysCount,
                 PrimaryInstructorId = course.PrimaryInstructorId,
@@ -321,7 +321,7 @@ namespace TrainingProgram.Areas.Manage.Controllers
                 EndingDate = course.EndingDate,
                 PdfFile = course.PdfFile,
                 Participants = course.Participants,
-                SecondryInstructors=course.Instructors
+                SecondryInstructors = course.Instructors
             };
             var courseInstructors = courseInstructorRepository.Get(expression: e => e.CourseId == course.Id, includeProps: [e => e.Instructor])
                 .Select(e => new { e.InstructorId, e.Instructor.FoundationId, e.Instructor.Name }).ToList();
@@ -352,15 +352,15 @@ namespace TrainingProgram.Areas.Manage.Controllers
             {
                 return RedirectToAction("Notfound", "Home");
             }
-                if (!CourseExists(courseVM.Id))
-                {
-                    return RedirectToAction("Notfound", "Home");
-                }
+            if (!CourseExists(courseVM.Id))
+            {
+                return RedirectToAction("Notfound", "Home");
+            }
             ModelState.Remove(nameof(file));
             ModelState.Remove(nameof(courseVM.instuctorsIds));
             if (ModelState.IsValid)
             {
-                if (courseVM.BeginningDate!> courseVM.EndingDate)
+                if (courseVM.BeginningDate! > courseVM.EndingDate)
                 {
                     ModelState.AddModelError(string.Empty, "تاريخ البداية لا يمكن ان يكون بعد تاريخ النهاية");
 
@@ -376,7 +376,7 @@ namespace TrainingProgram.Areas.Manage.Controllers
 
                     return View();
                 }
-                var similerCourse = courseRepository.Get(expression: e => e.PrimaryInstructorId == courseVM.PrimaryInstructorId && e.Id != courseVM.Id, tracked:false).ToList()
+                var similerCourse = courseRepository.Get(expression: e => e.PrimaryInstructorId == courseVM.PrimaryInstructorId && e.Id != courseVM.Id, tracked: false).ToList()
                             .Any(e => courseVM.BeginningDate >= e.BeginningDate && courseVM.BeginningDate <= e.EndingDate ||
                             courseVM.EndingDate >= e.BeginningDate && courseVM.EndingDate <= e.EndingDate ||
                             courseVM.BeginningDate <= e.BeginningDate && courseVM.EndingDate >= e.EndingDate);
@@ -420,19 +420,19 @@ namespace TrainingProgram.Areas.Manage.Controllers
                 }
                 if (file != null)
                 {
-                    if (Path.GetExtension(file.FileName).ToLower() != ".pdf" )
+                    if (Path.GetExtension(file.FileName).ToLower() != ".pdf")
                     {
-                    ModelState.AddModelError(nameof(courseVM.PdfFile), "يسمح برفع ملفات pdf فقط");
+                        ModelState.AddModelError(nameof(courseVM.PdfFile), "يسمح برفع ملفات pdf فقط");
 
-                    ViewBag.CourseNature = courseNatureRepository.Get().ToList();
-                    ViewBag.Instructors = instructorRepository.Get().Select(e => new { e.Id, e.FoundationId, e.Name });
-                    ViewBag.TotalImplementation = totalImplementationRepository.Get().ToList();
-                    ViewBag.ImplementationType = implementationTypeRepository.Get().ToList();
-                    ViewBag.Material = StaticData.material;
-                    ViewBag.CourseType = StaticData.courseType;
-                    ViewBag.ImplementationMonth = StaticData.implementationMonth;
-                    ViewBag.TrainingSpecialist = trainingSpecialistRepository.Get().ToList();
-                    ViewBag.Check = StaticData.check;
+                        ViewBag.CourseNature = courseNatureRepository.Get().ToList();
+                        ViewBag.Instructors = instructorRepository.Get().Select(e => new { e.Id, e.FoundationId, e.Name });
+                        ViewBag.TotalImplementation = totalImplementationRepository.Get().ToList();
+                        ViewBag.ImplementationType = implementationTypeRepository.Get().ToList();
+                        ViewBag.Material = StaticData.material;
+                        ViewBag.CourseType = StaticData.courseType;
+                        ViewBag.ImplementationMonth = StaticData.implementationMonth;
+                        ViewBag.TrainingSpecialist = trainingSpecialistRepository.Get().ToList();
+                        ViewBag.Check = StaticData.check;
 
                         return View(courseVM);
                     }
@@ -440,7 +440,7 @@ namespace TrainingProgram.Areas.Manage.Controllers
 
                 var course = new Course()
                 {
-                    Id =courseVM.Id,
+                    Id = courseVM.Id,
                     Name = MethodsCheck.chechName(courseVM.Name),
                     DaysCount = courseVM.DaysCount,
                     PrimaryInstructorId = courseVM.PrimaryInstructorId,
@@ -500,7 +500,7 @@ namespace TrainingProgram.Areas.Manage.Controllers
 
                 var courseInstructor = courseInstructorRepository.Get(expression: e => e.CourseId == course.Id, tracked: false).ToList();
 
-                foreach(var item in courseInstructor )
+                foreach (var item in courseInstructor)
                 {
                     courseInstructorRepository.Delete(item);
                     courseInstructorRepository.Commit();
@@ -545,17 +545,23 @@ namespace TrainingProgram.Areas.Manage.Controllers
             var course = courseRepository.Get(expression: m => m.Id == id).FirstOrDefault();
             if (course != null)
             {
-                string filePath = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot\\CouresFiles",course.PdfFile);
-                if (System.IO.File.Exists(filePath))
+                if (course.PdfFile != null)
                 {
-                    System.IO.File.Delete(filePath); 
+
+                    string filePath = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot\\CouresFiles", course.PdfFile);
+                    if (System.IO.File.Exists(filePath))
+                    {
+                        System.IO.File.Delete(filePath);
+                    }
                 }
 
                 courseRepository.Delete(course);
-            }
 
-            courseRepository.Commit();
-            return RedirectToAction(nameof(Index));
+                courseRepository.Commit();
+                return RedirectToAction(nameof(Index));
+            }
+            return RedirectToAction("Notfound", "Home");
+
         }
         public IActionResult DownloadFile(string fileName)
         {
@@ -577,7 +583,7 @@ namespace TrainingProgram.Areas.Manage.Controllers
 
         private bool CourseExists(int id)
         {
-            return courseRepository.Get(tracked:false).Any(e => e.Id == id);
+            return courseRepository.Get(tracked: false).Any(e => e.Id == id);
         }
     }
 }
