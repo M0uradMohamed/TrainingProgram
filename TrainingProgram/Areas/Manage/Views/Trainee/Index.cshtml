@@ -1,4 +1,5 @@
-﻿ @model IEnumerable<Models.ViewModels.TraineeVM>
+﻿@using Models.StaticData
+ @model IEnumerable<Models.ViewModels.TraineeVM>
 @{
     ViewData["Title"] = "Index";
     Layout = "~/Views/Shared/_Layout.cshtml";
@@ -113,7 +114,14 @@
                     @item.WorkPlace
                 </td>
                 <td>
-                    @item.Estimate
+                    @{
+                        if (item.Estimate.HasValue)
+                        {
+
+                            @StaticData.estimate[item.Estimate.Value]
+                        }
+
+                    }
                 </td>
                 <td>
                     @item.Notes
@@ -146,9 +154,11 @@
                     @item.TotalMarks
                 </td>
                 <td>
-                    @Html.ActionLink("Edit", "Edit", new { /* id=item.PrimaryKey */ }) |
-                    @Html.ActionLink("Details", "Details", new { /* id=item.PrimaryKey */ }) |
-                    @Html.ActionLink("Delete", "Delete", new { /* id=item.PrimaryKey */ })
+                    <a asp-action="Edit" asp-route-id="@ViewBag.Course.Id" asp-route-EmployeeId="@item.EmployeeId" type="button" class="btn btn-dark">Edit</a>
+                    <a asp-action="Details" asp-route-id="@ViewBag.Course.Id" asp-route-EmployeeId="@item.EmployeeId" type="button" class="btn btn-info ">Details</a>
+                    <button type="button" class="btn btn-danger " data-bs-toggle="modal" data-bs-target="#deleteModal" data-courseid="@ViewBag.Course.Id">
+                        Delete
+                    </button>
                 </td>
             </tr>
         }

@@ -14,10 +14,10 @@ namespace Models.ViewModels
         public int EmployeeId { get; set; }
         [ValidateNever]
         [Display(Name = "رقم المؤسسة")]
-        public string EmployeeFoundationId { get; set; }
+        public string? EmployeeFoundationId { get; set; }
         [ValidateNever]
         [Display(Name = "اسم المتدرب")]
-        public string EmployeeName { get; set; }
+        public string? EmployeeName { get; set; }
         [ValidateNever]
         [Display(Name = "الوظيفة")]
         public string? Job { get; set; }
@@ -58,5 +58,7 @@ namespace Models.ViewModels
         [Display(Name = "النتيجة الاجمالة")]
         public double? TotalMarks { get; set; }
 
+        [ValidateNever]
+        public int? CourseId { get; set; }
     }
 }

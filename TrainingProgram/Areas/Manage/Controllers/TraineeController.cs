@@ -67,6 +67,7 @@ namespace TrainingProgram.Areas.Manage.Controllers
             var trainees = traineeRepository.Get(expression: e => e.CourseId == id, includeProps: [e => e.Employee])
        .Select(e => new TraineeVM
        {
+           EmployeeId= e.EmployeeId,
            EmployeeFoundationId = e.Employee.FoundationId,
            EmployeeName = e.Employee.Name,
            Job = e.Employee.Job,
@@ -87,20 +88,19 @@ namespace TrainingProgram.Areas.Manage.Controllers
         }
         public IActionResult Create(int id)
         {
-            var Iscourse = courseRepository.Get(expression: e => e.Id == id).Any();
+            var IsCourse = courseRepository.Get(expression: e => e.Id == id).Any();
 
-            if (!Iscourse)
+            if (!IsCourse)
             {
                 return RedirectToAction("Notfound", "Home");
 
             }
-            int courseId = id;
 
             var employees = employeeRepository.Get().Select(e => new
             { e.Id, e.FoundationId, e.Name, e.Job, e.WorkPlace }).ToList();
 
             ViewBag.Employees = employees;
-            ViewBag.CourseId = courseId;
+            ViewBag.CourseId = id;
             ViewBag.Estimate = StaticData.estimate;
 
             return View();
@@ -130,7 +130,7 @@ namespace TrainingProgram.Areas.Manage.Controllers
                     .Select(e => new { e.BeginningDate, e.EndingDate }).FirstOrDefault();
 
                 var similarTrinee = traineeRepository.Get(includeProps: [e => e.Course], e => e.EmployeeId == traineeVM.EmployeeId)
-                    .Any(e =>  course.BeginningDate <= e.Course.EndingDate &&
+                    .Any(e => course.BeginningDate <= e.Course.EndingDate &&
                                   course.EndingDate >= e.Course.BeginningDate);
 
                 if (similarTrinee)
@@ -172,10 +172,12 @@ namespace TrainingProgram.Areas.Manage.Controllers
                     AdherenceMark = traineeVM.AdherenceMark ?? 0,
                     InteractionMark = traineeVM.InteractionMark ?? 0,
                     ActivitiesMark = traineeVM.ActivitiesMark ?? 0,
-                    TotalEvaluation = traineeVM.TotalEvaluation ?? 0,
-                    WrittenExam = traineeVM.WrittenExam ?? 0,
-                    TotalMarks = traineeVM.TotalMarks ?? 0
+                    WrittenExam = traineeVM.WrittenExam ?? 0
                 };
+
+                trainee.TotalEvaluation = (trainee.AdherenceMark + trainee.InteractionMark + trainee.ActivitiesMark);
+                trainee.TotalMarks = (trainee.TotalEvaluation + trainee.WrittenExam + trainee.AttendanceAndDeparture);
+
 
                 traineeRepository.Create(trainee);
                 traineeRepository.Commit();
@@ -226,6 +228,117 @@ namespace TrainingProgram.Areas.Manage.Controllers
             ViewBag.CourseId = id;
 
             return View(traineeVM);
+        }
+        public IActionResult Edit(int id , int EmployeeId)
+        {
+
+            var IsTrainee = traineeRepository.Get(expression: e => e.CourseId == id && e.EmployeeId == EmployeeId).Any();
+
+            if (!IsTrainee)
+            {
+                return RedirectToAction("Notfound", "Home");
+
+            }
+
+            var employee = employeeRepository.Get(expression:e=>e.Id == EmployeeId).Select(e => new
+            { e.FoundationId, e.Name, e.Job, e.WorkPlace }).FirstOrDefault();
+
+            var traineeVM = traineeRepository.Get(expression:e=>e.CourseId == id && e.EmployeeId == EmployeeId,
+                 includeProps: [e=>e.Course , e=>e.Employee]).Select(e=> new TraineeVM
+                 {
+                      CourseId = e.CourseId,
+                      EmployeeId = e.EmployeeId,
+                      Estimate = e.Estimate,
+                      AbsenceDays = e.AbsenceDays,
+                      AttendanceAndDeparture = e.AttendanceAndDeparture,
+                      ActivitiesMark = e.ActivitiesMark,
+                      AdherenceMark = e.AdherenceMark,
+                      InteractionMark = e.InteractionMark,
+                      Notes = e.Notes,
+                      File=e.File,
+                      TotalMarks = e.TotalMarks,
+                      WrittenExam=e.WrittenExam,
+                      TotalEvaluation=e.TotalEvaluation
+
+                 }).FirstOrDefault();
+
+
+            ViewBag.Employee = employee;
+            ViewBag.Estimate = StaticData.estimate;
+
+            return View(traineeVM);
+        }
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public IActionResult Edit(int id, TraineeVM traineeVM, IFormFile file)
+        {
+            ModelState.Remove(nameof(file));
+            if (traineeRepository.Get(expression: e => e.EmployeeId == traineeVM.EmployeeId && e.CourseId == id, tracked: false).Any())
+            {
+
+                if (file != null)
+                {
+
+                    if (Path.GetExtension(file.FileName).ToLower() != ".pdf" && Path.GetExtension(file.FileName).ToLower() != ".jpg"
+                      && Path.GetExtension(file.FileName).ToLower() != ".png")
+                    {
+                        ModelState.AddModelError(nameof(traineeVM.File), "هذا الملف غير مدعوم");
+
+                        return View(traineeVM);
+                    }
+                }
+                var trainee = new Trainee()
+                {
+                    CourseId = id,
+                    EmployeeId = traineeVM.EmployeeId,
+                    Estimate = traineeVM.Estimate,
+                    Notes = traineeVM.Notes,
+                    AbsenceDays = traineeVM.AbsenceDays ?? 0,
+                    AttendanceAndDeparture = traineeVM.AttendanceAndDeparture ?? 0,
+                    AdherenceMark = traineeVM.AdherenceMark ?? 0,
+                    InteractionMark = traineeVM.InteractionMark ?? 0,
+                    ActivitiesMark = traineeVM.ActivitiesMark ?? 0,
+                    WrittenExam = traineeVM.WrittenExam ?? 0
+                };
+                trainee.TotalEvaluation = (trainee.AdherenceMark + trainee.InteractionMark + trainee.ActivitiesMark);
+                trainee.TotalMarks = (trainee.TotalEvaluation + trainee.WrittenExam + trainee.AttendanceAndDeparture);
+              
+                traineeRepository.Edit(trainee);
+                traineeRepository.Commit();
+
+                if (file != null)
+                {
+                    string fileName = $"pdf{trainee.EmployeeId}".ToString();
+                    string extension = Path.GetExtension(file.FileName);
+
+
+                    fileName += extension;
+                    string filePath = Path.Combine(Directory.GetCurrentDirectory(), $"wwwroot\\TraineesFiles\\Coure{trainee.CourseId}", fileName);
+
+                    string directoryPath = Path.Combine(Directory.GetCurrentDirectory(), $"wwwroot\\TraineesFiles\\Coure{trainee.CourseId}");
+
+
+                    if (!Directory.Exists(directoryPath))
+                    {
+                        Directory.CreateDirectory(directoryPath);
+                    }
+
+                    using (var stream = System.IO.File.Create(filePath))
+                    {
+                        file.CopyTo(stream);
+                    }
+                    trainee.File = fileName;
+
+                    traineeRepository.Edit(trainee);
+                    traineeRepository.Commit();
+                }
+
+              return RedirectToAction("index");
+
+
+            }
+            return RedirectToAction("Notfound", "Home");
+
         }
     }
 }
