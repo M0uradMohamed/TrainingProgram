@@ -1,56 +1,35 @@
 ﻿@using Models.StaticData
- @model IEnumerable<Models.ViewModels.TraineeVM>
+@model IEnumerable<Models.ViewModels.TraineeEmployeeCourseVM>
+
 @{
     ViewData["Title"] = "Index";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
 <h1>Index</h1>
+<div class="row">
+    <div class="col-7">
 
-<div>
+        <form asp-action="index">
+            <label>برنامج</label>
+            <input name="CourseName" value="@ViewBag.Search.CourseName" />
+            <label>رقم المؤسسة</label>
+            <input name="EmployeeNumber" value="@ViewBag.Search.EmployeeNumber" />
+            <input type="submit" value="search" class="btn btn-primary" />
+        </form>
+    </div>
+    <div class="col-2">
 
-    <dl class="row">
-        <dt class="col-sm-2">
-            اسم البرنامج :
-        </dt>
-        <dd class="col-sm-10">
-            @ViewBag.Course.Name
-        </dd>
-        <dt class="col-sm-2">
-            تاريخ البداية :
-        </dt>
-        <dd class="col-sm-10">
-            @ViewBag.Course.BeginningDate
-        </dd>
-        <dt class="col-sm-2">
-            تاريخ النهاية :
-        </dt>
-        <dd class="col-sm-10">
-            @ViewBag.Course.EndingDate
-        </dd>
-        <dt class="col-sm-2">
-            المدرب الاساسي :
-        </dt>
-        <dd class="col-sm-10">
-            @ViewBag.Course.PrimaryInstructorName
-        </dd>
-        <dt class="col-sm-2">
-            مكان التنفيذ :
-        </dt>
-        <dd class="col-sm-10">
-            @ViewBag.Course.ImplementationPlace
-        </dd>
-    </dl>
+        <a type="button" asp-action="index" class="btn btn-danger "> reset</a>
+    </div>
 </div>
 
-<p>
-    <a asp-action="Create" asp-route-id="@ViewBag.Course.Id">Create New</a>
-</p>
+
 <table class="table">
     <thead>
         <tr>
             <th>
-                @Html.DisplayNameFor(model => model.EmployeeFoundationId)
+                @Html.DisplayNameFor(model => model.FoundationId)
             </th>
             <th>
                 @Html.DisplayNameFor(model => model.EmployeeName)
@@ -59,40 +38,25 @@
                 @Html.DisplayNameFor(model => model.Job)
             </th>
             <th>
+                @Html.DisplayNameFor(model => model.Department)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.SectorName)
+            </th>
+            <th>
                 @Html.DisplayNameFor(model => model.WorkPlace)
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.AbsenceDays)
+                @Html.DisplayNameFor(model => model.CourseName)
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.AttendanceAndDeparture)
+                @Html.DisplayNameFor(model => model.BeginningDate)
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.AdherenceMark)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.InteractionMark)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.ActivitiesMark)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.TotalEvaluation)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.WrittenExam)
+                @Html.DisplayNameFor(model => model.EndingDate)
             </th>
             <th>
                 @Html.DisplayNameFor(model => model.TotalMarks)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Estimate)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Notes)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.File)
             </th>
             <th></th>
         </tr>
@@ -102,108 +66,39 @@
         {
             <tr>
                 <td>
-                    @item.EmployeeFoundationId
+                    @Html.DisplayFor(modelItem => item.FoundationId)
                 </td>
                 <td>
-                    @item.EmployeeName
+                    @Html.DisplayFor(modelItem => item.EmployeeName)
                 </td>
                 <td>
-                    @item.Job
+                    @Html.DisplayFor(modelItem => item.Job)
                 </td>
                 <td>
-                    @item.WorkPlace
+                    @Html.DisplayFor(modelItem => item.Department)
                 </td>
                 <td>
-                    @item.AbsenceDays
+                    @Html.DisplayFor(modelItem => item.SectorName)
                 </td>
                 <td>
-                    @item.AttendanceAndDeparture
+                    @Html.DisplayFor(modelItem => item.WorkPlace)
                 </td>
-                <td>
-                    @item.AdherenceMark
-                </td>
-                <td>
-                    @item.InteractionMark
-                </td>
-                <td>
-                    @item.ActivitiesMark
-                </td>
-                <td>
-                    @item.TotalEvaluation
-                </td>
-                <td>
-                    @item.WrittenExam
-                </td>
-                <td>
-                    @item.TotalMarks
-                </td>
-                <td>
-                    @{
-                        if (item.Estimate.HasValue)
-                        {
 
-                            @StaticData.estimate[item.Estimate.Value]
-                        }
+                <td>
+                    @Html.DisplayFor(modelItem => item.CourseName)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.BeginningDate)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.EndingDate)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.TotalMarks)
+                </td>
 
-                    }
-                </td>
-                <td>
-                    @item.Notes
-                </td>
-                <td>
-                    @{
-                        if (item.File != null)
-                        {
-
-                            <a href="@Url.Action("DownloadFile", "trainee", new { fileName = item.File , id = @ViewBag.Course.Id})" class="btn btn-primary">
-                                <i class="bi bi-download"></i>
-                            </a>
-                        }
-                    }
-                </td>
-                <td>
-                    <a asp-action="Edit" asp-route-id="@ViewBag.Course.Id" asp-route-EmployeeId="@item.EmployeeId" type="button" class="btn btn-dark">Edit</a>
-                    <a asp-action="Details" asp-route-id="@ViewBag.Course.Id" asp-route-EmployeeId="@item.EmployeeId" type="button" class="btn btn-info ">Details</a>
-                    <button type="button" class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#deleteModal"
-                            data-courseid="@ViewBag.Course.Id" data-employeeid="@item.EmployeeId">
-                        Delete
-                    </button>
-                </td>
             </tr>
         }
     </tbody>
 </table>
-<!-- Modal -->
-<div class="modal fade" id="deleteModal" tabindex="-1" aria-labelledby="deleteModalLabel" aria-hidden="true">
-    <div class="modal-dialog">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title" id="deleteModalLabel">Confirm Delete</h5>
-                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-            </div>
-            <div class="modal-body">
-                Are you sure you want to delete this trainee?
-            </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
-                <form id="deleteForm" method="post" asp-action="Delete"
-                      asp-route-id="@ViewBag.Course.Id" asp-route-EmployeeId="">
-                    <input type="hidden" name="EmployeeId" id="employeeIdInput" value="" />
-                    <button type="submit" class="btn btn-danger">Delete</button>
-                </form>
-            </div>
-        </div>
-    </div>
-</div>
 
-<script>
-    document.addEventListener("DOMContentLoaded", function () {
-        var deleteModal = document.getElementById('deleteModal');
-        deleteModal.addEventListener('show.bs.modal', function (event) {
-            var button = event.relatedTarget;
-            var employeeId = button.getAttribute('data-employeeid');
-            var input = document.getElementById('employeeIdInput');
-            input.value = employeeId;
-        });
-    });
-</script>

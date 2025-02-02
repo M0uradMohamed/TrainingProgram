@@ -21,7 +21,29 @@ namespace TrainingProgram.Areas.Manage.Controllers
             this.traineeRepository = traineeRepository;
             this.employeeRepository = employeeRepository;
         }
-        public IActionResult Index(int id = 1)
+        public IActionResult index(string? EmployeeNumber = "" , string? CourseName ="")
+        {
+            var trainees = traineeRepository.Get(includeProps: [e=>e.Employee,e=>e.Course, e=>e.Employee.Sector]
+            ,expression:  e=>e.Employee.FoundationId.Contains(EmployeeNumber.TrimStart().TrimEnd()) && e.Course.Name.Contains(CourseName.TrimStart().TrimEnd() ) ).Select(e=>new TraineeEmployeeCourseVM
+            {
+                FoundationId=e.Employee.FoundationId,
+                EmployeeName=e.Employee.Name,
+                Job=e.Employee.Job,
+                Department=e.Employee.Department,
+                SectorName = e.Employee.Sector?.Name ?? "",
+                WorkPlace=e.Employee.WorkPlace,
+                CourseName=e.Course.Name,
+                BeginningDate=e.Course.BeginningDate,
+                EndingDate=e.Course.EndingDate,
+                TotalMarks=e.TotalMarks
+            }).ToList();
+
+            var search = new { EmployeeNumber, CourseName };
+
+            ViewBag.Search = search;
+            return View(trainees);
+        }
+        public IActionResult Course(int id = 1)
         {
 
             var Iscourse = courseRepository.Get(expression: e => e.Id == id).Any();

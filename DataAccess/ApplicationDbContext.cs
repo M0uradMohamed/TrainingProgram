@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 using Models;
+using Models.ViewModels;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -22,7 +23,6 @@ namespace DataAccess
         public DbSet<TrainingSpecialist> TrainingSpecialists { get; set; }
         public DbSet<ImplementationType> ImplementationTypes { get; set; }
         public DbSet<TotalImplementation> TotalImplementations { get; set; }
-
 
         public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options)
         : base(options)
