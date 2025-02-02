@@ -1,0 +1,156 @@
+﻿@using Models.StaticData
+@model IEnumerable<Models.ViewModels.TraineeCourseVM>
+@{
+    ViewData["Title"] = "Courses";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h1>Courses</h1>
+<div>
+
+    <dl class="row">
+        <dt class="col-sm-2">
+            اسم الموظف :
+        </dt>
+        <dd class="col-sm-10">
+            @ViewBag.Employee.Name
+        </dd>
+        <dt class="col-sm-2">
+            رقم المؤسسة :
+        </dt>
+        <dd class="col-sm-10">
+            @ViewBag.Employee.FoundationId
+        </dd>
+        <dt class="col-sm-2">
+            الوظيفة :
+        </dt>
+        <dd class="col-sm-10">
+            @ViewBag.Employee.Job
+        </dd>
+        <dt class="col-sm-2">
+            مكان العمل :
+        </dt>
+        <dd class="col-sm-10">
+            @ViewBag.Employee.WorkPlace
+        </dd>
+    </dl>
+</div>
+<p>
+    <a asp-action="Create">Create New</a>
+</p>
+<table class="table table-bordered">
+    <thead class="table-secondary">
+        <tr>
+            <th>
+                اسم الدورة
+            </th>
+            <th>
+                تاريخ البداية
+            </th>
+            <th>
+                تاريخ النهاية
+            </th>
+            <th>
+                التقدير
+            </th>
+            <th>
+                الملاحظات
+            </th>
+            <th>
+                الملف
+            </th>
+            <th>
+                عدد ايام الغياب
+            </th>
+            <th>
+                الحضور والانصراف
+            </th>
+            <th>
+                الالتزام
+            </th>
+            <th>
+                التفاعل
+            </th>
+            <th>
+                اداء الانشطة
+            </th>
+            <th>
+                اجمالي التقييم
+            </th>
+            <th>
+                درجة الامتحان التحريري
+            </th>
+            <th>
+                النتيجة الاجمالة
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>
+                    @item.CourseName
+                </td>
+                <td>
+                    @item.BeginningDate
+                </td>
+                <td>
+                    @item.EndingDate
+                </td>
+                <td>
+                    @{
+                        @if (item.Estimate.HasValue)
+                        {
+                            @StaticData.estimate[item.Estimate.Value]
+                        }
+                    }
+                </td>
+                <td>
+                    @item.Notes
+                </td>
+                <td>
+                    @item.File
+                </td>
+                <td>
+                    @item.AbsenceDays
+                </td>
+                <td>
+                    @item.AttendanceAndDeparture
+                </td>
+                <td>
+                    @item.AdherenceMark
+                </td>
+                <td>
+                    @item.InteractionMark
+                </td>
+                <td>
+                    @item.ActivitiesMark
+                </td>
+                <td>
+                    @item.TotalEvaluation
+                </td>
+                <td>
+                    @item.WrittenExam
+                </td>
+                <td>
+                    @item.TotalMarks
+                </td>
+                <td>
+                    <a asp-action="index" asp-controller="trainee" asp-route-id="@item.CourseId" type="button" class="btn btn-info ">Details</a>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
+<style>
+    .table {
+        border: 2px solid black !important; /* حدود خارجية سوداء */
+    }
+
+        .table th, .table td {
+            border: 2px solid black !important; /* حدود داخلية سوداء */
+        }
+
+</style>

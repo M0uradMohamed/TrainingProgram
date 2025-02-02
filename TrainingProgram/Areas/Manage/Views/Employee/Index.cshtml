@@ -110,11 +110,22 @@
                 @Html.DisplayFor(modelItem => item.Degree.Name)
             </td>
             <td>
-                    <a asp-action="Edit" asp-route-id="@item.Id" type="button" class="btn btn-dark">Edit</a> |
-                    <a asp-action="Details" asp-route-id="@item.Id" type="button" class="btn btn-info ">Details</a> |
+                <div class="row ">
+                    <div class="col-6">
+                    <a asp-action="Edit" asp-route-id="@item.Id" type="button" class="btn btn-dark">Edit</a> 
+                    </div>
+                        <div class="col-6">
+                    <a asp-action="Details" asp-route-id="@item.Id" type="button" class="btn btn-info ">Details</a> 
+                        </div>
+                        <div class="col-6">
                     <button type="button" class="btn btn-danger " data-bs-toggle="modal" data-bs-target="#deleteModal" data-employeeid="@item.Id">
-                        <i class="bi bi-trash3"></i> Delete
+                        Delete
                     </button>
+                        </div>
+                        <div class="col-6">
+                            <a asp-action="Courses" asp-route-id="@item.Id" type="button" class="btn btn-success ">الدورات</a>
+                        </div>
+                </div>
             </td>
         </tr>
 }

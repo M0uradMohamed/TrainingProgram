@@ -24,5 +24,11 @@
 	  <Folder Include="Controllers\" />
 	  <Folder Include="wwwroot\CouresFiles\" />
 	</ItemGroup>
+	<ItemGroup>
+	  <Content Update="wwwroot\TraineesFiles\Course1\file12.jpg">
+	    <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
+	    <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+	  </Content>
+	</ItemGroup>
 
 </Project>

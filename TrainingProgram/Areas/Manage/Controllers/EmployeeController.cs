@@ -18,14 +18,16 @@ namespace TrainingProgram.Areas.Manage.Controllers
     public class EmployeeController : Controller
     {
         private readonly IEmployeeRepository employeeRepository;
+        private readonly ITraineeRepository traineeRepository;
         private readonly IDegreeRepository degreeRepository;
         private readonly ISectorRepository sectorRepository;
 
-        public EmployeeController( IEmployeeRepository employeeRepository,
+        public EmployeeController( IEmployeeRepository employeeRepository, ITraineeRepository traineeRepository,
             IDegreeRepository degreeRepository, ISectorRepository sectorRepository)
         {
 
             this.employeeRepository = employeeRepository;
+            this.traineeRepository = traineeRepository;
             this.degreeRepository = degreeRepository;
             this.sectorRepository = sectorRepository;
         }
@@ -238,6 +240,52 @@ namespace TrainingProgram.Areas.Manage.Controllers
             }
             return RedirectToAction("Notfound", "Home");
         }
+        public IActionResult Courses(int id)
+        {
+           /* var employee = employeeRepository.Get(expression: e=> e.Id == id, includeProps : [e=>e.Trainees, e=>e.Courses] )
+                .Select(e=> new
+                {
+                    e.Id,
+                    e.FoundationId,
+                    e.Name,
+                    e.Job,
+                    e.WorkPlace,
+                    e.Trainees.
+                });*/
+           var employee = employeeRepository.Get(expression: e =>e.Id == id).Select(e => new
+           {
+               e.Id,
+               e.Name,
+               e.FoundationId,
+               e.Job,
+               e.WorkPlace,
+           }).FirstOrDefault();
+            ViewBag.Employee=employee;
+
+            var courses = traineeRepository.Get(expression: e=>e.EmployeeId == id, includeProps: [e=>e.Course])
+                .Select(e => new TraineeCourseVM
+                {
+                    CourseId = e.CourseId,
+                    CourseName = e.Course.Name,
+                    BeginningDate = e.Course.BeginningDate,
+                    EndingDate = e.Course.EndingDate,
+                    Estimate = e.Estimate, 
+                    Notes = e.Notes,
+                    File = e.File,
+                    AbsenceDays = e.AbsenceDays,
+                    AttendanceAndDeparture = e.AttendanceAndDeparture,
+                    ActivitiesMark = e.ActivitiesMark,
+                    AdherenceMark = e.AdherenceMark,
+                    InteractionMark = e.InteractionMark,
+                    TotalEvaluation = e.TotalEvaluation,
+                    WrittenExam = e.WrittenExam,
+                    TotalMarks = e.TotalMarks
+
+                }).OrderBy(e=>e.BeginningDate).ThenBy(e=>e.EndingDate).ToList(); 
+            return View(courses);
+
+        }
+
 
         private bool EmployeeExists(int id)
         {

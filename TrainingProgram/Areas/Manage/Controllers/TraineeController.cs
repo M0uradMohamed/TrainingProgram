@@ -209,7 +209,7 @@ namespace TrainingProgram.Areas.Manage.Controllers
                     traineeRepository.Commit();
                 }
 
-                TempData["success"] = "تم اضافة المتدرب بنجاح";
+                TempData["success"] = $"  تم اضافة المتدرب بنجاح , {trainee.Employee.Name} ";
 
                 ViewBag.Employees = employeeRepository.Get().Select(e => new
                 { e.Id, e.FoundationId, e.Name, e.Job, e.WorkPlace }).ToList();
