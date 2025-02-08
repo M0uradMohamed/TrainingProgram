@@ -12,6 +12,9 @@ using Models.ViewModels;
 using System.Numerics;
 using Models.StaticData;
 using System.Xml.Linq;
+using AspNetCore.Reporting;
+using DataAccess.Repository;
+using Models.EnumClasses;
 
 namespace TrainingProgram.Areas.Manage.Controllers
 {
@@ -26,11 +29,12 @@ namespace TrainingProgram.Areas.Manage.Controllers
         private readonly IImplementationTypeRepository implementationTypeRepository;
         private readonly ICourseInstructorRepository courseInstructorRepository;
         private readonly ITrainingSpecialistRepository trainingSpecialistRepository;
+        private readonly ISectorRepository sectorRepository;
 
         public CourseController(ICourseRepository courseRepository, IInstructorRepository instructorRepository
             , ICourseNatureRepository courseNatureRepository, ITotalImplementationRepository totalImplementationRepository
             , IImplementationTypeRepository implementationTypeRepository, ICourseInstructorRepository courseInstructorRepository,
-            ITrainingSpecialistRepository trainingSpecialistRepository)
+            ITrainingSpecialistRepository trainingSpecialistRepository , ISectorRepository sectorRepository)
         {
 
             this.courseRepository = courseRepository;
@@ -40,6 +44,7 @@ namespace TrainingProgram.Areas.Manage.Controllers
             this.implementationTypeRepository = implementationTypeRepository;
             this.courseInstructorRepository = courseInstructorRepository;
             this.trainingSpecialistRepository = trainingSpecialistRepository;
+            this.sectorRepository = sectorRepository;
         }
 
         // GET: Manage/Course
@@ -579,7 +584,39 @@ namespace TrainingProgram.Areas.Manage.Controllers
             return View();
 
         }
+        public IActionResult print()
+        {
 
+            // string path = Path.Combine(webHostEnvironment.WebRootPath + @"\Reports\SectorReport.rdlc");
+            string path = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot\\Reports\\CourseReport.rdlc");
+
+
+            Dictionary<string, string> parmaeters = new Dictionary<string, string>();
+           // parmaeters.Add("Ahmed", "شركة المياة");
+
+            var Courses = courseRepository.Get(includeProps: [e=>e.PrimaryInstructor]).Select( e=> new
+            {
+                e.Name ,
+                  InstructorName =  e.PrimaryInstructor.Name ?? "لا يوجد",
+                Material = e.Material.HasValue ? StaticData.material[e.Material.Value] ?? "لا يوجد" : "لا يوجد"
+            }).ToList();
+            //  var sector = sectorRepository.Get().ToList()[0];
+            List<Sector> sector = new List<Sector>
+            {
+                sectorRepository.Get().FirstOrDefault()
+            };
+
+            LocalReport localreport = new LocalReport(path);
+            localreport.AddDataSource("CourseDataSet", Courses);
+            localreport.AddDataSource("SectorDataSet", sector);
+
+            var report = localreport.Execute(RenderType.Pdf, 1, null, "");
+
+
+
+
+            return File(report.MainStream, "application/pdf");
+        }
 
         private bool CourseExists(int id)
         {

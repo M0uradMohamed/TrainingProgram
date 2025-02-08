@@ -10,6 +10,8 @@ using Models;
 using DataAccess.Repository.IRepository;
 using Models.ViewModels;
 using System.Xml.Linq;
+using Microsoft.AspNetCore.Hosting;
+using AspNetCore.Reporting;
 
 namespace TrainingProgram.Areas.Manage.Controllers
 {
@@ -17,10 +19,12 @@ namespace TrainingProgram.Areas.Manage.Controllers
     public class SectorController : Controller
     {
         private readonly ISectorRepository sectorRepository;
+        private readonly IWebHostEnvironment webHostEnvironment;
 
-        public SectorController(ISectorRepository sectorRepository)
+        public SectorController(ISectorRepository sectorRepository , IWebHostEnvironment webHostEnvironment)
         {
             this.sectorRepository = sectorRepository;
+            this.webHostEnvironment = webHostEnvironment;
         }
 
         // GET: Manage/Sector
@@ -155,7 +159,45 @@ namespace TrainingProgram.Areas.Manage.Controllers
             sectorRepository.Commit();
             return RedirectToAction(nameof(Index));
         }
+        public IActionResult print()
+        {
 
+            // string path = Path.Combine(webHostEnvironment.WebRootPath + @"\Reports\SectorReport.rdlc");
+            string path = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot\\Reports\\SectorReport.rdlc");
+
+
+            Dictionary<string, string> parmaeters = new Dictionary<string, string>();
+            parmaeters.Add("Ahmed", "شركة المياة");
+
+            var sector = sectorRepository.Get();
+
+            LocalReport localreport = new LocalReport(path);
+           localreport.AddDataSource("SectorDataSet", sector);
+            var report = localreport.Execute(RenderType.Pdf, 1, null, "");
+
+
+
+
+            return File(report.MainStream, "application/pdf");
+        }
+        public IActionResult Testprint()
+        {
+
+             string path = Path.Combine(webHostEnvironment.WebRootPath + @"\Reports\TestRP.rdlc");
+           // string path = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot\\Reports\\SectorReport.rdlc");
+
+            Dictionary<string, string> parmaeters = new Dictionary<string, string>();
+            parmaeters.Add("", "شركة المياة");
+
+            var sector = sectorRepository.Get();
+
+            LocalReport localreport = new LocalReport(path);
+            localreport.AddDataSource("SectorDataSet", sector);
+            var report = localreport.Execute(RenderType.Excel, 1, null, "");
+
+
+            return File(report.MainStream, "application/vnd.ms-excel");
+        }
         private bool SectorExists(int id)
         {
             return sectorRepository.Get().Any(e => e.Id == id);

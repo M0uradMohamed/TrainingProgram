@@ -1,0 +1,27 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<xs:schema id="CourseTrainee" targetNamespace="http://tempuri.org/CourseTrainee.xsd" xmlns:mstns="http://tempuri.org/CourseTrainee.xsd" xmlns="http://tempuri.org/CourseTrainee.xsd" xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata" xmlns:msprop="urn:schemas-microsoft-com:xml-msprop" attributeFormDefault="qualified" elementFormDefault="qualified">
+  <xs:annotation>
+    <xs:appinfo source="urn:schemas-microsoft-com:xml-msdatasource">
+      <DataSource DefaultConnectionIndex="0" FunctionsComponentName="QueriesTableAdapter" Modifier="AutoLayout, AnsiClass, Class, Public" SchemaSerializationMode="IncludeSchema" xmlns="urn:schemas-microsoft-com:xml-msdatasource">
+        <Connections />
+        <Tables />
+        <Sources />
+      </DataSource>
+    </xs:appinfo>
+  </xs:annotation>
+  <xs:element name="CourseTrainee" msdata:IsDataSet="true" msdata:UseCurrentLocale="true" msprop:EnableTableAdapterManager="true" msprop:Generator_UserDSName="CourseTrainee" msprop:Generator_DataSetName="CourseTrainee">
+    <xs:complexType>
+      <xs:choice minOccurs="0" maxOccurs="unbounded">
+        <xs:element name="Course" msprop:Generator_RowEvHandlerName="CourseRowChangeEventHandler" msprop:Generator_RowDeletedName="CourseRowDeleted" msprop:Generator_RowDeletingName="CourseRowDeleting" msprop:Generator_RowEvArgName="CourseRowChangeEvent" msprop:Generator_TablePropName="Course" msprop:Generator_RowChangedName="CourseRowChanged" msprop:Generator_RowChangingName="CourseRowChanging" msprop:Generator_TableClassName="CourseDataTable" msprop:Generator_RowClassName="CourseRow" msprop:Generator_TableVarName="tableCourse" msprop:Generator_UserTableName="Course">
+          <xs:complexType>
+            <xs:sequence>
+              <xs:element name="Name" msprop:Generator_ColumnPropNameInRow="Name" msprop:Generator_ColumnPropNameInTable="NameColumn" msprop:Generator_ColumnVarNameInTable="columnName" msprop:Generator_UserColumnName="Name" type="xs:string" minOccurs="0" />
+              <xs:element name="BeginningDate" msprop:Generator_ColumnPropNameInRow="BeginningDate" msprop:Generator_ColumnPropNameInTable="BeginningDateColumn" msprop:Generator_ColumnVarNameInTable="columnBeginningDate" msprop:Generator_UserColumnName="BeginningDate" type="xs:string" minOccurs="0" />
+              <xs:element name="EndingDate" msprop:Generator_ColumnPropNameInRow="EndingDate" msprop:Generator_ColumnPropNameInTable="EndingDateColumn" msprop:Generator_ColumnVarNameInTable="columnEndingDate" msprop:Generator_UserColumnName="EndingDate" type="xs:string" minOccurs="0" />
+            </xs:sequence>
+          </xs:complexType>
+        </xs:element>
+      </xs:choice>
+    </xs:complexType>
+  </xs:element>
+</xs:schema>

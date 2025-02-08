@@ -10,6 +10,8 @@
 <p>
     <a asp-action="Create">Create New</a>
 </p>
+<a asp-action="print" class="btn btn-success" target="_blank"> Print Report</a>
+
 <table class="table table-bordered">
     <thead>
         <tr>
@@ -213,7 +215,7 @@
                 <td>
                     <a asp-action="Edit" asp-route-id="@item.Id" type="button" class="btn btn-dark">Edit</a> 
                     <a asp-action="Details" asp-route-id="@item.Id" type="button" class="btn btn-info ">Details</a> 
-                    <a asp-action="index" asp-route-id="@item.Id" asp-controller="trainee"  type="button" class="btn btn-primary ">المتدربين</a> 
+                    <a asp-action="Course" asp-route-id="@item.Id" asp-controller="trainee"  type="button" class="btn btn-primary ">المتدربين</a> 
                     <button type="button" class="btn btn-danger " data-bs-toggle="modal" data-bs-target="#deleteModal" data-courseid="@item.Id">
                          Delete
                     </button>
