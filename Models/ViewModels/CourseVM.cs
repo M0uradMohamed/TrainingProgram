@@ -62,7 +62,7 @@ namespace Models.ViewModels
         public Material? Material { get; set; }
         [ValidateNever]
         [Display(Name = "نوعية الدورة")]
-        public CourseType? courseType { get; set; }
+        public CourseType? CourseType { get; set; }
         [ValidateNever]
         [Display(Name = "التقييم")]
         public double? Rating { get; set; }
@@ -84,18 +84,18 @@ namespace Models.ViewModels
         [ValidateNever]
         [Display(Name = "ملاحظات")]
         public string? Notes { get; set; }
-        [ValidateNever]
-        [Display(Name = "المدرب الاول")]
-        public int? PrimaryInstructorId { get; set; }
+        //[ValidateNever]
+        //[Display(Name = "المدرب الاول")]
+        //public int? PrimaryInstructorId { get; set; }
         [ValidateNever]
         [Display(Name = "طبيعة الدورة")]
         public int? CourseNatureId { get; set; }
         [ValidateNever]
         [Display(Name = "أخصائي تدريب")]
         public int? TrainingSpecialistId { get; set; }
-        [ValidateNever]
-        [Display(Name = "المدربين الثانويين")]
-        public ICollection<int>? instuctorsIds { get; set; }
+        //[ValidateNever]
+        //[Display(Name = "المدربين الثانويين")]
+        //public ICollection<int>? instuctorsIds { get; set; }
         [ValidateNever]
         public ICollection<Instructor>? SecondryInstructors { get; set; }
     }

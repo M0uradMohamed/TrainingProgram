@@ -1,0 +1,107 @@
+﻿@model Models.ViewModels.CourseInstructorVM
+
+@{
+    ViewData["Title"] = "Create";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+@if (TempData["success"] != null)
+{
+    <div id="boughtToast" class="toastorange">
+        <h1>@TempData["success"]</h1>
+    </div>
+}
+<h1>Create</h1>
+
+<h4>CourseInstructor</h4>
+<hr />
+<div class="row">
+    <div class="col-md-4">
+        <form asp-action="Create" asp-route-id="@ViewBag.CourseId">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <div class="form-group">
+                <label asp-for="InstructorId" class="control-label"></label>
+                <select asp-for="InstructorId" id="select-InstructorId" placeholder="Search for a instructor...">
+                    <option value=""> none</option>
+                    @foreach (var item in ViewBag.Instructors)
+                    {
+                        <option value="@item.Id"> @item.FoundationId | @item.Name </option>
+                    }
+                </select>
+                <span asp-validation-for="InstructorId" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="CourseNotes" class="control-label"></label>
+                <input asp-for="CourseNotes" class="form-control" />
+                <span asp-validation-for="CourseNotes" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Rating" class="control-label"></label>
+                <input asp-for="Rating" class="form-control" />
+                <span asp-validation-for="Rating" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Position" class="control-label"></label>
+                @*                 <select class="form-select" name="Position">
+                @{
+                <option value="">غير محدد</option>
+                foreach (var item in ViewBag.Position)
+                {
+                <option value="@item.Key">@item.Value</option>
+                }
+                }
+                </select> *@
+
+                <select class="form-select" name="Position">
+                    @{
+
+
+                        if (Model == null)
+                        {
+                            <option value="" selected>غير محدد</option>
+                        }
+                        else
+                        {
+                            <option value="">غير محدد</option>
+                        }
+                        foreach (var item in ViewBag.Position)
+                        {
+                            if (Model != null)
+                            {
+
+                                if (Model.Position == item.Key)
+                                {
+                                    <option value="@item.Key" selected>@item.Value</option>
+                                }
+                            }
+                            else
+                            {
+                                <option value="@item.Key">@item.Value</option>
+                            }
+
+                        }
+
+                    }
+                </select>
+
+                <span asp-validation-for="Position" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <input type="submit" value="Create" class="btn btn-primary" />
+            </div>
+        </form>
+    </div>
+</div>
+
+<div>
+    <a asp-action="Index">Back to List</a>
+</div>
+
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+}
+<script>
+    new TomSelect("#select-InstructorId", { create: false, sortField: { field: "text", direction: "asc" }, maxOptions: false });
+
+</script>

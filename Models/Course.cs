@@ -22,38 +22,33 @@ namespace Models
         public double? Cost { get; set; }
         public string? ImplementedCenter { get; set; }
         public int? HoursNumber { get; set; }
-        //edit , table #
         public int? ImplementationTypeId { get; set; }
-        //edit, table #
         public int? TotalImplementationId { get; set; }
         public int? RoomNumber { get; set; }
-        //enum #
         public Material? Material { get; set; }
-        //enum #
-        public CourseType? courseType { get; set; }
+        public CourseType? CourseType { get; set; }
         public double? Rating { get; set; }
-        //edit , enum #
         public ImplementationMonth? ImplementationMonth { get; set; }
         public double? ActualCost { get; set; }
         public string? Code { get; set; }
-        //enum #
         public Check? Check { get; set; }
         public string? PdfFile { get; set; }
-        public string? Notes { get; set; }
-        //user.name
         public string? EnterName { get; set; }
+        public string? Link { get; set; }
+        public string? RatingSpecialist { get; set; }
+        public string? Notes { get; set; }
+        public string? RatingSpecialistNotse { get; set; }
+        public string? TraineesNotes { get; set; }
 
-        public int? PrimaryInstructorId { get; set; }
+     //   public int? PrimaryInstructorId { get; set; }
         public int? CourseNatureId { get; set; }
         public int? TrainingSpecialistId { get; set; }
 
-
-        public Instructor? PrimaryInstructor { get; set; }
         public ICollection<Instructor>? Instructors { get; set; } = new List<Instructor>();
         public ICollection<Employee> Employees { get; set; } = new List<Employee>();
         public ICollection<Trainee> Trainees { get; set; } = new List<Trainee>();
         public ICollection<CourseInstructor> CoursesInstructors { get; set; } = new List<CourseInstructor>();
-        public ImplementationType? implementationType { get; set; }
+        public ImplementationType? ImplementationType { get; set; }
         public TotalImplementation? TotalImplementation { get; set; }
         public CourseNature? CourseNature { get; set; }
     }

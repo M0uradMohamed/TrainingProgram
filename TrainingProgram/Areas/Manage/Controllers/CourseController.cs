@@ -51,8 +51,8 @@ namespace TrainingProgram.Areas.Manage.Controllers
         public IActionResult Index()
         {
             var courses = courseRepository.Get(includeProps: [c => c.CourseNature
-                ,c => c.PrimaryInstructor , c => c.TotalImplementation
-                ,c => c.implementationType,c=>c.Instructors]).ToList();
+                , c => c.TotalImplementation
+                ,c => c.ImplementationType,c=>c.Instructors]).ToList();
             return View(courses);
         }
 
@@ -66,9 +66,9 @@ namespace TrainingProgram.Areas.Manage.Controllers
 
             var course = courseRepository.Get(includeProps: [
                 c => c.CourseNature
-                ,c => c.PrimaryInstructor
+            //    ,c => c.PrimaryInstructor
                 ,c => c.TotalImplementation
-                ,c => c.implementationType
+                ,c => c.ImplementationType
                 ,c=>c.Instructors]
                 , expression: m => m.Id == id).FirstOrDefault();
             if (course == null)
@@ -104,7 +104,7 @@ namespace TrainingProgram.Areas.Manage.Controllers
         public IActionResult Create(CourseVM courseVM, IFormFile file)
         {
             ModelState.Remove(nameof(file));
-            ModelState.Remove(nameof(courseVM.instuctorsIds));
+          //  ModelState.Remove(nameof(courseVM.instuctorsIds));
             if (ModelState.IsValid)
             {
                 if (courseVM.BeginningDate! > courseVM.EndingDate)
@@ -125,7 +125,7 @@ namespace TrainingProgram.Areas.Manage.Controllers
                     return View(courseVM);
                 }
 
-                var similerCourse = courseRepository.Get(expression: e => e.PrimaryInstructorId == courseVM.PrimaryInstructorId).ToList()
+             /*   var similerCourse = courseRepository.Get(expression: e => e.PrimaryInstructorId == courseVM.PrimaryInstructorId).ToList()
                     .Any(e => courseVM.BeginningDate <= e.EndingDate &&
                                   courseVM.EndingDate >= e.BeginningDate);
 
@@ -144,8 +144,8 @@ namespace TrainingProgram.Areas.Manage.Controllers
                     ViewBag.Check = StaticData.check;
 
                     return View(courseVM);
-                }
-                if (courseVM.instuctorsIds != null)
+                }*/
+              /*  if (courseVM.instuctorsIds != null)
                 {
                     foreach (var item in courseVM.instuctorsIds)
                     {
@@ -166,7 +166,7 @@ namespace TrainingProgram.Areas.Manage.Controllers
                             return View(courseVM);
                         }
                     }
-                }
+                }*/
 
                 if (file != null)
                 {
@@ -193,8 +193,8 @@ namespace TrainingProgram.Areas.Manage.Controllers
                 {
                     Name = MethodsCheck.chechName(courseVM.Name),
                     DaysCount = courseVM.DaysCount,
-                    PrimaryInstructorId = courseVM.PrimaryInstructorId,
-                    courseType = courseVM.courseType,
+                 //   PrimaryInstructorId = courseVM.PrimaryInstructorId,
+                    CourseType = courseVM.CourseType,
                     Check = courseVM.Check,
                     Code = MethodsCheck.chechName(courseVM.Code),
                     ImplementedDays = MethodsCheck.chechName(courseVM.ImplementedDays),
@@ -223,7 +223,7 @@ namespace TrainingProgram.Areas.Manage.Controllers
                 courseRepository.Create(course);
                 courseRepository.Commit();
 
-                if (courseVM.instuctorsIds != null)
+              /*  if (courseVM.instuctorsIds != null)
                 {
                     foreach (var item in courseVM.instuctorsIds)
                     {
@@ -231,7 +231,7 @@ namespace TrainingProgram.Areas.Manage.Controllers
                         { CourseId = course.Id, InstructorId = item });
                         courseInstructorRepository.Commit();
                     }
-                }
+                }*/
 
 
                 if (file != null)
@@ -287,9 +287,9 @@ namespace TrainingProgram.Areas.Manage.Controllers
 
             var course = courseRepository.Get(includeProps: [
                 c => c.CourseNature
-                ,c => c.PrimaryInstructor
+               // ,c => c.PrimaryInstructor
                 ,c => c.TotalImplementation
-                ,c => c.implementationType
+                ,c => c.ImplementationType
                 ,c=>c.Instructors ]
                 , expression: m => m.Id == id).FirstOrDefault(); ;
             if (course == null)
@@ -302,8 +302,8 @@ namespace TrainingProgram.Areas.Manage.Controllers
                 Id = course.Id,
                 Name = course.Name,
                 DaysCount = course.DaysCount,
-                PrimaryInstructorId = course.PrimaryInstructorId,
-                courseType = course.courseType,
+             //   PrimaryInstructorId = course.PrimaryInstructorId,
+                CourseType = course.CourseType,
                 Check = course.Check,
                 Code = course.Code,
                 ImplementedDays = course.ImplementedDays,
@@ -362,7 +362,7 @@ namespace TrainingProgram.Areas.Manage.Controllers
                 return RedirectToAction("Notfound", "Home");
             }
             ModelState.Remove(nameof(file));
-            ModelState.Remove(nameof(courseVM.instuctorsIds));
+           // ModelState.Remove(nameof(courseVM.instuctorsIds));
             if (ModelState.IsValid)
             {
                 if (courseVM.BeginningDate! > courseVM.EndingDate)
@@ -381,7 +381,7 @@ namespace TrainingProgram.Areas.Manage.Controllers
 
                     return View();
                 }
-                var similerCourse = courseRepository.Get(expression: e => e.PrimaryInstructorId == courseVM.PrimaryInstructorId && e.Id != courseVM.Id, tracked: false).ToList()
+             /*   var similerCourse = courseRepository.Get(expression: e => e.PrimaryInstructorId == courseVM.PrimaryInstructorId && e.Id != courseVM.Id, tracked: false).ToList()
                             .Any(e => courseVM.BeginningDate >= e.BeginningDate && courseVM.BeginningDate <= e.EndingDate ||
                             courseVM.EndingDate >= e.BeginningDate && courseVM.EndingDate <= e.EndingDate ||
                             courseVM.BeginningDate <= e.BeginningDate && courseVM.EndingDate >= e.EndingDate);
@@ -400,8 +400,8 @@ namespace TrainingProgram.Areas.Manage.Controllers
                     ViewBag.Check = StaticData.check;
 
                     return View(courseVM);
-                }
-                if (courseVM.instuctorsIds != null)
+                } */
+               /* if (courseVM.instuctorsIds != null)
                 {
                     foreach (var item in courseVM.instuctorsIds)
                     {
@@ -422,7 +422,7 @@ namespace TrainingProgram.Areas.Manage.Controllers
                             return View(courseVM);
                         }
                     }
-                }
+                }*/
                 if (file != null)
                 {
                     if (Path.GetExtension(file.FileName).ToLower() != ".pdf")
@@ -448,8 +448,8 @@ namespace TrainingProgram.Areas.Manage.Controllers
                     Id = courseVM.Id,
                     Name = MethodsCheck.chechName(courseVM.Name),
                     DaysCount = courseVM.DaysCount,
-                    PrimaryInstructorId = courseVM.PrimaryInstructorId,
-                    courseType = courseVM.courseType,
+                 //   PrimaryInstructorId = courseVM.PrimaryInstructorId,
+                    CourseType = courseVM.CourseType,
                     Check = courseVM.Check,
                     Code = MethodsCheck.chechName(courseVM.Code),
                     ImplementedDays = MethodsCheck.chechName(courseVM.ImplementedDays),
@@ -513,7 +513,7 @@ namespace TrainingProgram.Areas.Manage.Controllers
                 }
 
 
-                if (courseVM.instuctorsIds != null)
+              /*  if (courseVM.instuctorsIds != null)
                 {
                     foreach (var item in courseVM.instuctorsIds)
                     {
@@ -521,7 +521,7 @@ namespace TrainingProgram.Areas.Manage.Controllers
                         { CourseId = course.Id, InstructorId = item });
                         courseInstructorRepository.Commit();
                     }
-                }
+                }*/
 
 
 
@@ -594,10 +594,10 @@ namespace TrainingProgram.Areas.Manage.Controllers
             Dictionary<string, string> parmaeters = new Dictionary<string, string>();
            // parmaeters.Add("Ahmed", "شركة المياة");
 
-            var Courses = courseRepository.Get(includeProps: [e=>e.PrimaryInstructor]).Select( e=> new
+            var Courses = courseRepository.Get(/*includeProps: [e=>e.PrimaryInstructor]*/).Select( e=> new
             {
                 e.Name ,
-                  InstructorName =  e.PrimaryInstructor.Name ?? "لا يوجد",
+                 // InstructorName =  e.PrimaryInstructor.Name ?? "لا يوجد",
                 Material = e.Material.HasValue ? StaticData.material[e.Material.Value] ?? "لا يوجد" : "لا يوجد"
             }).ToList();
             //  var sector = sectorRepository.Get().ToList()[0];

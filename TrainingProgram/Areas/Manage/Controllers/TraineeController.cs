@@ -55,13 +55,13 @@ namespace TrainingProgram.Areas.Manage.Controllers
                 return RedirectToAction("Notfound", "Home");
 
             }
-            var course = courseRepository.Get(expression: e => e.Id == id, includeProps: [e => e.PrimaryInstructor]).Select(e => new
+            var course = courseRepository.Get(expression: e => e.Id == id /*, includeProps: [e => e.PrimaryInstructor]*/).Select(e => new
             {
                 e.Id,
                 e.Name,
                 e.BeginningDate,
                 e.EndingDate,
-                PrimaryInstructorName = e.PrimaryInstructor.Name,
+              //  PrimaryInstructorName = e.PrimaryInstructor.Name,
                 e.ImplementationPlace
             }).FirstOrDefault();
 
@@ -410,7 +410,7 @@ namespace TrainingProgram.Areas.Manage.Controllers
                 return RedirectToAction("Notfound", "Home");
 
             }
-            var course = courseRepository.Get(expression: e => e.Id == id, includeProps: [e => e.PrimaryInstructor]).Select(e => new
+            var course = courseRepository.Get(expression: e => e.Id == id /*, includeProps: [e => e.PrimaryInstructor]*/).Select(e => new
             {
                 e.Id,
                 e.Name,

@@ -4,6 +4,7 @@ using DataAccess;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace DataAccess.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20250210182923_Update_Notes")]
+    partial class Update_Notes
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -302,6 +305,9 @@ namespace DataAccess.Migrations
                     b.Property<string>("PdfFile")
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<int?>("PrimaryInstructorId")
+                        .HasColumnType("int");
+
                     b.Property<double?>("Rating")
                         .HasColumnType("float");
 
@@ -352,9 +358,6 @@ namespace DataAccess.Migrations
 
                     b.Property<string>("CourseNotes")
                         .HasColumnType("nvarchar(max)");
-
-                    b.Property<int>("Position")
-                        .HasColumnType("int");
 
                     b.Property<double?>("Rating")
                         .HasColumnType("float");

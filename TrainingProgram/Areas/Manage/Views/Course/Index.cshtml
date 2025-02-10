@@ -58,7 +58,7 @@
                 @Html.DisplayNameFor(model => model.Material)
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.courseType)
+                @Html.DisplayNameFor(model => model.CourseType)
             </th>
             <th>
                 @Html.DisplayNameFor(model => model.Rating)
@@ -85,9 +85,9 @@
             <th>
                 @Html.DisplayNameFor(model => model.EnterName)
             </th>
-            <th>
-                @Html.DisplayNameFor(model => model.PrimaryInstructor)
-            </th>
+             <th>
+                المدرب الاول
+            </th> 
             <th>
                 <span>المدرب الثاني </span>
             </th>
@@ -98,7 +98,7 @@
                 <span>المدرب الرابع </span>
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.implementationType)
+                @Html.DisplayNameFor(model => model.ImplementationType)
             </th>
             <th>
                 @Html.DisplayNameFor(model => model.TotalImplementation)
@@ -155,7 +155,7 @@
                     @Html.DisplayFor(modelItem => item.Material)
                 </td>
                 <td>
-                    @Html.DisplayFor(modelItem => item.courseType)
+                    @Html.DisplayFor(modelItem => item.CourseType)
                 </td>
                 <td>
                     @Html.DisplayFor(modelItem => item.Rating)
@@ -189,22 +189,39 @@
                 <td>
                     @Html.DisplayFor(modelItem => item.EnterName)
                 </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.PrimaryInstructor.Name)
+               <td>
+                @*    @{
+                        foreach (var instructor in item.Instructors)
+                        {
+                            if(instructor.Id==item.PrimaryInstructorId)
+                            {
+                                
+                            <td><span>@instructor.Name</span></td>
+                            break;
+                            }
+                        }
+                        
+                    } *@
                 </td>
-                @{
+                <td>
+               @* @{
                     foreach(var instructor in item.Instructors)
                     {
-                        <td><span>@instructor.Name</span></td>
+                            if (instructor.Id != item.PrimaryInstructorId)
+                            {
+
+                            <td><span>@instructor.Name</span></td>
+                            }
                     }
-                    for(int i=1; i <= 3 - item.Instructors.Count(); i++)
+                    for(int i=1; i <= 4 - item.Instructors.Count(); i++)
                     {
                         <td></td>
                     }
-                }
+                } *@
+                </td>
 
                 <td>
-                    @Html.DisplayFor(modelItem => item.implementationType.Name)
+                    @Html.DisplayFor(modelItem => item.ImplementationType.Name)
                 </td>
                 <td>
                     @Html.DisplayFor(modelItem => item.TotalImplementation.Name)
@@ -215,7 +232,8 @@
                 <td>
                     <a asp-action="Edit" asp-route-id="@item.Id" type="button" class="btn btn-dark">Edit</a> 
                     <a asp-action="Details" asp-route-id="@item.Id" type="button" class="btn btn-info ">Details</a> 
-                    <a asp-action="Course" asp-route-id="@item.Id" asp-controller="trainee"  type="button" class="btn btn-primary ">المتدربين</a> 
+                    <a asp-action="Course" asp-route-id="@item.Id" asp-controller="trainee"  type="button" class="btn btn-primary ">المتدربين</a>
+                    <a asp-action="index" asp-route-id="@item.Id" asp-controller="CourseInstructor" type="button" class="btn btn-primary ">المدربين</a>
                     <button type="button" class="btn btn-danger " data-bs-toggle="modal" data-bs-target="#deleteModal" data-courseid="@item.Id">
                          Delete
                     </button>

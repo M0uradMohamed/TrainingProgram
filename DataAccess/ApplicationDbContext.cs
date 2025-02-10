@@ -40,12 +40,12 @@ namespace DataAccess
             builder.Entity<CourseInstructor>()
             .HasOne(ci => ci.Course)
             .WithMany(c => c.CoursesInstructors)
-            .HasForeignKey(ci => ci.CourseId).HasPrincipalKey(c => c.Id).OnDelete(DeleteBehavior.NoAction);
+            .HasForeignKey(ci => ci.CourseId).HasPrincipalKey(c => c.Id).OnDelete(DeleteBehavior.Cascade);
 
             builder.Entity<CourseInstructor>()
             .HasOne(ci => ci.Instructor)
             .WithMany(i => i.CoursesInstructors)
-            .HasForeignKey(ci => ci.InstructorId).HasPrincipalKey(i => i.Id).OnDelete(DeleteBehavior.NoAction);
+            .HasForeignKey(ci => ci.InstructorId).HasPrincipalKey(i => i.Id).OnDelete(DeleteBehavior.Cascade);
 
             builder.Entity<Course>().HasMany(c => c.Instructors).WithMany(i => i.Courses).UsingEntity<CourseInstructor>();
 
@@ -54,18 +54,18 @@ namespace DataAccess
             builder.Entity<Trainee>()
                 .HasOne(ci => ci.Employee)
                 .WithMany(e => e.Trainees)
-                .HasForeignKey(ci => ci.EmployeeId).HasPrincipalKey(e => e.Id).OnDelete(DeleteBehavior.NoAction);
+                .HasForeignKey(ci => ci.EmployeeId).HasPrincipalKey(e => e.Id).OnDelete(DeleteBehavior.Cascade);
 
             builder.Entity<Trainee>()
                 .HasOne(ci => ci.Course)
                 .WithMany(c => c.Trainees)
-                .HasForeignKey(ci => ci.CourseId).HasPrincipalKey(c => c.Id).OnDelete(DeleteBehavior.NoAction);
+                .HasForeignKey(ci => ci.CourseId).HasPrincipalKey(c => c.Id).OnDelete(DeleteBehavior.Cascade);
 
             //builder.Entity<Instructor>().HasOne(i => i.Employee).WithOne(e=>e.instructor)
             //    .HasForeignKey<Instructor>(i => i.EmployeeId).HasPrincipalKey<Employee>(e => e.Id).IsRequired(false);
 
-            builder.Entity<Course>().HasOne(c => c.PrimaryInstructor).WithMany(i => i.PrimaryCourses).HasForeignKey(c => c.PrimaryInstructorId)
-                .HasPrincipalKey(i => i.Id).OnDelete(DeleteBehavior.NoAction);
+          /*  builder.Entity<Course>().HasOne(c => c.PrimaryInstructor).WithMany(i => i.PrimaryCourses).HasForeignKey(c => c.PrimaryInstructorId)
+                .HasPrincipalKey(i => i.Id).OnDelete(DeleteBehavior.NoAction);*/
 
         }
     }

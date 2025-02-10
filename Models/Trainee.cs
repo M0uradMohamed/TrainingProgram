@@ -13,10 +13,7 @@ namespace Models
         public int EmployeeId { get; set; }
         //enum
         public Estimate? Estimate {  get; set; }
-        public string? Notes {  get; set; }
         public string? File { get; set; }
-
-        //--------------------------\\
         public int? AbsenceDays { get; set; }
         public int? AttendanceAndDeparture { get; set; }
         public int? AdherenceMark { get; set; }
@@ -25,6 +22,8 @@ namespace Models
         public int? TotalEvaluation { get; set; }
         public double? WrittenExam { get; set; }
         public double? TotalMarks {  get; set; }
+        public string? Notes {  get; set; }
+        public string? SecondNotes {  get; set; }
 
 
         public Employee Employee { get; set; }

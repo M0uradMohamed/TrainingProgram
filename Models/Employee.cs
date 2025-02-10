@@ -13,7 +13,6 @@ namespace Models
         public int Id { get; set; }
         public string? FoundationId { get; set; }
         public string? Name { get; set; }
-        //enum
         public Gender? Gender { get; set; }
         public string? Major { get; set; }
         public string? Job { get; set; }
@@ -22,7 +21,6 @@ namespace Models
         public int? DegreeId { get; set; }
         public string? WorkPlace { get; set; }
         public string? PhoneNumber { get; set; }
-        //enum
         public Belong? Belong  { get; set; }
         public string? CompanyNameForForeign  { get; set; }
 

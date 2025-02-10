@@ -24,6 +24,7 @@ namespace Models
         public string? PhoneNumber { get; set; }
         public string? OtherPhoneNumber { get; set; }
         public string? Email { get; set; }
+        public bool? Certified { get; set; } 
 
      //   public int? EmployeeId { get; set; }
 
@@ -31,7 +32,7 @@ namespace Models
         public Sector? Sector { get; set; }
      //   public Employee? Employee { get; set; }
         public ICollection<Course> Courses { get; set; } = new List<Course>();
-        public ICollection<Course> PrimaryCourses { get; set; } = new List<Course>();
+     //   public ICollection<Course> PrimaryCourses { get; set; } = new List<Course>();
         public ICollection<CourseInstructor> CoursesInstructors { get; set; } = new List<CourseInstructor>();
 
     }

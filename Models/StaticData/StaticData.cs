@@ -60,6 +60,14 @@ namespace Models.StaticData
             {ImplementationMonth.November ,"نوفمبر" },
             {ImplementationMonth.December ,"ديسمبر" }
         };
+        public static readonly Dictionary<Position, string> position = new Dictionary<Position, string>()
+        {
+            {Position.First,"الاول" },
+            {Position.Second,"الثاني" },
+            {Position.Third,"الثالث" },
+            {Position.Fourth,"الرابع" }
+
+        };
 
     }
 }
