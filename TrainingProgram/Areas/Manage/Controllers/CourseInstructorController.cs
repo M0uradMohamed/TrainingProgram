@@ -11,6 +11,7 @@ using DataAccess.Repository.IRepository;
 using DataAccess.Repository;
 using Models.StaticData;
 using Models.ViewModels;
+using Models.EnumClasses;
 
 namespace TrainingProgram.Areas.Manage.Controllers
 {
@@ -50,7 +51,8 @@ namespace TrainingProgram.Areas.Manage.Controllers
 
             ViewBag.Course = course;
 
-            var courseInstructors = courseInstructorRepository.Get(expression:e=>e.CourseId ==id).ToList();
+            var courseInstructors = courseInstructorRepository.Get(expression:e=>e.CourseId ==id,includeProps:[e=>e.Instructor])
+                .OrderBy(e=>e.Position).ToList();
             return View(courseInstructors);
         }
 
@@ -110,6 +112,50 @@ namespace TrainingProgram.Areas.Manage.Controllers
                     ViewBag.Position = StaticData.position;
                     return View(courseInstructorVM);
                 }
+                var similerPosition = courseInstructorRepository.Get(expression: e => e.CourseId == id)
+                    .Any(e => e.Position == courseInstructorVM.Position);
+
+                if (similerPosition)
+                {
+                    ModelState.AddModelError(nameof(courseInstructorVM.Position), "هذا الموضع  موجود بالفعل لمدرب");
+
+                    ViewBag.Instructors = instructorRepository.Get().Select(e => new { e.Id, e.FoundationId, e.Name });
+                    ViewBag.CourseId = id;
+                    ViewBag.Position = StaticData.position;
+                    return View(courseInstructorVM);
+                }
+                var course = courseRepository.Get(expression: e=>e.Id == id,tracked:false).Select(e=> new
+                {
+                    e.BeginningDate,
+                    e.EndingDate,
+                }).FirstOrDefault();
+
+                var similerCourse = courseInstructorRepository.Get(expression: e => e.InstructorId == courseInstructorVM.InstructorId && e.Position == Position.First ,
+                    includeProps: [e=>e.Course]).ToList()
+               .Any(e => course.BeginningDate <= e.Course.EndingDate &&
+                             course.EndingDate >= e.Course.BeginningDate);
+
+                if (similerCourse)
+                {
+                    ModelState.AddModelError(string.Empty, "لا يمكن تسجيل دورة بهذا المدرب في هذان الموعدان");
+
+                    ViewBag.Instructors = instructorRepository.Get().Select(e => new { e.Id, e.FoundationId, e.Name });
+                    ViewBag.CourseId = id;
+                    ViewBag.Position = StaticData.position;
+                    return View(courseInstructorVM);
+                }
+
+                var courseInstructor = new CourseInstructor()
+                {
+                   CourseId = id,
+                   InstructorId=courseInstructorVM.InstructorId,
+                   CourseNotes = courseInstructorVM.CourseNotes,
+                   Position = courseInstructorVM.Position,
+                   Rating = courseInstructorVM.Rating
+                    
+                };
+                courseInstructorRepository.Create(courseInstructor);
+                courseInstructorRepository.Commit();
 
                 TempData["success"] = $"  تم اضافة المدرب بنجاح ,";
                 ViewBag.Instructors = instructorRepository.Get().Select(e => new { e.Id, e.FoundationId, e.Name });
@@ -118,9 +164,7 @@ namespace TrainingProgram.Areas.Manage.Controllers
                 ModelState.Clear();
                 return View();
             }
-            //   ViewData["CourseId"] = new SelectList(_context.Courses, "Id", "Id", courseInstructor.CourseId);
-            // ViewData["InstructorId"] = new SelectList(_context.Instructors, "Id", "Id", courseInstructor.InstructorId);
-        
+
             ViewBag.Instructors = instructorRepository.Get().Select(e => new { e.Id, e.FoundationId, e.Name });
             ViewBag.CourseId = id;
             ViewBag.Position = StaticData.position;
@@ -128,22 +172,46 @@ namespace TrainingProgram.Areas.Manage.Controllers
         }
 
         // GET: Manage/CourseInstructor/Edit/5
-        public async Task<IActionResult> Edit(int? id)
+        public  IActionResult Edit(int? id, int instructorId)
         {
             if (id == null)
             {
                 return RedirectToAction("Notfound", "Home");
             }
+            var IsCourse = courseRepository.Get(expression: e => e.Id == id).Any();
 
-          //  var courseInstructor = await _context.CoursesInstructors.FindAsync(id);
-          /*  if (courseInstructor == null)
+            if (!IsCourse)
+            {
+                return RedirectToAction("Notfound", "Home");
+
+            }
+            var courseInstructor = courseInstructorRepository.Get(expression: e =>e.CourseId  == id && 
+            e.InstructorId == instructorId).FirstOrDefault();
+
+            if (courseInstructor == null)
             {
                 return RedirectToAction("Notfound", "Home");
             }
-            ViewData["CourseId"] = new SelectList(_context.Courses, "Id", "Id", courseInstructor.CourseId);
-            ViewData["InstructorId"] = new SelectList(_context.Instructors, "Id", "Id", courseInstructor.InstructorId);
-          */
-            return View(/*courseInstructor*/);
+            var courseInstructorVM = new CourseInstructorVM()
+            {
+                CourseId=courseInstructor.CourseId,
+                InstructorId = courseInstructor.InstructorId,
+                CourseNotes = courseInstructor.CourseNotes,
+                Rating = courseInstructor.Rating,
+                Position = courseInstructor.Position
+            };
+            var instructor = courseInstructorRepository.Get(expression: e => e.CourseId == id &&
+            e.InstructorId == instructorId, tracked:false). Select(e=> new
+            {
+                e.Instructor.Name, e.Position
+            }).FirstOrDefault();
+
+            ViewBag.Instructor = instructor;
+            ViewBag.Instructors = instructorRepository.Get().Select(e => new { e.Id, e.FoundationId, e.Name });
+            ViewBag.CourseId = id;
+            ViewBag.Position = StaticData.position;
+
+            return View(courseInstructorVM);
         }
 
         // POST: Manage/CourseInstructor/Edit/5
@@ -151,72 +219,50 @@ namespace TrainingProgram.Areas.Manage.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("CourseId,InstructorId,CourseNotes,Rating")] CourseInstructor courseInstructor)
+        public IActionResult Edit(int id, CourseInstructorVM courseInstructorVM)
         {
-            if (id != courseInstructor.CourseId)
+            if (id != courseInstructorVM.CourseId)
             {
                 return RedirectToAction("Notfound", "Home");
             }
 
             if (ModelState.IsValid)
             {
-                try
+                
+
+                var courseinstructor = new CourseInstructor()
                 {
-                   // _context.Update(courseInstructor);
-                    //await _context.SaveChangesAsync();
-                }
-                catch (DbUpdateConcurrencyException)
-                {
-                    if (!CourseInstructorExists(courseInstructor.CourseId))
-                    {
-                        return RedirectToAction("Notfound", "Home");
-                    }
-                    else
-                    {
-                        throw;
-                    }
-                }
-                return RedirectToAction(nameof(Index));
+                    InstructorId=courseInstructorVM.InstructorId,
+                    CourseId=id,
+                    CourseNotes=courseInstructorVM.CourseNotes,
+                    Rating=courseInstructorVM.Rating,
+                    Position=courseInstructorVM.Position
+                };
+                courseInstructorRepository.Edit(courseinstructor);
+                courseInstructorRepository.Commit();
+
+                return RedirectToAction(nameof(Index), new { id = $"{id}" });
             }
-         //   ViewData["CourseId"] = new SelectList(_context.Courses, "Id", "Id", courseInstructor.CourseId);
-          //  ViewData["InstructorId"] = new SelectList(_context.Instructors, "Id", "Id", courseInstructor.InstructorId);
-            return View(courseInstructor);
+            return View(courseInstructorVM);
         }
 
-        // GET: Manage/CourseInstructor/Delete/5
-        public async Task<IActionResult> Delete(int? id)
-        {
-            if (id == null)
-            {
-                return RedirectToAction("Notfound", "Home");
-            }
 
-         /*   var courseInstructor = await _context.CoursesInstructors
-                .Include(c => c.Course)
-                .Include(c => c.Instructor)
-                .FirstOrDefaultAsync(m => m.CourseId == id);
-            if (courseInstructor == null)
-            {
-                return RedirectToAction("Notfound", "Home");
-            }*/
-
-            return View(/*courseInstructor*/);
-        }
 
         // POST: Manage/CourseInstructor/Delete/5
-      /*  [HttpPost, ActionName("Delete")]
+        [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> DeleteConfirmed(int id)
+        public IActionResult Delete(int id, int instructorId)
         {
-            var courseInstructor = await _context.CoursesInstructors.FindAsync(id);
+            var courseInstructor = courseInstructorRepository.Get(expression: e => e.CourseId == id &&
+             e.InstructorId == instructorId).FirstOrDefault();
             if (courseInstructor != null)
             {
-                //_context.CoursesInstructors.Remove(courseInstructor);
+                courseInstructorRepository.Delete(courseInstructor);
+                courseInstructorRepository.Commit();
             }
 
-          //  await _context.SaveChangesAsync();
-            return RedirectToAction(nameof(Index));
-        }*/
+            return RedirectToAction(nameof(Index), new { id = $"{id}" });
+        }
 
         private bool CourseInstructorExists(int id)
         {

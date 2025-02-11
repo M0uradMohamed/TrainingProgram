@@ -15,6 +15,8 @@ using System.Xml.Linq;
 using AspNetCore.Reporting;
 using DataAccess.Repository;
 using Models.EnumClasses;
+using System.Linq.Expressions;
+using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 
 namespace TrainingProgram.Areas.Manage.Controllers
 {
@@ -31,10 +33,12 @@ namespace TrainingProgram.Areas.Manage.Controllers
         private readonly ITrainingSpecialistRepository trainingSpecialistRepository;
         private readonly ISectorRepository sectorRepository;
 
+
         public CourseController(ICourseRepository courseRepository, IInstructorRepository instructorRepository
             , ICourseNatureRepository courseNatureRepository, ITotalImplementationRepository totalImplementationRepository
             , IImplementationTypeRepository implementationTypeRepository, ICourseInstructorRepository courseInstructorRepository,
-            ITrainingSpecialistRepository trainingSpecialistRepository , ISectorRepository sectorRepository)
+            ITrainingSpecialistRepository trainingSpecialistRepository, ISectorRepository sectorRepository
+     )
         {
 
             this.courseRepository = courseRepository;
@@ -45,14 +49,18 @@ namespace TrainingProgram.Areas.Manage.Controllers
             this.courseInstructorRepository = courseInstructorRepository;
             this.trainingSpecialistRepository = trainingSpecialistRepository;
             this.sectorRepository = sectorRepository;
-        }
 
+        }
         // GET: Manage/Course
         public IActionResult Index()
         {
-            var courses = courseRepository.Get(includeProps: [c => c.CourseNature
-                , c => c.TotalImplementation
-                ,c => c.ImplementationType,c=>c.Instructors]).ToList();
+            
+
+            IQueryable<Course> qcourses = (IQueryable<Course>)courseRepository.Get(includeProps: [
+                e=>e.CourseNature!, e=>e.TotalImplementation! ,e=>e.ImplementationType!
+                ]);
+            qcourses = qcourses.Include(e=>e.CoursesInstructors).ThenInclude(e=>e.Instructor);
+           IEnumerable<Course> courses= qcourses.ToList();
             return View(courses);
         }
 
@@ -66,7 +74,6 @@ namespace TrainingProgram.Areas.Manage.Controllers
 
             var course = courseRepository.Get(includeProps: [
                 c => c.CourseNature
-            //    ,c => c.PrimaryInstructor
                 ,c => c.TotalImplementation
                 ,c => c.ImplementationType
                 ,c=>c.Instructors]
@@ -104,7 +111,7 @@ namespace TrainingProgram.Areas.Manage.Controllers
         public IActionResult Create(CourseVM courseVM, IFormFile file)
         {
             ModelState.Remove(nameof(file));
-          //  ModelState.Remove(nameof(courseVM.instuctorsIds));
+            //  ModelState.Remove(nameof(courseVM.instuctorsIds));
             if (ModelState.IsValid)
             {
                 if (courseVM.BeginningDate! > courseVM.EndingDate)
@@ -125,48 +132,6 @@ namespace TrainingProgram.Areas.Manage.Controllers
                     return View(courseVM);
                 }
 
-             /*   var similerCourse = courseRepository.Get(expression: e => e.PrimaryInstructorId == courseVM.PrimaryInstructorId).ToList()
-                    .Any(e => courseVM.BeginningDate <= e.EndingDate &&
-                                  courseVM.EndingDate >= e.BeginningDate);
-
-                if (similerCourse)
-                {
-                    ModelState.AddModelError(string.Empty, "لا يمكن تسجيل دورة بهذا المدرب في هذان الموعدان");
-
-                    ViewBag.CourseNature = courseNatureRepository.Get().ToList();
-                    ViewBag.Instructors = instructorRepository.Get().Select(e => new { e.Id, e.FoundationId, e.Name });
-                    ViewBag.TotalImplementation = totalImplementationRepository.Get().ToList();
-                    ViewBag.ImplementationType = implementationTypeRepository.Get().ToList();
-                    ViewBag.Material = StaticData.material;
-                    ViewBag.CourseType = StaticData.courseType;
-                    ViewBag.ImplementationMonth = StaticData.implementationMonth;
-                    ViewBag.TrainingSpecialist = trainingSpecialistRepository.Get().ToList();
-                    ViewBag.Check = StaticData.check;
-
-                    return View(courseVM);
-                }*/
-              /*  if (courseVM.instuctorsIds != null)
-                {
-                    foreach (var item in courseVM.instuctorsIds)
-                    {
-                        if (item == courseVM.PrimaryInstructorId)
-                        {
-                            ModelState.AddModelError(string.Empty, "لا يمكن اختيار نفس المدرب كا مدرب اساسي و ثانوي معا");
-
-                            ViewBag.CourseNature = courseNatureRepository.Get().ToList();
-                            ViewBag.Instructors = instructorRepository.Get().Select(e => new { e.Id, e.FoundationId, e.Name });
-                            ViewBag.TotalImplementation = totalImplementationRepository.Get().ToList();
-                            ViewBag.ImplementationType = implementationTypeRepository.Get().ToList();
-                            ViewBag.Material = StaticData.material;
-                            ViewBag.CourseType = StaticData.courseType;
-                            ViewBag.ImplementationMonth = StaticData.implementationMonth;
-                            ViewBag.TrainingSpecialist = trainingSpecialistRepository.Get().ToList();
-                            ViewBag.Check = StaticData.check;
-
-                            return View(courseVM);
-                        }
-                    }
-                }*/
 
                 if (file != null)
                 {
@@ -193,7 +158,6 @@ namespace TrainingProgram.Areas.Manage.Controllers
                 {
                     Name = MethodsCheck.chechName(courseVM.Name),
                     DaysCount = courseVM.DaysCount,
-                 //   PrimaryInstructorId = courseVM.PrimaryInstructorId,
                     CourseType = courseVM.CourseType,
                     Check = courseVM.Check,
                     Code = MethodsCheck.chechName(courseVM.Code),
@@ -222,16 +186,6 @@ namespace TrainingProgram.Areas.Manage.Controllers
 
                 courseRepository.Create(course);
                 courseRepository.Commit();
-
-              /*  if (courseVM.instuctorsIds != null)
-                {
-                    foreach (var item in courseVM.instuctorsIds)
-                    {
-                        courseInstructorRepository.Create(new CourseInstructor()
-                        { CourseId = course.Id, InstructorId = item });
-                        courseInstructorRepository.Commit();
-                    }
-                }*/
 
 
                 if (file != null)
@@ -287,7 +241,6 @@ namespace TrainingProgram.Areas.Manage.Controllers
 
             var course = courseRepository.Get(includeProps: [
                 c => c.CourseNature
-               // ,c => c.PrimaryInstructor
                 ,c => c.TotalImplementation
                 ,c => c.ImplementationType
                 ,c=>c.Instructors ]
@@ -302,7 +255,6 @@ namespace TrainingProgram.Areas.Manage.Controllers
                 Id = course.Id,
                 Name = course.Name,
                 DaysCount = course.DaysCount,
-             //   PrimaryInstructorId = course.PrimaryInstructorId,
                 CourseType = course.CourseType,
                 Check = course.Check,
                 Code = course.Code,
@@ -362,7 +314,6 @@ namespace TrainingProgram.Areas.Manage.Controllers
                 return RedirectToAction("Notfound", "Home");
             }
             ModelState.Remove(nameof(file));
-           // ModelState.Remove(nameof(courseVM.instuctorsIds));
             if (ModelState.IsValid)
             {
                 if (courseVM.BeginningDate! > courseVM.EndingDate)
@@ -381,48 +332,7 @@ namespace TrainingProgram.Areas.Manage.Controllers
 
                     return View();
                 }
-             /*   var similerCourse = courseRepository.Get(expression: e => e.PrimaryInstructorId == courseVM.PrimaryInstructorId && e.Id != courseVM.Id, tracked: false).ToList()
-                            .Any(e => courseVM.BeginningDate >= e.BeginningDate && courseVM.BeginningDate <= e.EndingDate ||
-                            courseVM.EndingDate >= e.BeginningDate && courseVM.EndingDate <= e.EndingDate ||
-                            courseVM.BeginningDate <= e.BeginningDate && courseVM.EndingDate >= e.EndingDate);
-                if (similerCourse)
-                {
-                    ModelState.AddModelError(string.Empty, "لا يمكن تسجيل دورة بهذا المدرب في هذان الموعدان");
 
-                    ViewBag.CourseNature = courseNatureRepository.Get().ToList();
-                    ViewBag.Instructors = instructorRepository.Get().Select(e => new { e.Id, e.FoundationId, e.Name });
-                    ViewBag.TotalImplementation = totalImplementationRepository.Get().ToList();
-                    ViewBag.ImplementationType = implementationTypeRepository.Get().ToList();
-                    ViewBag.Material = StaticData.material;
-                    ViewBag.CourseType = StaticData.courseType;
-                    ViewBag.ImplementationMonth = StaticData.implementationMonth;
-                    ViewBag.TrainingSpecialist = trainingSpecialistRepository.Get().ToList();
-                    ViewBag.Check = StaticData.check;
-
-                    return View(courseVM);
-                } */
-               /* if (courseVM.instuctorsIds != null)
-                {
-                    foreach (var item in courseVM.instuctorsIds)
-                    {
-                        if (item == courseVM.PrimaryInstructorId)
-                        {
-                            ModelState.AddModelError(string.Empty, "لا يمكن اختيار نفس المدرب كا مدرب اساسي و ثانوي معا");
-
-                            ViewBag.CourseNature = courseNatureRepository.Get().ToList();
-                            ViewBag.Instructors = instructorRepository.Get().Select(e => new { e.Id, e.FoundationId, e.Name });
-                            ViewBag.TotalImplementation = totalImplementationRepository.Get().ToList();
-                            ViewBag.ImplementationType = implementationTypeRepository.Get().ToList();
-                            ViewBag.Material = StaticData.material;
-                            ViewBag.CourseType = StaticData.courseType;
-                            ViewBag.ImplementationMonth = StaticData.implementationMonth;
-                            ViewBag.TrainingSpecialist = trainingSpecialistRepository.Get().ToList();
-                            ViewBag.Check = StaticData.check;
-
-                            return View(courseVM);
-                        }
-                    }
-                }*/
                 if (file != null)
                 {
                     if (Path.GetExtension(file.FileName).ToLower() != ".pdf")
@@ -448,7 +358,7 @@ namespace TrainingProgram.Areas.Manage.Controllers
                     Id = courseVM.Id,
                     Name = MethodsCheck.chechName(courseVM.Name),
                     DaysCount = courseVM.DaysCount,
-                 //   PrimaryInstructorId = courseVM.PrimaryInstructorId,
+                    PdfFile=courseVM.PdfFile,
                     CourseType = courseVM.CourseType,
                     Check = courseVM.Check,
                     Code = MethodsCheck.chechName(courseVM.Code),
@@ -511,19 +421,6 @@ namespace TrainingProgram.Areas.Manage.Controllers
                     courseInstructorRepository.Commit();
 
                 }
-
-
-              /*  if (courseVM.instuctorsIds != null)
-                {
-                    foreach (var item in courseVM.instuctorsIds)
-                    {
-                        courseInstructorRepository.Create(new CourseInstructor()
-                        { CourseId = course.Id, InstructorId = item });
-                        courseInstructorRepository.Commit();
-                    }
-                }*/
-
-
 
                 return RedirectToAction(nameof(Index));
             }
@@ -592,12 +489,12 @@ namespace TrainingProgram.Areas.Manage.Controllers
 
 
             Dictionary<string, string> parmaeters = new Dictionary<string, string>();
-           // parmaeters.Add("Ahmed", "شركة المياة");
+            // parmaeters.Add("Ahmed", "شركة المياة");
 
-            var Courses = courseRepository.Get(/*includeProps: [e=>e.PrimaryInstructor]*/).Select( e=> new
+            var Courses = courseRepository.Get(/*includeProps: [e=>e.PrimaryInstructor]*/).Select(e => new
             {
-                e.Name ,
-                 // InstructorName =  e.PrimaryInstructor.Name ?? "لا يوجد",
+                e.Name,
+                // InstructorName =  e.PrimaryInstructor.Name ?? "لا يوجد",
                 Material = e.Material.HasValue ? StaticData.material[e.Material.Value] ?? "لا يوجد" : "لا يوجد"
             }).ToList();
             //  var sector = sectorRepository.Get().ToList()[0];
@@ -611,9 +508,6 @@ namespace TrainingProgram.Areas.Manage.Controllers
             localreport.AddDataSource("SectorDataSet", sector);
 
             var report = localreport.Execute(RenderType.Pdf, 1, null, "");
-
-
-
 
             return File(report.MainStream, "application/pdf");
         }

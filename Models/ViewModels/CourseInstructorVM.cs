@@ -21,7 +21,10 @@ namespace Models.ViewModels
         [Display(Name = "التقييم")]
         public double? Rating { get; set; }
         [Required]
-        [Display(Name = "الموضع")]
-        public Position? Position { get; set; }
+        [Display(Name = "ترتيب المدرب")]
+        public Position Position { get; set; }
+        [ValidateNever]
+        public int CourseId { get; set; }
+
     }
 }

@@ -32,7 +32,7 @@ namespace TrainingProgram.Areas.Manage.Controllers
                 EmployeeName=e.Employee.Name,
                 Job=e.Employee.Job,
                 Department=e.Employee.Department,
-                SectorName = e.Employee.Sector?.Name ?? "",
+                SectorName = e.Employee.Sector!.Name ?? "",
                 WorkPlace=e.Employee.WorkPlace,
                 CourseName=e.Course.Name,
                 BeginningDate=e.Course.BeginningDate,
@@ -55,38 +55,17 @@ namespace TrainingProgram.Areas.Manage.Controllers
                 return RedirectToAction("Notfound", "Home");
 
             }
-            var course = courseRepository.Get(expression: e => e.Id == id /*, includeProps: [e => e.PrimaryInstructor]*/).Select(e => new
+            var course = courseRepository.Get(expression: e => e.Id == id , includeProps: [e => e.Instructors!]).Select(e => new
             {
                 e.Id,
                 e.Name,
                 e.BeginningDate,
                 e.EndingDate,
-              //  PrimaryInstructorName = e.PrimaryInstructor.Name,
                 e.ImplementationPlace
             }).FirstOrDefault();
 
             ViewBag.Course = course;
 
-            /*    var trainees = traineeRepository.Get(expression: e => e.CourseId == id
-                 , includeProps: [e => e.Employee])
-                     .Select(e => new
-                     {
-                         EmployeeFoundationId = e.Employee.FoundationId,
-                         EmployeeName = e.Employee.Name,
-                         e.Employee.Job,
-                         e.Employee.WorkPlace,
-                         e.Estimate,
-                         e.Notes,
-                         e.File,
-                         e.AbsenceDays,
-                         e.AttendanceAndDeparture,
-                         e.AdherenceMark,
-                         e.InteractionMark,
-                         e.ActivitiesMark,
-                         e.TotalEvaluation,
-                         e.WrittenExam,
-                         e.TotalMarks
-                     }).ToList();*/
 
             var trainees = traineeRepository.Get(expression: e => e.CourseId == id, includeProps: [e => e.Employee])
        .Select(e => new TraineeVM
@@ -371,7 +350,7 @@ namespace TrainingProgram.Areas.Manage.Controllers
                     traineeRepository.Commit();
                 }
 
-                return RedirectToAction("index", new { id = $"{id}" });
+                return RedirectToAction("Course", new { id = $"{id}" });
 
 
             }
@@ -397,7 +376,7 @@ namespace TrainingProgram.Areas.Manage.Controllers
 
                 traineeRepository.Delete(trainee);
                 traineeRepository.Commit();
-                return RedirectToAction("index", new { id = $"{id}" });
+                return RedirectToAction("course", new { id = $"{id}" });
             }
             return RedirectToAction("Notfound", "Home");
         }

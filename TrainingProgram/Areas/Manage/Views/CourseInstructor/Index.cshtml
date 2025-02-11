@@ -1,4 +1,5 @@
-﻿@model IEnumerable<Models.CourseInstructor>
+﻿@using Models.StaticData
+@model IEnumerable<Models.CourseInstructor>
 
 @{
     ViewData["Title"] = "Index";
@@ -11,7 +12,6 @@
     <a asp-action="Create" asp-route-id="@ViewBag.Course.Id">Create New</a>
 </p>
 <div>
-
     <dl class="row">
         <dt class="col-sm-2">
             اسم البرنامج :
@@ -51,27 +51,74 @@
             <th>
                 @Html.DisplayNameFor(model => model.Rating)
             </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Position)
+            </th>
             <th></th>
         </tr>
     </thead>
     <tbody>
-@foreach (var item in Model) {
-        <tr>
-            <td>
-                @Html.DisplayFor(modelItem => item.Instructor.Name)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.CourseNotes)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Rating)
-            </td>
-            <td>
-                @Html.ActionLink("Edit", "Edit", new { /* id=item.PrimaryKey */ }) |
-                @Html.ActionLink("Details", "Details", new { /* id=item.PrimaryKey */ }) |
-                @Html.ActionLink("Delete", "Delete", new { /* id=item.PrimaryKey */ })
-            </td>
-        </tr>
-}
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Instructor.Name)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.CourseNotes)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Rating)
+
+                </td>
+                <td>
+                    @{
+                            @StaticData.position[item.Position]
+                    }
+                </td>
+                <td>
+                    <a asp-action="Edit" asp-route-id="@ViewBag.Course.Id" asp-route-InstructorId="@item.InstructorId" type="button" class="btn btn-dark">Edit</a>
+                    <a asp-action="Details" asp-route-id="@ViewBag.Course.Id" asp-route-InstructorId="@item.InstructorId" type="button" class="btn btn-info ">Details</a>
+                    <button type="button" class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#deleteModal"
+                            data-courseid="@ViewBag.Course.Id" data-instructorId="@item.InstructorId">
+                        Delete
+                    </button>
+                </td>
+            </tr>
+        }
     </tbody>
 </table>
+<!-- Modal -->
+<div class="modal fade" id="deleteModal" tabindex="-1" aria-labelledby="deleteModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="deleteModalLabel">Confirm Delete</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                Are you sure you want to delete this instructor?
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                <form id="deleteForm" method="post" asp-action="Delete"
+                      asp-route-id="@ViewBag.Course.Id" asp-route-InstructorId="">
+                    <input type="hidden" name="instructorId" id="instructorIdInput" value="" />
+                    <button type="submit" class="btn btn-danger">Delete</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    document.addEventListener("DOMContentLoaded", function () {
+        var deleteModal = document.getElementById('deleteModal');
+        deleteModal.addEventListener('show.bs.modal', function (event) {
+            var button = event.relatedTarget;
+            var instructorId = button.getAttribute('data-instructorId');
+            var input = document.getElementById('instructorIdInput');
+            input.value = instructorId;
+        });
+    });
+</script>

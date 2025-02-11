@@ -19,7 +19,7 @@ namespace DataAccess.Repository
         }
 
         // CRUD operations
-        public IEnumerable<T> Get(Expression<Func<T, object>>[]? includeProps = null, Expression<Func<T, bool>>? expression = null, bool tracked = true)
+        public IQueryable<T> Get(Expression<Func<T, object>>[]? includeProps = null, Expression<Func<T, bool>>? expression = null, bool tracked = true)
         {
             IQueryable<T> query = dbSet;
 

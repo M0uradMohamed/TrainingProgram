@@ -1,4 +1,5 @@
-﻿@model Models.CourseInstructor
+﻿@using Models.StaticData
+@model Models.ViewModels.CourseInstructorVM
 
 @{
     ViewData["Title"] = "Edit";
@@ -8,16 +9,34 @@
 <h1>Edit</h1>
 
 <h4>CourseInstructor</h4>
+<div>
+    <dl class="row">
+        <dt class="col-sm-2">
+            اسم المدرب :
+        </dt>
+        <dd class="col-sm-10">
+            @ViewBag.Instructor.Name
+        </dd>
+        <dt class="col-sm-2">
+            الموضع :
+        </dt>
+        <dd class="col-sm-10">
+            @StaticData.position[ViewBag.Instructor.Position]
+           
+        </dd>
+    </dl>
+</div>
 <hr />
 <div class="row">
     <div class="col-md-4">
-        <form asp-action="Edit">
+        <form asp-action="Edit" asp-route-id="@Model.CourseId">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
             <input type="hidden" asp-for="CourseId" />
             <input type="hidden" asp-for="InstructorId" />
+            <input type="hidden" asp-for="Position" />
             <div class="form-group">
                 <label asp-for="CourseNotes" class="control-label"></label>
-                <input asp-for="CourseNotes" class="form-control" />
+                <textarea asp-for="CourseNotes" class="form-control" id="textAreaExample1" rows="4"></textarea>
                 <span asp-validation-for="CourseNotes" class="text-danger"></span>
             </div>
             <div class="form-group">

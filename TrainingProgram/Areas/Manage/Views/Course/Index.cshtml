@@ -85,9 +85,9 @@
             <th>
                 @Html.DisplayNameFor(model => model.EnterName)
             </th>
-             <th>
+            <th>
                 المدرب الاول
-            </th> 
+            </th>
             <th>
                 <span>المدرب الثاني </span>
             </th>
@@ -106,6 +106,7 @@
             <th>
                 @Html.DisplayNameFor(model => model.CourseNature)
             </th>
+            <th></th>
         </tr>
     </thead>
     <tbody>
@@ -189,38 +190,28 @@
                 <td>
                     @Html.DisplayFor(modelItem => item.EnterName)
                 </td>
-               <td>
-                @*    @{
-                        foreach (var instructor in item.Instructors)
+
+               @{
+                    if (item.Instructors != null)
+                    {
+
+                        foreach (var instructor in item.CoursesInstructors.OrderBy(e => e.Position))
                         {
-                            if(instructor.Id==item.PrimaryInstructorId)
-                            {
-                                
-                            <td><span>@instructor.Name</span></td>
-                            break;
-                            }
+
+
+                                <td><span>@instructor.Instructor.Name</span></td>
+            
                         }
-                        
-                    } *@
-                </td>
-                <td>
-               @* @{
-                    foreach(var instructor in item.Instructors)
-                    {
-                            if (instructor.Id != item.PrimaryInstructorId)
-                            {
+                    }
+                        for (int i = 1; i <= 4 - item.Instructors.Count(); i++)
+                        {
+                            <td></td>
+                        }
 
-                            <td><span>@instructor.Name</span></td>
-                            }
-                    }
-                    for(int i=1; i <= 4 - item.Instructors.Count(); i++)
-                    {
-                        <td></td>
-                    }
-                } *@
-                </td>
+                } 
 
                 <td>
+
                     @Html.DisplayFor(modelItem => item.ImplementationType.Name)
                 </td>
                 <td>
@@ -230,12 +221,12 @@
                     @Html.DisplayFor(modelItem => item.CourseNature.Name)
                 </td>
                 <td>
-                    <a asp-action="Edit" asp-route-id="@item.Id" type="button" class="btn btn-dark">Edit</a> 
-                    <a asp-action="Details" asp-route-id="@item.Id" type="button" class="btn btn-info ">Details</a> 
-                    <a asp-action="Course" asp-route-id="@item.Id" asp-controller="trainee"  type="button" class="btn btn-primary ">المتدربين</a>
-                    <a asp-action="index" asp-route-id="@item.Id" asp-controller="CourseInstructor" type="button" class="btn btn-primary ">المدربين</a>
+                    <a asp-action="Edit" asp-route-id="@item.Id" type="button" class="btn btn-dark">Edit</a>
+                    <a asp-action="Details" asp-route-id="@item.Id" type="button" class="btn btn-info ">Details</a>
+                    <a asp-action="Course" asp-route-id="@item.Id" asp-controller="trainee" type="button" class="btn btn-primary ">المتدربين</a>
+                    <a asp-action="index" asp-route-id="@item.Id" asp-controller="CourseInstructor" type="button" class="btn btn-success ">المدربين</a>
                     <button type="button" class="btn btn-danger " data-bs-toggle="modal" data-bs-target="#deleteModal" data-courseid="@item.Id">
-                         Delete
+                        Delete
                     </button>
                 </td>
             </tr>

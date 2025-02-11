@@ -65,7 +65,7 @@
                         }
                         foreach (var item in ViewBag.Position)
                         {
-                            if (Model != null)
+                              if (Model != null)
                             {
 
                                 if (Model.Position == item.Key)
@@ -93,7 +93,7 @@
 </div>
 
 <div>
-    <a asp-action="Index">Back to List</a>
+    <a asp-action="Index" asp-route-id="@ViewBag.CourseId">Back to List</a>
 </div>
 
 @section Scripts {
