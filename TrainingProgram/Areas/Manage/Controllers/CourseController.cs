@@ -56,12 +56,54 @@ namespace TrainingProgram.Areas.Manage.Controllers
         {
             
 
-            IQueryable<Course> qcourses = (IQueryable<Course>)courseRepository.Get(includeProps: [
-                e=>e.CourseNature!, e=>e.TotalImplementation! ,e=>e.ImplementationType!
+            IQueryable<Course> qcourses = courseRepository.Get(includeProps: [
+                e=>e.CourseNature!, e=>e.TotalImplementation! ,e=>e.ImplementationType! ,e=>e.TrainingSpecialist!
                 ]);
             qcourses = qcourses.Include(e=>e.CoursesInstructors).ThenInclude(e=>e.Instructor);
-           IEnumerable<Course> courses= qcourses.ToList();
-            return View(courses);
+
+
+           IQueryable<CourseIndexVM> courses= (IQueryable<CourseIndexVM>)qcourses.Select(e=>new CourseIndexVM
+           {
+               Id = e.Id,
+               Name = e.Name,
+               TargetSector = e.TargetSector,
+               Participants = e.Participants,
+               ImplementationPlace = e.ImplementationPlace,
+               DaysCount = e.DaysCount,
+               ImplementedDays = e.ImplementedDays,
+               BeginningDate = e.BeginningDate,
+               EndingDate = e.EndingDate,
+               TraineesNumber = e.TraineesNumber,
+               Cost = e.Cost,
+               ImplementedCenter = e.ImplementedCenter,
+               HoursNumber = e.HoursNumber,
+               ImplementationTypeName =e.ImplementationType!.Name,
+               TotalImplementationName=e.TotalImplementation!.Name,
+               RoomNumber = e.RoomNumber,
+               Material=e.Material,
+               CourseType=e.CourseType,
+               Rating=e.Rating,
+               ImplementationMonth = e.ImplementationMonth,
+               ActualCost=e.ActualCost,
+               Code=e.Code,
+               Check=e.Check,
+               PdfFile=e.PdfFile,
+               EnterName=e.EnterName,
+               Link=e.Link,
+               RatingSpecialist=e.RatingSpecialist,
+               Notes=e.Notes,
+               RatingSpecialistNotes=e.RatingSpecialistNotes,
+               TraineesNotes=e.TraineesNotes,
+               TraineesRating=e.TraineesRating,
+               CourseNatureName=e.CourseNature!.Name,
+               TrainingSpecialistName=e.TrainingSpecialist!.Name,
+               FirstInstructorName=e.CoursesInstructors.Where(c=>c.Position == Position.First).Select(e=>e.Instructor.Name).FirstOrDefault(),
+               SecondInstructorName=e.CoursesInstructors.Where(c=>c.Position == Position.Second).Select(e=>e.Instructor.Name).FirstOrDefault(),
+               ThirdInstructorName=e.CoursesInstructors.Where(c=>c.Position == Position.Third).Select(e=>e.Instructor.Name).FirstOrDefault(),
+               ForthInstructorName=e.CoursesInstructors.Where(c=>c.Position == Position.Fourth).Select(e=>e.Instructor.Name).FirstOrDefault()
+               
+           });
+            return View(courses.ToList() );
         }
 
         // GET: Manage/Course/Details/5
@@ -73,10 +115,11 @@ namespace TrainingProgram.Areas.Manage.Controllers
             }
 
             var course = courseRepository.Get(includeProps: [
-                c => c.CourseNature
-                ,c => c.TotalImplementation
-                ,c => c.ImplementationType
-                ,c=>c.Instructors]
+                c => c.CourseNature!
+                ,c => c.TotalImplementation!
+                ,c => c.ImplementationType!
+                ,c => c.TrainingSpecialist!
+                ,c=>c.Instructors!]
                 , expression: m => m.Id == id).FirstOrDefault();
             if (course == null)
             {
@@ -180,6 +223,13 @@ namespace TrainingProgram.Areas.Manage.Controllers
                     BeginningDate = courseVM.BeginningDate,
                     EndingDate = courseVM.EndingDate,
                     Participants = MethodsCheck.chechName(courseVM.Participants),
+                   Link= courseVM.Link,
+                   RatingSpecialist= courseVM.RatingSpecialist,
+                   RatingSpecialistNotes= courseVM.RatingSpecialistNotes,
+                   TraineesNotes= courseVM.RatingSpecialistNotes,
+                   TraineesRating=courseVM.TraineesRating,
+                   ImplementedCenter= courseVM.ImplementedCenter,
+                     
 
                 };
 
@@ -278,7 +328,6 @@ namespace TrainingProgram.Areas.Manage.Controllers
                 EndingDate = course.EndingDate,
                 PdfFile = course.PdfFile,
                 Participants = course.Participants,
-                SecondryInstructors = course.Instructors
             };
             var courseInstructors = courseInstructorRepository.Get(expression: e => e.CourseId == course.Id, includeProps: [e => e.Instructor])
                 .Select(e => new { e.InstructorId, e.Instructor.FoundationId, e.Instructor.Name }).ToList();

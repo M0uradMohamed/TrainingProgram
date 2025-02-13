@@ -37,10 +37,9 @@ namespace Models
         public string? Link { get; set; }
         public string? RatingSpecialist { get; set; }
         public string? Notes { get; set; }
-        public string? RatingSpecialistNotse { get; set; }
+        public string? RatingSpecialistNotes { get; set; }
         public string? TraineesNotes { get; set; }
-
-     //   public int? PrimaryInstructorId { get; set; }
+        public double? TraineesRating{ get; set; }
         public int? CourseNatureId { get; set; }
         public int? TrainingSpecialistId { get; set; }
 
@@ -50,6 +49,7 @@ namespace Models
         public ICollection<CourseInstructor> CoursesInstructors { get; set; } = new List<CourseInstructor>();
         public ImplementationType? ImplementationType { get; set; }
         public TotalImplementation? TotalImplementation { get; set; }
+        public TrainingSpecialist? TrainingSpecialist { get; set; }
         public CourseNature? CourseNature { get; set; }
     }
 }

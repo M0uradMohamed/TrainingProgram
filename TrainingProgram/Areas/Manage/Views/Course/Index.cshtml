@@ -1,4 +1,6 @@
-﻿@model IEnumerable<Models.Course>
+﻿@using Models.EnumClasses
+@using Models.StaticData
+@model IEnumerable<Models.ViewModels.CourseIndexVM>
 
 @{
     ViewData["Title"] = "Index";
@@ -8,6 +10,7 @@
 <h1>Index</h1>
 
 <p>
+
     <a asp-action="Create">Create New</a>
 </p>
 <a asp-action="print" class="btn btn-success" target="_blank"> Print Report</a>
@@ -86,25 +89,25 @@
                 @Html.DisplayNameFor(model => model.EnterName)
             </th>
             <th>
-                المدرب الاول
+                @Html.DisplayNameFor(model => model.FirstInstructorName)
             </th>
             <th>
-                <span>المدرب الثاني </span>
+                @Html.DisplayNameFor(model => model.SecondInstructorName)
             </th>
             <th>
-                <span>المدرب الثالث </span>
+                @Html.DisplayNameFor(model => model.ThirdInstructorName)
             </th>
             <th>
-                <span>المدرب الرابع </span>
+                @Html.DisplayNameFor(model => model.ForthInstructorName)
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.ImplementationType)
+                @Html.DisplayNameFor(model => model.ImplementationTypeName)
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.TotalImplementation)
+                @Html.DisplayNameFor(model => model.TotalImplementationName)
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.CourseNature)
+                @Html.DisplayNameFor(model => model.CourseNatureName)
             </th>
             <th></th>
         </tr>
@@ -190,8 +193,24 @@
                 <td>
                     @Html.DisplayFor(modelItem => item.EnterName)
                 </td>
+                <td>
+                  @*   @item.CoursesInstructors.Where(e => e.Position == Position.First).Select(e => e.Instructor.Name).FirstOrDefault() *@
+                  @item.FirstInstructorName
+                </td>
+                <td>
+                   @*  @item.CoursesInstructors.Where(e => e.Position == Position.Second).Select(e => e.Instructor.Name).FirstOrDefault() *@
+                   @item.SecondInstructorName
+                </td>
+                <td>
+                  @*   @item.CoursesInstructors.Where(e => e.Position == Position.Third).Select(e => e.Instructor.Name).FirstOrDefault() *@
+                  @item.ThirdInstructorName
+                </td>
+                <td>
+                    @* @item.CoursesInstructors.Where(e => e.Position == Position.Fourth).Select(e => e.Instructor.Name).FirstOrDefault() *@
+                    @item.ForthInstructorName
+                </td>
 
-               @{
+              @*   @{
                     if (item.Instructors != null)
                     {
 
@@ -199,26 +218,26 @@
                         {
 
 
-                                <td><span>@instructor.Instructor.Name</span></td>
-            
+                            <td><span>@instructor.Instructor.Name</span></td>
+
                         }
                     }
-                        for (int i = 1; i <= 4 - item.Instructors.Count(); i++)
-                        {
-                            <td></td>
-                        }
+                    for (int i = 1; i <= 4 - item.Instructors.Count(); i++)
+                    {
+                        <td></td>
+                    }
 
-                } 
+                } *@
 
                 <td>
 
-                    @Html.DisplayFor(modelItem => item.ImplementationType.Name)
+                    @Html.DisplayFor(modelItem => item.ImplementationTypeName)
                 </td>
                 <td>
-                    @Html.DisplayFor(modelItem => item.TotalImplementation.Name)
+                    @Html.DisplayFor(modelItem => item.TotalImplementationName)
                 </td>
                 <td>
-                    @Html.DisplayFor(modelItem => item.CourseNature.Name)
+                    @Html.DisplayFor(modelItem => item.CourseNatureName)
                 </td>
                 <td>
                     <a asp-action="Edit" asp-route-id="@item.Id" type="button" class="btn btn-dark">Edit</a>

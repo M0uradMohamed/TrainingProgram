@@ -212,8 +212,10 @@ namespace TrainingProgram.Areas.Manage.Controllers
                     traineeRepository.Edit(trainee);
                     traineeRepository.Commit();
                 }
+                var name = traineeRepository.Get(expression: e => e.EmployeeId == trainee.EmployeeId, includeProps: [e => e.Employee], tracked: false)
+                    .Select(e=>e.Employee.Name).FirstOrDefault();
 
-                TempData["success"] = $"  تم اضافة المتدرب بنجاح , {trainee.Employee.Name} ";
+                TempData["success"] = $"  تم اضافة المتدرب بنجاح , {name} ";
 
                 ViewBag.Employees = employeeRepository.Get().Select(e => new
                 { e.Id, e.FoundationId, e.Name, e.Job, e.WorkPlace }).ToList();

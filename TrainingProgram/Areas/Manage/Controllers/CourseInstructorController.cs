@@ -87,7 +87,7 @@ namespace TrainingProgram.Areas.Manage.Controllers
             }
             ViewBag.Instructors = instructorRepository.Get().Select(e => new { e.Id, e.FoundationId, e.Name });
             ViewBag.CourseId = id;
-            ViewBag.Position = StaticData.position;
+          ViewBag.Position = StaticData.position.ToList();
 
             return View();
         }
@@ -109,7 +109,7 @@ namespace TrainingProgram.Areas.Manage.Controllers
 
                     ViewBag.Instructors = instructorRepository.Get().Select(e => new { e.Id, e.FoundationId, e.Name });
                     ViewBag.CourseId = id;
-                    ViewBag.Position = StaticData.position;
+                  ViewBag.Position = StaticData.position.ToList();
                     return View(courseInstructorVM);
                 }
                 var similerPosition = courseInstructorRepository.Get(expression: e => e.CourseId == id)
@@ -121,7 +121,7 @@ namespace TrainingProgram.Areas.Manage.Controllers
 
                     ViewBag.Instructors = instructorRepository.Get().Select(e => new { e.Id, e.FoundationId, e.Name });
                     ViewBag.CourseId = id;
-                    ViewBag.Position = StaticData.position;
+                  ViewBag.Position = StaticData.position.ToList();
                     return View(courseInstructorVM);
                 }
                 var course = courseRepository.Get(expression: e=>e.Id == id,tracked:false).Select(e=> new
@@ -141,7 +141,7 @@ namespace TrainingProgram.Areas.Manage.Controllers
 
                     ViewBag.Instructors = instructorRepository.Get().Select(e => new { e.Id, e.FoundationId, e.Name });
                     ViewBag.CourseId = id;
-                    ViewBag.Position = StaticData.position;
+                  ViewBag.Position = StaticData.position.ToList();
                     return View(courseInstructorVM);
                 }
 
@@ -160,14 +160,14 @@ namespace TrainingProgram.Areas.Manage.Controllers
                 TempData["success"] = $"  تم اضافة المدرب بنجاح ,";
                 ViewBag.Instructors = instructorRepository.Get().Select(e => new { e.Id, e.FoundationId, e.Name });
                 ViewBag.CourseId = id;
-                ViewBag.Position = StaticData.position;
+              ViewBag.Position = StaticData.position.ToList();
                 ModelState.Clear();
                 return View();
             }
 
             ViewBag.Instructors = instructorRepository.Get().Select(e => new { e.Id, e.FoundationId, e.Name });
             ViewBag.CourseId = id;
-            ViewBag.Position = StaticData.position;
+            ViewBag.Position = StaticData.position.ToList();
             return View(courseInstructorVM);
         }
 
@@ -209,7 +209,7 @@ namespace TrainingProgram.Areas.Manage.Controllers
             ViewBag.Instructor = instructor;
             ViewBag.Instructors = instructorRepository.Get().Select(e => new { e.Id, e.FoundationId, e.Name });
             ViewBag.CourseId = id;
-            ViewBag.Position = StaticData.position;
+          ViewBag.Position = StaticData.position.ToList();
 
             return View(courseInstructorVM);
         }
