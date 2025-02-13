@@ -407,7 +407,6 @@ namespace TrainingProgram.Areas.Manage.Controllers
                     Id = courseVM.Id,
                     Name = MethodsCheck.chechName(courseVM.Name),
                     DaysCount = courseVM.DaysCount,
-                    PdfFile=courseVM.PdfFile,
                     CourseType = courseVM.CourseType,
                     Check = courseVM.Check,
                     Code = MethodsCheck.chechName(courseVM.Code),
@@ -430,6 +429,12 @@ namespace TrainingProgram.Areas.Manage.Controllers
                     BeginningDate = courseVM.BeginningDate,
                     EndingDate = courseVM.EndingDate,
                     Participants = MethodsCheck.chechName(courseVM.Participants),
+                    Link = courseVM.Link,
+                    RatingSpecialist = courseVM.RatingSpecialist,
+                    RatingSpecialistNotes = courseVM.RatingSpecialistNotes,
+                    TraineesNotes = courseVM.RatingSpecialistNotes,
+                    TraineesRating = courseVM.TraineesRating,
+                    ImplementedCenter = courseVM.ImplementedCenter,
 
                 };
                 courseRepository.Edit(course);

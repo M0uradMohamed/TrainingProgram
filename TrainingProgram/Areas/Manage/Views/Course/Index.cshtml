@@ -55,6 +55,12 @@
                 @Html.DisplayNameFor(model => model.HoursNumber)
             </th>
             <th>
+                @Html.DisplayNameFor(model => model.ImplementationTypeName)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.TotalImplementationName)
+            </th>
+            <th>
                 @Html.DisplayNameFor(model => model.RoomNumber)
             </th>
             <th>
@@ -80,10 +86,21 @@
             </th>
             <th>
                 @Html.DisplayNameFor(model => model.PdfFile)
-
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.Notes)
+                @Html.DisplayNameFor(model => model.Link)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.RatingSpecialist)
+            </th> 
+            <th>
+                @Html.DisplayNameFor(model => model.TraineesRating)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.CourseNatureName)
+            </th>    
+            <th>
+                @Html.DisplayNameFor(model => model.TrainingSpecialistName)
             </th>
             <th>
                 @Html.DisplayNameFor(model => model.EnterName)
@@ -99,15 +116,6 @@
             </th>
             <th>
                 @Html.DisplayNameFor(model => model.ForthInstructorName)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.ImplementationTypeName)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.TotalImplementationName)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.CourseNatureName)
             </th>
             <th></th>
         </tr>
@@ -153,28 +161,62 @@
                     @Html.DisplayFor(modelItem => item.HoursNumber)
                 </td>
                 <td>
+                    @Html.DisplayFor(modelItem => item.ImplementationTypeName)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.TotalImplementationName)
+                </td>
+                <td>
                     @Html.DisplayFor(modelItem => item.RoomNumber)
                 </td>
                 <td>
-                    @Html.DisplayFor(modelItem => item.Material)
+                    @{
+                        if (item.Material.HasValue)
+                        {
+
+                            @StaticData.material[item.Material.Value]
+                        }
+
+                    }
                 </td>
                 <td>
-                    @Html.DisplayFor(modelItem => item.CourseType)
+                    @{
+                        if (item.CourseType.HasValue)
+                        {
+
+                            @StaticData.courseType[item.CourseType.Value]
+                        }
+
+                    }
                 </td>
                 <td>
                     @Html.DisplayFor(modelItem => item.Rating)
                 </td>
                 <td>
-                    @Html.DisplayFor(modelItem => item.ImplementationMonth)
+                    @{
+                        if (item.ImplementationMonth.HasValue)
+                        {
+
+                            @StaticData.implementationMonth[item.ImplementationMonth.Value]
+                        }
+
+                    }
                 </td>
                 <td>
                     @Html.DisplayFor(modelItem => item.ActualCost)
-                </td>
+                </td>  
                 <td>
                     @Html.DisplayFor(modelItem => item.Code)
-                </td>
+                </td> 
                 <td>
-                    @Html.DisplayFor(modelItem => item.Check)
+                    @{
+                        if (item.Check.HasValue)
+                        {
+
+                            @StaticData.check[item.Check.Value]
+                        }
+
+                    }
                 </td>
                 <td>
                     @{
@@ -188,57 +230,35 @@
                     }
                 </td>
                 <td>
-                    @Html.DisplayFor(modelItem => item.Notes)
+                    <a href="@item.Link" target="_blank" >@item.Link </a>
                 </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.RatingSpecialist)
+                </td>   
+                <td>
+                    @Html.DisplayFor(modelItem => item.TraineesRating)
+                </td> 
+                <td>
+                    @Html.DisplayFor(modelItem => item.CourseNatureName)
+                </td>   
+                <td>
+                    @Html.DisplayFor(modelItem => item.TrainingSpecialistName)
+                </td>   
                 <td>
                     @Html.DisplayFor(modelItem => item.EnterName)
                 </td>
                 <td>
-                  @*   @item.CoursesInstructors.Where(e => e.Position == Position.First).Select(e => e.Instructor.Name).FirstOrDefault() *@
                   @item.FirstInstructorName
                 </td>
                 <td>
-                   @*  @item.CoursesInstructors.Where(e => e.Position == Position.Second).Select(e => e.Instructor.Name).FirstOrDefault() *@
                    @item.SecondInstructorName
                 </td>
                 <td>
-                  @*   @item.CoursesInstructors.Where(e => e.Position == Position.Third).Select(e => e.Instructor.Name).FirstOrDefault() *@
                   @item.ThirdInstructorName
                 </td>
                 <td>
-                    @* @item.CoursesInstructors.Where(e => e.Position == Position.Fourth).Select(e => e.Instructor.Name).FirstOrDefault() *@
                     @item.ForthInstructorName
-                </td>
-
-              @*   @{
-                    if (item.Instructors != null)
-                    {
-
-                        foreach (var instructor in item.CoursesInstructors.OrderBy(e => e.Position))
-                        {
-
-
-                            <td><span>@instructor.Instructor.Name</span></td>
-
-                        }
-                    }
-                    for (int i = 1; i <= 4 - item.Instructors.Count(); i++)
-                    {
-                        <td></td>
-                    }
-
-                } *@
-
-                <td>
-
-                    @Html.DisplayFor(modelItem => item.ImplementationTypeName)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.TotalImplementationName)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.CourseNatureName)
-                </td>
+                </td> 
                 <td>
                     <a asp-action="Edit" asp-route-id="@item.Id" type="button" class="btn btn-dark">Edit</a>
                     <a asp-action="Details" asp-route-id="@item.Id" type="button" class="btn btn-info ">Details</a>
