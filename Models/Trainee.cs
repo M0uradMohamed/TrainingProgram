@@ -11,7 +11,6 @@ namespace Models
     {
         public int CourseId { get; set; }
         public int EmployeeId { get; set; }
-        //enum
         public Estimate? Estimate {  get; set; }
         public string? File { get; set; }
         public int? AbsenceDays { get; set; }

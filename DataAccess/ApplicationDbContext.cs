@@ -28,12 +28,12 @@ namespace DataAccess
         : base(options)
         {
         }
-            protected override void OnModelCreating(ModelBuilder builder)
-            {
+        protected override void OnModelCreating(ModelBuilder builder)
+        {
             base.OnModelCreating(builder);
 
 
-            builder.Entity<Trainee>().HasKey(t => new {  t.EmployeeId , t.CourseId });
+            builder.Entity<Trainee>().HasKey(t => new { t.EmployeeId, t.CourseId });
 
             builder.Entity<CourseInstructor>().HasKey(j => new { j.CourseId, j.InstructorId });
 
@@ -64,9 +64,34 @@ namespace DataAccess
             //builder.Entity<Instructor>().HasOne(i => i.Employee).WithOne(e=>e.instructor)
             //    .HasForeignKey<Instructor>(i => i.EmployeeId).HasPrincipalKey<Employee>(e => e.Id).IsRequired(false);
 
-          /*  builder.Entity<Course>().HasOne(c => c.PrimaryInstructor).WithMany(i => i.PrimaryCourses).HasForeignKey(c => c.PrimaryInstructorId)
-                .HasPrincipalKey(i => i.Id).OnDelete(DeleteBehavior.NoAction);*/
+            /*  builder.Entity<Course>().HasOne(c => c.PrimaryInstructor).WithMany(i => i.PrimaryCourses).HasForeignKey(c => c.PrimaryInstructorId)
+                  .HasPrincipalKey(i => i.Id).OnDelete(DeleteBehavior.NoAction);*/
+            builder.Entity<Course>()
+                .HasOne(c => c.ImplementationType).WithMany(e => e.Courses)
+                .HasForeignKey(c => c.ImplementationTypeId).HasPrincipalKey(e => e.Id).OnDelete(DeleteBehavior.SetNull);
+            builder.Entity<Course>()
+                .HasOne(c => c.TotalImplementation).WithMany(e => e.Courses)
+                .HasForeignKey(c => c.TotalImplementationId).HasPrincipalKey(e => e.Id).OnDelete(DeleteBehavior.SetNull);
+            builder.Entity<Course>()
+                .HasOne(c => c.TrainingSpecialist).WithMany(e => e.Courses)
+                .HasForeignKey(c => c.TrainingSpecialistId).HasPrincipalKey(e => e.Id).OnDelete(DeleteBehavior.SetNull);
+            builder.Entity<Course>()
+                .HasOne(c => c.CourseNature).WithMany(e => e.Courses)
+                .HasForeignKey(c => c.CourseNatureId).HasPrincipalKey(e => e.Id).OnDelete(DeleteBehavior.SetNull);
 
+            builder.Entity<Employee>()
+                .HasOne(c => c.Sector).WithMany(e => e.Employees)
+                .HasForeignKey(c => c.SectorId).HasPrincipalKey(e => e.Id).OnDelete(DeleteBehavior.SetNull);
+            builder.Entity<Employee>()
+             .HasOne(c => c.Degree).WithMany(e => e.Employees)
+             .HasForeignKey(c => c.DegreeId).HasPrincipalKey(e => e.Id).OnDelete(DeleteBehavior.SetNull);
+
+            builder.Entity<Instructor>()
+            .HasOne(c => c.Sector).WithMany(e => e.Instructors)
+            .HasForeignKey(c => c.SectorId).HasPrincipalKey(e => e.Id).OnDelete(DeleteBehavior.SetNull);
+            builder.Entity<Instructor>()
+             .HasOne(c => c.Degree).WithMany(e => e.Instructors)
+             .HasForeignKey(c => c.DegreeId).HasPrincipalKey(e => e.Id).OnDelete(DeleteBehavior.SetNull);
         }
     }
 }

@@ -33,7 +33,7 @@ namespace TrainingProgram.Areas.Manage.Controllers
         // GET: Manage/Instructor
         public IActionResult Index()
         {
-            var instructors = instructorRepository.Get(includeProps: [e => e.Degree, e => e.Sector ]).ToList();
+            var instructors = instructorRepository.Get(includeProps: [e => e.Degree!, e => e.Sector! ]).ToList();
             return View(instructors);
         }
 
@@ -45,8 +45,8 @@ namespace TrainingProgram.Areas.Manage.Controllers
                 return RedirectToAction("Notfound", "Home");
             }
             var instructor = instructorRepository.Get(includeProps:
-               [ e => e.Degree,
-                e => e.Sector]
+               [ e => e.Degree!,
+                e => e.Sector!]
                 , expression: m => m.Id == id)
                 .FirstOrDefault();
             if (instructor == null)
@@ -169,7 +169,7 @@ namespace TrainingProgram.Areas.Manage.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, InstructorVM instructorVM)
+        public  IActionResult Edit(int id, InstructorVM instructorVM)
         {
             if (id != instructorVM.Id)
             {

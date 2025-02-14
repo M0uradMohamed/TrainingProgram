@@ -1,4 +1,5 @@
-﻿@model Models.Course
+﻿@using Models.StaticData
+@model Models.ViewModels.CourseIndexVM
 
 @{
     ViewData["Title"] = "Details";
@@ -11,130 +12,164 @@
     <h4>Course</h4>
     <hr />
     <dl class="row">
-        <dt class = "col-sm-2">
+        <dt class="col-sm-2">
             @Html.DisplayNameFor(model => model.Name)
         </dt>
-        <dd class = "col-sm-10">
+        <dd class="col-sm-10">
             @Html.DisplayFor(model => model.Name)
         </dd>
-        <dt class = "col-sm-2">
+        <dt class="col-sm-2">
             @Html.DisplayNameFor(model => model.TargetSector)
         </dt>
-        <dd class = "col-sm-10">
+        <dd class="col-sm-10">
             @Html.DisplayFor(model => model.TargetSector)
         </dd>
-        <dt class = "col-sm-2">
+        <dt class="col-sm-2">
             @Html.DisplayNameFor(model => model.Participants)
         </dt>
-        <dd class = "col-sm-10">
+        <dd class="col-sm-10">
             @Html.DisplayFor(model => model.Participants)
         </dd>
-        <dt class = "col-sm-2">
+        <dt class="col-sm-2">
             @Html.DisplayNameFor(model => model.ImplementationPlace)
         </dt>
-        <dd class = "col-sm-10">
+        <dd class="col-sm-10">
             @Html.DisplayFor(model => model.ImplementationPlace)
         </dd>
-        <dt class = "col-sm-2">
+        <dt class="col-sm-2">
             @Html.DisplayNameFor(model => model.DaysCount)
         </dt>
-        <dd class = "col-sm-10">
+        <dd class="col-sm-10">
             @Html.DisplayFor(model => model.DaysCount)
         </dd>
-        <dt class = "col-sm-2">
+        <dt class="col-sm-2">
             @Html.DisplayNameFor(model => model.ImplementedDays)
         </dt>
-        <dd class = "col-sm-10">
+        <dd class="col-sm-10">
             @Html.DisplayFor(model => model.ImplementedDays)
         </dd>
-        <dt class = "col-sm-2">
+        <dt class="col-sm-2">
             @Html.DisplayNameFor(model => model.BeginningDate)
         </dt>
-        <dd class = "col-sm-10">
+        <dd class="col-sm-10">
             @Html.DisplayFor(model => model.BeginningDate)
         </dd>
-        <dt class = "col-sm-2">
+        <dt class="col-sm-2">
             @Html.DisplayNameFor(model => model.EndingDate)
         </dt>
-        <dd class = "col-sm-10">
+        <dd class="col-sm-10">
             @Html.DisplayFor(model => model.EndingDate)
         </dd>
-        <dt class = "col-sm-2">
+        <dt class="col-sm-2">
             @Html.DisplayNameFor(model => model.TraineesNumber)
         </dt>
-        <dd class = "col-sm-10">
+        <dd class="col-sm-10">
             @Html.DisplayFor(model => model.TraineesNumber)
         </dd>
-        <dt class = "col-sm-2">
+        <dt class="col-sm-2">
             @Html.DisplayNameFor(model => model.Cost)
         </dt>
-        <dd class = "col-sm-10">
+        <dd class="col-sm-10">
             @Html.DisplayFor(model => model.Cost)
         </dd>
-        <dt class = "col-sm-2">
+        <dt class="col-sm-2">
             @Html.DisplayNameFor(model => model.ImplementedCenter)
         </dt>
-        <dd class = "col-sm-10">
+        <dd class="col-sm-10">
             @Html.DisplayFor(model => model.ImplementedCenter)
         </dd>
-        <dt class = "col-sm-2">
+        <dt class="col-sm-2">
             @Html.DisplayNameFor(model => model.HoursNumber)
         </dt>
-        <dd class = "col-sm-10">
+        <dd class="col-sm-10">
             @Html.DisplayFor(model => model.HoursNumber)
         </dd>
-        <dt class = "col-sm-2">
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.ImplementationTypeName)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.ImplementationTypeName)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.TotalImplementationName)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.TotalImplementationName)
+        </dd>
+        <dt class="col-sm-2">
             @Html.DisplayNameFor(model => model.RoomNumber)
         </dt>
-        <dd class = "col-sm-10">
+        <dd class="col-sm-10">
             @Html.DisplayFor(model => model.RoomNumber)
         </dd>
-        <dt class = "col-sm-2">
+        <dt class="col-sm-2">
             @Html.DisplayNameFor(model => model.Material)
         </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Material)
-        </dd>
-        <dt class = "col-sm-2">
+        <dd class="col-sm-10">
+            @{
+                if (Model.Material.HasValue)
+                {
+                    @StaticData.material[Model.Material.Value]
+                }
+            }
+        </dd> 
+        <dt class="col-sm-2">    
             @Html.DisplayNameFor(model => model.CourseType)
         </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.CourseType)
+        <dd class="col-sm-10">
+            @{
+                if (Model.CourseType.HasValue)
+                {
+                    @StaticData.courseType[Model.CourseType.Value]
+                }
+            }
         </dd>
-        <dt class = "col-sm-2">
+        <dt class="col-sm-2">
             @Html.DisplayNameFor(model => model.Rating)
         </dt>
-        <dd class = "col-sm-10">
+        <dd class="col-sm-10">
             @Html.DisplayFor(model => model.Rating)
         </dd>
-        <dt class = "col-sm-2">
+        <dt class="col-sm-2">
             @Html.DisplayNameFor(model => model.ImplementationMonth)
         </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.ImplementationMonth)
+        <dd class="col-sm-10">
+            @{
+                if (Model.ImplementationMonth.HasValue)
+                {
+                    @StaticData.implementationMonth[Model.ImplementationMonth.Value]
+                }
+            }
         </dd>
-        <dt class = "col-sm-2">
+        <dt class="col-sm-2">
             @Html.DisplayNameFor(model => model.ActualCost)
         </dt>
-        <dd class = "col-sm-10">
+        <dd class="col-sm-10">
             @Html.DisplayFor(model => model.ActualCost)
         </dd>
-        <dt class = "col-sm-2">
+        <dt class="col-sm-2">
             @Html.DisplayNameFor(model => model.Code)
         </dt>
-        <dd class = "col-sm-10">
+        <dd class="col-sm-10">
             @Html.DisplayFor(model => model.Code)
         </dd>
-        <dt class = "col-sm-2">
+        <dt class="col-sm-2">
             @Html.DisplayNameFor(model => model.Check)
         </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Check)
+        <dd class="col-sm-10">
+            @{
+                if (Model.Check.HasValue)
+                {
+
+                    @StaticData.check[Model.Check.Value]
+                }
+
+            }
         </dd>
-        <dt class = "col-sm-2">
+        <dt class="col-sm-2">
             @Html.DisplayNameFor(model => model.PdfFile)
         </dt>
-        <dd class = "col-sm-10">
+        <dd class="col-sm-10">
             @Html.DisplayFor(model => model.PdfFile)
             @{
                 if (Model.PdfFile != null)
@@ -146,82 +181,87 @@
                 }
             }
         </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Notes)
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.Link)
         </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Notes)
+        <dd class="col-sm-10">
+            <a href="@Model.Link" target="_blank">@Model.Link </a>
         </dd>
-        <dt class = "col-sm-2">
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.RatingSpecialist)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.RatingSpecialist)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.TraineesRating)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.TraineesRating)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.CourseNatureName)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.CourseNatureName)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.TrainingSpecialistName)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.TrainingSpecialistName)
+        </dd>
+        <dt class="col-sm-2">
             @Html.DisplayNameFor(model => model.EnterName)
         </dt>
-        <dd class = "col-sm-10">
+        <dd class="col-sm-10">
             @Html.DisplayFor(model => model.EnterName)
         </dd>
-     @*
-
-            @Html.DisplayNameFor(model => model.PrimaryInstructor)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.PrimaryInstructor.Name)
-        </dd>
-     *@   <dt class = "col-sm-2">
-
         <dt class="col-sm-2">
-            <span>المدرب الثاني </span>
+            @Html.DisplayNameFor(model => model.Notes)
         </dt>
         <dd class="col-sm-10">
-            @{
-                if(Model.Instructors.Count()>=1)
-                {     
-            <span>@Model.Instructors.ToList()[0].Name</span>
-                }
-            }
+            @Html.DisplayFor(model => model.Notes)
         </dd>
         <dt class="col-sm-2">
-            <span>المدرب الثالث </span>
+            @Html.DisplayNameFor(model => model.RatingSpecialistNotes)
         </dt>
         <dd class="col-sm-10">
-            @{
-                if (Model.Instructors.Count() >= 2)
-                {
-                    <span>@Model.Instructors.ToList()[1].Name</span>
-                }
-            }
+            @Html.DisplayFor(model => model.RatingSpecialistNotes)
         </dd>
         <dt class="col-sm-2">
-            <span>المدرب الرابع </span>
+            @Html.DisplayNameFor(model => model.TraineesNotes)
         </dt>
         <dd class="col-sm-10">
-            @{
-                if (Model.Instructors.Count() >= 3)
-                {
-                    <span>@Model.Instructors.ToList()[2].Name</span>
-                }
-            }
+            @Html.DisplayFor(model => model.TraineesNotes)
         </dd>
-
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.ImplementationType)
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.FirstInstructorName)
         </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.ImplementationType.Name)
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.FirstInstructorName)
         </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.TotalImplementation)
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.SecondInstructorName)
         </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.TotalImplementation.Name)
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.SecondInstructorName)
         </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.CourseNature)
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.ThirdInstructorName)
         </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.CourseNature.Name)
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.ThirdInstructorName)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.ForthInstructorName)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.ForthInstructorName)
         </dd>
     </dl>
 </div>
 <div>
-    <a asp-action="Edit" asp-route-id="@Model?.Id">Edit</a> |
+    <a asp-action="Edit" asp-route-id="@Model.Id">Edit</a> |
     <a asp-action="Index">Back to List</a>
 </div>
