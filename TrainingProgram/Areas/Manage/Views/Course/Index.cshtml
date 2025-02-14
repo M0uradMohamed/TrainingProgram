@@ -15,6 +15,152 @@
 </p>
 <a asp-action="print" class="btn btn-success" target="_blank"> Print Report</a>
 
+<div class="row">
+    <div class="col-7">
+
+        <form asp-action="index">
+            <div class="form-group col-5">
+                <label class="control-label">برنامج</label>
+                <input name="Name" class="form-control" value="@ViewBag.Search.Name" />
+            </div>
+            <div class="form-group col-5">
+                <label class="control-label">تاريخ البداية</label>
+                <input name="BeginningDate" class="form-control" type="date" value="@(ViewBag.Search?.BeginningDate != null ? ((DateOnly)ViewBag.Search.BeginningDate).ToString("yyyy-MM-dd") : "")" />
+            </div>
+            <div class="form-group col-5">
+                <label class="control-label">تاريخ النهاية</label>
+                <input name="EndingDate" class="form-control" type="date" value="@(ViewBag.Search?.EndingDate != null ? ((DateOnly)ViewBag.Search.EndingDate).ToString("yyyy-MM-dd") : "")" />
+            </div>
+            <div class="form-group col-5">
+                <label name="ImplementationPlace" class="control-label">مكان التنفيذ </label>
+            <input name="ImplementationPlace" value="@ViewBag.Search.ImplementationPlace" class="form-control" />
+            </div>
+            <div class="form-group col-5">
+                <label name="ImplementedCenter" class="control-label">مركز التنفيذ</label>
+            <input name="ImplementedCenter" value="@ViewBag.Search.ImplementedCenter" class="form-control" />
+            </div>
+            <div class="form-group col-5">
+                <label name="ImplementationTypeId" class="control-label">نوع التنفيذ</label>
+                    <select class="form-select" name="ImplementationTypeId">
+                    @{
+                        if ( ViewBag.Search.ImplementationTypeId == null)
+                        {
+                            <option value="" selected>غير محدد</option>
+                        }
+                        else
+                        {
+                            <option value="">غير محدد</option>
+                        }
+                        foreach (var item in ViewBag.ImplementationType)
+                        {
+                            if (ViewBag.Search.ImplementationTypeId == item.Id)
+                            {
+                                <option value="@item.Id" selected>@item.Name</option>
+                            }
+                            else
+                            {
+                                <option value="@item.Id">@item.Name</option>
+                            }
+
+                        }
+                    }
+                    </select>
+            </div>
+            <div class="form-group col-5">
+                <label name="TotalImplementationId" class="control-label">اجمالي التنفيذ</label>
+                <select class="form-select" name="TotalImplementationId">
+                    @{
+                        if (ViewBag.Search.TotalImplementationId == null)
+                        {
+                            <option value="" selected>غير محدد</option>
+                        }
+                        else
+                        {
+                            <option value="">غير محدد</option>
+                        }
+                        foreach (var item in ViewBag.TotalImplementation)
+                        {
+                            if (ViewBag.Search.TotalImplementationId == item.Id)
+                            {
+                                <option value="@item.Id" selected>@item.Name</option>
+                            }
+                            else
+                            {
+                                <option value="@item.Id">@item.Name</option>
+                            }
+
+                        }
+                    }
+                </select>
+            </div>
+            <div class="form-group col-5">
+                <label name="Check" class="control-label">حالة البرنامج</label>
+                <select class="form-select" name="Check">
+                    @{
+
+                        if (ViewBag.Search.Check == null)
+                        {
+                            <option value="" selected>غير محدد</option>
+                        }
+                        else
+                        {
+                            <option value="">غير محدد</option>
+                        }
+                        foreach (var item in ViewBag.Check)
+                        {
+                            if (ViewBag.Search.Check == item.Key)
+                            {
+                                <option value="@item.Key" selected>@item.Value</option>
+                            }
+                            else
+                            {
+                                <option value="@item.Key">@item.Value</option>
+                            }
+
+                        }
+                    }
+                </select>
+            </div>
+            <div class="form-group col-5 ">
+                <label name="CourseNatureId" class="control-label">طبيعة الدورة</label>
+                <select class="form-select" name="CourseNatureId">
+                    @{
+                        if (ViewBag.Search.CourseNatureId == null)
+                        {
+                            <option value="" selected>غير محدد</option>
+                        }
+                        else
+                        {
+                            <option value="">غير محدد</option>
+                        }
+                        foreach (var item in ViewBag.CourseNature)
+                        {
+                            if (ViewBag.Search.CourseNatureId == item.Id)
+                            {
+                                <option value="@item.Id" selected>@item.Name</option>
+                            }
+                            else
+                            {
+                                <option value="@item.Id">@item.Name</option>
+                            }
+
+                        }
+                    }
+                </select>
+            </div>
+               <div class="form-group col-5">
+                <label class="control-label">المدرب</label>
+                <input name="Instructor" class="form-control" value="@ViewBag.Search.Instructor" />
+            </div>
+
+            <input type="submit" value="search" class="btn btn-primary" />
+        </form>
+        <div class="col-2">
+            <a type="button" asp-action="index" class="btn btn-danger "> reset</a>
+        </div>
+    </div>
+</div>
+
 <table class="table table-bordered">
     <thead>
         <tr>
@@ -92,13 +238,13 @@
             </th>
             <th>
                 @Html.DisplayNameFor(model => model.RatingSpecialist)
-            </th> 
+            </th>
             <th>
                 @Html.DisplayNameFor(model => model.TraineesRating)
             </th>
             <th>
                 @Html.DisplayNameFor(model => model.CourseNatureName)
-            </th>    
+            </th>
             <th>
                 @Html.DisplayNameFor(model => model.TrainingSpecialistName)
             </th>
@@ -170,12 +316,7 @@
                     @Html.DisplayFor(modelItem => item.RoomNumber)
                 </td>
                 <td>
-                    @{
-                        if (item.Material.HasValue)
-                        {
-                            @StaticData.material[item.Material.Value]
-                        }
-                    }
+                    @(item.Material.HasValue ? StaticData.material[item.Material.Value] : "")
                 </td>
                 <td>
                     @{
@@ -202,10 +343,10 @@
                 </td>
                 <td>
                     @Html.DisplayFor(modelItem => item.ActualCost)
-                </td>  
+                </td>
                 <td>
                     @Html.DisplayFor(modelItem => item.Code)
-                </td> 
+                </td>
                 <td>
                     @{
                         if (item.Check.HasValue)
@@ -228,35 +369,35 @@
                     }
                 </td>
                 <td>
-                    <a href="@item.Link" target="_blank" >@item.Link </a>
+                    <a href="@item.Link" target="_blank">@item.Link </a>
                 </td>
                 <td>
                     @Html.DisplayFor(modelItem => item.RatingSpecialist)
-                </td>   
+                </td>
                 <td>
                     @Html.DisplayFor(modelItem => item.TraineesRating)
-                </td> 
+                </td>
                 <td>
                     @Html.DisplayFor(modelItem => item.CourseNatureName)
-                </td>   
+                </td>
                 <td>
                     @Html.DisplayFor(modelItem => item.TrainingSpecialistName)
-                </td>   
+                </td>
                 <td>
                     @Html.DisplayFor(modelItem => item.EnterName)
                 </td>
                 <td>
-                  @item.FirstInstructorName
+                    @item.FirstInstructorName
                 </td>
                 <td>
-                   @item.SecondInstructorName
+                    @item.SecondInstructorName
                 </td>
                 <td>
-                  @item.ThirdInstructorName
+                    @item.ThirdInstructorName
                 </td>
                 <td>
                     @item.ForthInstructorName
-                </td> 
+                </td>
                 <td>
                     <a asp-action="Edit" asp-route-id="@item.Id" type="button" class="btn btn-dark">Edit</a>
                     <a asp-action="Details" asp-route-id="@item.Id" type="button" class="btn btn-info ">Details</a>

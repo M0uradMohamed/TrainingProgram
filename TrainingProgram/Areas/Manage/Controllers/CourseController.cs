@@ -52,58 +52,121 @@ namespace TrainingProgram.Areas.Manage.Controllers
 
         }
         // GET: Manage/Course
-        public IActionResult Index()
+        public IActionResult Index(string? Name, DateOnly? BeginningDate, DateOnly? EndingDate, string? ImplementationPlace
+            , string? ImplementedCenter, int? ImplementationTypeId, int? TotalImplementationId, Check? Check ,int? CourseNatureId
+            , string? Instructor)
         {
-            
+
 
             IQueryable<Course> qcourses = courseRepository.Get(includeProps: [
                 e=>e.CourseNature!, e=>e.TotalImplementation! ,e=>e.ImplementationType! ,e=>e.TrainingSpecialist!
                 ]);
-            qcourses = qcourses.Include(e=>e.CoursesInstructors).ThenInclude(e=>e.Instructor);
+            qcourses = qcourses.Include(e => e.CoursesInstructors).ThenInclude(e => e.Instructor);
+            
+            if (Name != null)
+            {
+                qcourses = qcourses.Where(e => e.Name!.Contains(Name.TrimStart().TrimEnd()));
+            }
+            if (BeginningDate != null)
+            {
+                qcourses = qcourses.Where(e => e.BeginningDate >= BeginningDate);
+            }
+            if (EndingDate != null)
+            {
+                qcourses = qcourses.Where(e => e.EndingDate <= EndingDate);
+            }
+            if (ImplementationPlace != null)
+            {
+                qcourses = qcourses.Where(e => e.ImplementationPlace!.Contains(ImplementationPlace.TrimStart().TrimEnd()));
+            }
+            if (ImplementedCenter != null)
+            {
+                qcourses = qcourses.Where(e => e.ImplementedCenter!.Contains(ImplementedCenter.TrimStart().TrimEnd()));
+            }
+            if (ImplementationTypeId != null)
+            {
+                qcourses = qcourses.Where(e => e.ImplementationType!.Id == ImplementationTypeId);
+            }
+            if (TotalImplementationId != null)
+            {
+                qcourses = qcourses.Where(e => e.TotalImplementation!.Id == TotalImplementationId);
+            }
+            if (Check != null)
+            {
+                qcourses = qcourses.Where(e => e.Check == Check);
+            }
+            if (CourseNatureId != null)
+            {
+                qcourses = qcourses.Where(e => e.CourseNature!.Id == CourseNatureId);
+            }
+            if (Instructor != null)
+            {
+                qcourses = qcourses.Where(e => e.CoursesInstructors.Any(c => c.Instructor.Name!.Contains(Instructor.TrimStart().TrimEnd() ) ));
+             }
 
 
-           IQueryable<CourseIndexVM> courses= qcourses.Select(e=>new CourseIndexVM
-           {
-               Id = e.Id,
-               Name = e.Name,
-               TargetSector = e.TargetSector,
-               Participants = e.Participants,
-               ImplementationPlace = e.ImplementationPlace,
-               DaysCount = e.DaysCount,
-               ImplementedDays = e.ImplementedDays,
-               BeginningDate = e.BeginningDate,
-               EndingDate = e.EndingDate,
-               TraineesNumber = e.TraineesNumber,
-               Cost = e.Cost,
-               ImplementedCenter = e.ImplementedCenter,
-               HoursNumber = e.HoursNumber,
-               ImplementationTypeName =e.ImplementationType!.Name,
-               TotalImplementationName=e.TotalImplementation!.Name,
-               RoomNumber = e.RoomNumber,
-               Material=e.Material,
-               CourseType=e.CourseType,
-               Rating=e.Rating,
-               ImplementationMonth = e.ImplementationMonth,
-               ActualCost=e.ActualCost,
-               Code=e.Code,
-               Check=e.Check,
-               PdfFile=e.PdfFile,
-               EnterName=e.EnterName,
-               Link=e.Link,
-               RatingSpecialist=e.RatingSpecialist,
-               Notes=e.Notes,
-               RatingSpecialistNotes=e.RatingSpecialistNotes,
-               TraineesNotes=e.TraineesNotes,
-               TraineesRating=e.TraineesRating,
-               CourseNatureName=e.CourseNature!.Name,
-               TrainingSpecialistName=e.TrainingSpecialist!.Name,
-               FirstInstructorName=e.CoursesInstructors.Where(c=>c.Position == Position.First).Select(e=>e.Instructor.Name).FirstOrDefault(),
-               SecondInstructorName=e.CoursesInstructors.Where(c=>c.Position == Position.Second).Select(e=>e.Instructor.Name).FirstOrDefault(),
-               ThirdInstructorName=e.CoursesInstructors.Where(c=>c.Position == Position.Third).Select(e=>e.Instructor.Name).FirstOrDefault(),
-               ForthInstructorName=e.CoursesInstructors.Where(c=>c.Position == Position.Fourth).Select(e=>e.Instructor.Name).FirstOrDefault()
-               
-           });
-            return View(courses.ToList() );
+            IQueryable<CourseIndexVM> courses = qcourses.Select(e => new CourseIndexVM
+            {
+                Id = e.Id,
+                Name = e.Name,
+                TargetSector = e.TargetSector,
+                Participants = e.Participants,
+                ImplementationPlace = e.ImplementationPlace,
+                DaysCount = e.DaysCount,
+                ImplementedDays = e.ImplementedDays,
+                BeginningDate = e.BeginningDate,
+                EndingDate = e.EndingDate,
+                TraineesNumber = e.TraineesNumber,
+                Cost = e.Cost,
+                ImplementedCenter = e.ImplementedCenter,
+                HoursNumber = e.HoursNumber,
+                ImplementationTypeName = e.ImplementationType!.Name,
+                TotalImplementationName = e.TotalImplementation!.Name,
+                RoomNumber = e.RoomNumber,
+                Material = e.Material,
+                CourseType = e.CourseType,
+                Rating = e.Rating,
+                ImplementationMonth = e.ImplementationMonth,
+                ActualCost = e.ActualCost,
+                Code = e.Code,
+                Check = e.Check,
+                PdfFile = e.PdfFile,
+                EnterName = e.EnterName,
+                Link = e.Link,
+                RatingSpecialist = e.RatingSpecialist,
+                Notes = e.Notes,
+                RatingSpecialistNotes = e.RatingSpecialistNotes,
+                TraineesNotes = e.TraineesNotes,
+                TraineesRating = e.TraineesRating,
+                CourseNatureName = e.CourseNature!.Name,
+                TrainingSpecialistName = e.TrainingSpecialist!.Name,
+                FirstInstructorName = e.CoursesInstructors.Where(c => c.Position == Position.First).Select(e => e.Instructor.Name).FirstOrDefault(),
+                SecondInstructorName = e.CoursesInstructors.Where(c => c.Position == Position.Second).Select(e => e.Instructor.Name).FirstOrDefault(),
+                ThirdInstructorName = e.CoursesInstructors.Where(c => c.Position == Position.Third).Select(e => e.Instructor.Name).FirstOrDefault(),
+                ForthInstructorName = e.CoursesInstructors.Where(c => c.Position == Position.Fourth).Select(e => e.Instructor.Name).FirstOrDefault()
+
+            });
+            var Search = new
+            {
+                Name,
+                BeginningDate,
+                EndingDate,
+                ImplementationPlace,
+                ImplementedCenter,
+                ImplementationTypeId,
+                TotalImplementationId,
+                Check,
+                CourseNatureId,
+                Instructor
+            };
+            ViewBag.Search = Search;
+            ViewBag.ImplementationType = implementationTypeRepository.Get().ToList();
+            ViewBag.TotalImplementation = totalImplementationRepository.Get().ToList();
+            ViewBag.CourseNature = courseNatureRepository.Get().ToList();
+            ViewBag.Check = StaticData.check;
+
+           
+            return View(courses.ToList());
         }
 
         // GET: Manage/Course/Details/5
@@ -114,10 +177,10 @@ namespace TrainingProgram.Areas.Manage.Controllers
                 return RedirectToAction("Notfound", "Home");
             }
 
-            IQueryable<Course> qcourse = courseRepository.Get(expression : e=>e.Id == id ,includeProps: [
+            IQueryable<Course> qcourse = courseRepository.Get(expression: e => e.Id == id, includeProps: [
                   e=>e.CourseNature!, e=>e.TotalImplementation! ,e=>e.ImplementationType! ,e=>e.TrainingSpecialist!
                   ]);
-          IQueryable<CourseIndexVM>  course = qcourse.Include(e => e.CoursesInstructors).ThenInclude(e => e.Instructor).Select(e=> new CourseIndexVM
+            IQueryable<CourseIndexVM> course = qcourse.Include(e => e.CoursesInstructors).ThenInclude(e => e.Instructor).Select(e => new CourseIndexVM
             {
                 Id = e.Id,
                 Name = e.Name,
@@ -165,7 +228,7 @@ namespace TrainingProgram.Areas.Manage.Controllers
                 return RedirectToAction("Notfound", "Home");
             }
 
-            return View(course.FirstOrDefault() );
+            return View(course.FirstOrDefault());
         }
 
         // GET: Manage/Course/Create
@@ -261,13 +324,13 @@ namespace TrainingProgram.Areas.Manage.Controllers
                     BeginningDate = courseVM.BeginningDate,
                     EndingDate = courseVM.EndingDate,
                     Participants = MethodsCheck.chechName(courseVM.Participants),
-                   Link= courseVM.Link,
-                   RatingSpecialist= courseVM.RatingSpecialist,
-                   RatingSpecialistNotes= courseVM.RatingSpecialistNotes,
-                   TraineesNotes= courseVM.RatingSpecialistNotes,
-                   TraineesRating=courseVM.TraineesRating,
-                   ImplementedCenter= courseVM.ImplementedCenter,
-                     
+                    Link = courseVM.Link,
+                    RatingSpecialist = courseVM.RatingSpecialist,
+                    RatingSpecialistNotes = courseVM.RatingSpecialistNotes,
+                    TraineesNotes = courseVM.RatingSpecialistNotes,
+                    TraineesRating = courseVM.TraineesRating,
+                    ImplementedCenter = courseVM.ImplementedCenter,
+
 
                 };
 
@@ -366,7 +429,7 @@ namespace TrainingProgram.Areas.Manage.Controllers
                 EndingDate = course.EndingDate,
                 PdfFile = course.PdfFile,
                 Participants = course.Participants,
-                Link= course.Link,
+                Link = course.Link,
                 RatingSpecialist = course.RatingSpecialist,
                 TraineesNotes = course.TraineesNotes,
                 TraineesRating = course.TraineesRating,
