@@ -160,10 +160,10 @@
         </div>
     </div>
 </div>
-
-<table class="table table-bordered">
-    <thead>
-        <tr>
+<div >
+    <table class="table table-striped table-bordered text-nowrap">
+        <thead class="bg-primary text-white" style="background-color:#5D7B9D !important;">
+            <tr>
             <th>
                 @Html.DisplayNameFor(model => model.Name)
             </th>
@@ -285,7 +285,7 @@
                 <td>
                     @Html.DisplayFor(modelItem => item.DaysCount)
                 </td>
-                <td>
+                <td >
                     @Html.DisplayFor(modelItem => item.ImplementedDays)
                 </td>
                 <td>
@@ -398,7 +398,7 @@
                 <td>
                     @item.ForthInstructorName
                 </td>
-                <td>
+                <td >
                     <a asp-action="Edit" asp-route-id="@item.Id" type="button" class="btn btn-dark">Edit</a>
                     <a asp-action="Details" asp-route-id="@item.Id" type="button" class="btn btn-info ">Details</a>
                     <a asp-action="Course" asp-route-id="@item.Id" asp-controller="trainee" type="button" class="btn btn-primary ">المتدربين</a>
@@ -411,6 +411,7 @@
         }
     </tbody>
 </table>
+</div>
 <!-- Modal -->
 <div class="modal fade" id="deleteModal" tabindex="-1" aria-labelledby="deleteModalLabel" aria-hidden="true">
     <div class="modal-dialog">
@@ -442,3 +443,13 @@
         input.value = id;
     });
 </script>
+<style>
+    .table {
+        border: 2px solid black !important; /* حدود خارجية سوداء */
+    }
+
+        .table th, .table td {
+            border: 2px solid black !important; /* حدود داخلية سوداء */
+        }
+
+</style>
