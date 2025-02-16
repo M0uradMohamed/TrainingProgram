@@ -11,6 +11,7 @@ using Models;
 using DataAccess.Repository.IRepository;
 using Models.StaticData;
 using Models.ViewModels;
+using Models.EnumClasses;
 
 namespace TrainingProgram.Areas.Manage.Controllers
 {
@@ -22,7 +23,7 @@ namespace TrainingProgram.Areas.Manage.Controllers
         private readonly IDegreeRepository degreeRepository;
         private readonly ISectorRepository sectorRepository;
 
-        public EmployeeController( IEmployeeRepository employeeRepository, ITraineeRepository traineeRepository,
+        public EmployeeController(IEmployeeRepository employeeRepository, ITraineeRepository traineeRepository,
             IDegreeRepository degreeRepository, ISectorRepository sectorRepository)
         {
 
@@ -33,10 +34,55 @@ namespace TrainingProgram.Areas.Manage.Controllers
         }
 
         // GET: Manage/Employee
-        public IActionResult Index()
+        public IActionResult Index(string? FoundationId, string? Name, string? Job, string? Department
+           , int? SectorId, int? DegreeId, string? WorkPlace)
         {
-            var employees = employeeRepository.Get(includeProps: [e => e.Degree, e => e.Sector]).ToList();
-            return View(employees);
+            var employees = employeeRepository.Get(includeProps: [e => e.Degree!, e => e.Sector!]);
+
+            if (FoundationId != null)
+            {
+                employees = employees.Where(e => e.FoundationId!.Contains(FoundationId.TrimStart().TrimEnd() ) );
+            }
+            if (Name != null)
+            {
+                employees = employees.Where(e => e.Name!.Contains(Name.TrimStart().TrimEnd()));
+            }
+            if (Job != null)
+            {
+                employees = employees.Where(e => e.Job!.Contains(Job.TrimStart().TrimEnd()));
+            }
+            if (Department != null)
+            {
+                employees = employees.Where(e => e.Department!.Contains(Department.TrimStart().TrimEnd()));
+            }
+            if (SectorId != null)
+            {
+                employees = employees.Where(e => e.SectorId == SectorId);
+            }
+            if (DegreeId != null)
+            {
+                employees = employees.Where(e => e.DegreeId == DegreeId);
+            }
+            if (WorkPlace != null)
+            {
+                employees = employees.Where(e => e.WorkPlace!.Contains(WorkPlace.TrimStart().TrimEnd()));
+            }
+
+            var Search = new
+            {
+                FoundationId,
+                Name,
+                Job,
+                Department,
+                SectorId,
+                DegreeId,
+                WorkPlace
+            };
+            ViewBag.Search = Search;
+            ViewBag.Degree = degreeRepository.Get().ToList();
+            ViewBag.Sector = sectorRepository.Get().ToList();
+
+            return View(employees.ToList());
         }
 
         // GET: Manage/Employee/Details/5
@@ -48,8 +94,8 @@ namespace TrainingProgram.Areas.Manage.Controllers
             }
 
             var employee = employeeRepository.Get(includeProps:
-               [ e => e.Degree,
-                e => e.Sector]
+               [ e => e.Degree!,
+                e => e.Sector!]
                 , expression: m => m.Id == id)
                 .FirstOrDefault();
             if (employee == null)
@@ -200,8 +246,8 @@ namespace TrainingProgram.Areas.Manage.Controllers
                 };
                 if (employee.FoundationId.All(char.IsDigit))
                 {
-                    if (employeeRepository.Get(expression: e => e.FoundationId == employee.FoundationId 
-                    && e.Id!=employee.Id, tracked:false).FirstOrDefault() != null )
+                    if (employeeRepository.Get(expression: e => e.FoundationId == employee.FoundationId
+                    && e.Id != employee.Id, tracked: false).FirstOrDefault() != null)
                     {
                         ModelState.AddModelError("FoundationId", "رقم المؤسسة موجود بالفعل");
 
@@ -213,10 +259,10 @@ namespace TrainingProgram.Areas.Manage.Controllers
                     }
 
                 }
-                    employeeRepository.Edit(employee);
-                    employeeRepository.Commit();
+                employeeRepository.Edit(employee);
+                employeeRepository.Commit();
 
-                    return RedirectToAction(nameof(Index));
+                return RedirectToAction(nameof(Index));
             }
             ViewBag.Degree = degreeRepository.Get().ToList();
             ViewBag.Sector = sectorRepository.Get().ToList();
@@ -235,31 +281,31 @@ namespace TrainingProgram.Areas.Manage.Controllers
             {
                 employeeRepository.Delete(employee);
 
-            employeeRepository.Commit();
-            return RedirectToAction(nameof(Index));
+                employeeRepository.Commit();
+                return RedirectToAction(nameof(Index));
             }
             return RedirectToAction("Notfound", "Home");
         }
         public IActionResult Courses(int id)
         {
-           var employee = employeeRepository.Get(expression: e =>e.Id == id).Select(e => new
-           {
-               e.Id,
-               e.Name,
-               e.FoundationId,
-               e.Job,
-               e.WorkPlace,
-           }).FirstOrDefault();
-            ViewBag.Employee=employee;
+            var employee = employeeRepository.Get(expression: e => e.Id == id).Select(e => new
+            {
+                e.Id,
+                e.Name,
+                e.FoundationId,
+                e.Job,
+                e.WorkPlace,
+            }).FirstOrDefault();
+            ViewBag.Employee = employee;
 
-            var courses = traineeRepository.Get(expression: e=>e.EmployeeId == id, includeProps: [e=>e.Course])
+            var courses = traineeRepository.Get(expression: e => e.EmployeeId == id, includeProps: [e => e.Course])
                 .Select(e => new TraineeCourseVM
                 {
                     CourseId = e.CourseId,
                     CourseName = e.Course.Name!,
                     BeginningDate = e.Course.BeginningDate,
                     EndingDate = e.Course.EndingDate,
-                    Estimate = e.Estimate, 
+                    Estimate = e.Estimate,
                     Notes = e.Notes,
                     File = e.File,
                     AbsenceDays = e.AbsenceDays,
@@ -271,7 +317,7 @@ namespace TrainingProgram.Areas.Manage.Controllers
                     WrittenExam = e.WrittenExam,
                     TotalMarks = e.TotalMarks
 
-                }).OrderBy(e=>e.BeginningDate).ThenBy(e=>e.EndingDate).ToList(); 
+                }).OrderBy(e => e.BeginningDate).ThenBy(e => e.EndingDate).ToList();
             return View(courses);
 
         }
@@ -279,7 +325,7 @@ namespace TrainingProgram.Areas.Manage.Controllers
 
         private bool EmployeeExists(int id)
         {
-            return employeeRepository.Get(tracked:false).Any(e => e.Id == id);
+            return employeeRepository.Get(tracked: false).Any(e => e.Id == id);
         }
     }
 }

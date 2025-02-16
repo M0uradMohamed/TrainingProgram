@@ -23,29 +23,46 @@ namespace TrainingProgram.Areas.Manage.Controllers
             this.traineeRepository = traineeRepository;
             this.employeeRepository = employeeRepository;
         }
-        public IActionResult index(string? EmployeeNumber = "" , string? CourseName ="")
+        public IActionResult index(string? EmployeeNumber, string? CourseName)
         {
-            var trainees = traineeRepository.Get(includeProps: [e=>e.Employee,e=>e.Course, e=>e.Employee.Sector]
-            ,expression:  e=>e.Employee.FoundationId.Contains(EmployeeNumber.TrimStart().TrimEnd()) && e.Course.Name.Contains(CourseName.TrimStart().TrimEnd() ) ).Select(e=>new TraineeEmployeeCourseVM
+            var qtrainees = traineeRepository.Get(includeProps: [e => e.Employee, e => e.Course, e => e.Employee.Sector!]);
+
+            if (CourseName != null)
             {
-                FoundationId=e.Employee.FoundationId,
-                EmployeeName=e.Employee.Name,
-                Job=e.Employee.Job,
-                Department=e.Employee.Department,
-                SectorName = e.Employee.Sector!.Name ?? "",
-                WorkPlace=e.Employee.WorkPlace,
-                CourseName=e.Course.Name,
-                BeginningDate=e.Course.BeginningDate,
-                EndingDate=e.Course.EndingDate,
-                TotalMarks=e.TotalMarks
-            }).ToList();
+                qtrainees = qtrainees.Where(e => e.Course.Name!.Contains(CourseName.Trim() ));
+            }
+
+            if (EmployeeNumber != null)
+            {
+
+                List<string> employeeList = EmployeeNumber
+           .Split(new char[] { '+', ',' }, StringSplitOptions.RemoveEmptyEntries)
+           .Select(e => e.Trim())
+           .ToList();
+
+                qtrainees = qtrainees.Where(e => employeeList.Any(emp => e.Employee.FoundationId!.Contains(emp)));
+            }
+  
+        IQueryable<TraineeEmployeeCourseVM> trainees = qtrainees.Select(e => new TraineeEmployeeCourseVM
+            {
+                FoundationId = e.Employee.FoundationId,
+                EmployeeName = e.Employee.Name,
+                Job = e.Employee.Job,
+                Department = e.Employee.Department,
+                SectorName = e.Employee.Sector!.Name,
+                WorkPlace = e.Employee.WorkPlace,
+                CourseName = e.Course.Name,
+                BeginningDate = e.Course.BeginningDate,
+                EndingDate = e.Course.EndingDate,
+                TotalMarks = e.TotalMarks
+            });
 
             var search = new { EmployeeNumber, CourseName };
 
             ViewBag.Search = search;
             return View(trainees);
         }
-        public IActionResult Course(int id = 1)
+        public IActionResult Course(int id)
         {
 
             var Iscourse = courseRepository.Get(expression: e => e.Id == id).Any();
@@ -55,7 +72,7 @@ namespace TrainingProgram.Areas.Manage.Controllers
                 return RedirectToAction("Notfound", "Home");
 
             }
-            var course = courseRepository.Get(expression: e => e.Id == id , includeProps: [e => e.Instructors!]).Select(e => new
+            var course = courseRepository.Get(expression: e => e.Id == id, includeProps: [e => e.Instructors!]).Select(e => new
             {
                 e.Id,
                 e.Name,
@@ -134,7 +151,7 @@ namespace TrainingProgram.Areas.Manage.Controllers
                     .Select(e => new { e.BeginningDate, e.EndingDate }).FirstOrDefault();
 
                 var similarTrinee = traineeRepository.Get(includeProps: [e => e.Course], e => e.EmployeeId == traineeVM.EmployeeId)
-                    .Any(e => course.BeginningDate <= e.Course.EndingDate &&
+                    .Any(e => course!.BeginningDate <= e.Course.EndingDate &&
                                   course.EndingDate >= e.Course.BeginningDate);
 
                 if (similarTrinee)
@@ -213,7 +230,7 @@ namespace TrainingProgram.Areas.Manage.Controllers
                     traineeRepository.Commit();
                 }
                 var name = traineeRepository.Get(expression: e => e.EmployeeId == trainee.EmployeeId, includeProps: [e => e.Employee], tracked: false)
-                    .Select(e=>e.Employee.Name).FirstOrDefault();
+                    .Select(e => e.Employee.Name).FirstOrDefault();
 
                 TempData["success"] = $"  تم اضافة المتدرب بنجاح , {name} ";
 
@@ -299,7 +316,7 @@ namespace TrainingProgram.Areas.Manage.Controllers
                     EmployeeId = traineeVM.EmployeeId,
                     Estimate = traineeVM.Estimate,
                     Notes = traineeVM.Notes,
-                    File=traineeVM.File,
+                    File = traineeVM.File,
                     AbsenceDays = traineeVM.AbsenceDays ?? 0,
                     AttendanceAndDeparture = traineeVM.AttendanceAndDeparture ?? 0,
                     AdherenceMark = traineeVM.AdherenceMark ?? 0,
@@ -330,7 +347,7 @@ namespace TrainingProgram.Areas.Manage.Controllers
                         Directory.CreateDirectory(directoryPath);
                     }
 
-                    if(traineeVM.File != null)
+                    if (traineeVM.File != null)
                     {
 
                         string oldFilePath = Path.Combine(Directory.GetCurrentDirectory(), $"wwwroot\\TraineesFiles\\Course{id}", traineeVM.File);
@@ -340,7 +357,7 @@ namespace TrainingProgram.Areas.Manage.Controllers
                             System.IO.File.Delete(oldFilePath);
                         }
                     }
-                    
+
 
                     using (var stream = System.IO.File.Create(filePath))
                     {
@@ -395,30 +412,30 @@ namespace TrainingProgram.Areas.Manage.Controllers
             {
                 e.Id,
                 e.Name,
-                BeginningDate =   e.BeginningDate.ToString(),
-                EndingDate =  e.EndingDate.ToString(),
+                BeginningDate = e.BeginningDate.ToString(),
+                EndingDate = e.EndingDate.ToString(),
 
             }).FirstOrDefault();
             var courses = new List<object>()
             {
-                course
+                course!
             };
 
 
             var trainees = traineeRepository.Get(expression: e => e.CourseId == id, includeProps: [e => e.Employee])
-       .Select(e => new 
+       .Select(e => new
        {
 
            Id = e.Employee.FoundationId,
            Name = e.Employee.Name
-          
+
        }).ToList();
 
             // string path = Path.Combine(webHostEnvironment.WebRootPath + @"\Reports\SectorReport.rdlc");
             string path = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot\\Reports\\TraineesReport.rdlc");
 
 
-           // Dictionary<string, string> parmaeters = new Dictionary<string, string>();
+            // Dictionary<string, string> parmaeters = new Dictionary<string, string>();
             // parmaeters.Add("Ahmed", "شركة المياة");
 
 
@@ -434,7 +451,7 @@ namespace TrainingProgram.Areas.Manage.Controllers
 
             return File(report.MainStream, "application/pdf");
         }
-        public IActionResult DownloadFile(string fileName , int id)
+        public IActionResult DownloadFile(string fileName, int id)
         {
             if (fileName != null)
             {

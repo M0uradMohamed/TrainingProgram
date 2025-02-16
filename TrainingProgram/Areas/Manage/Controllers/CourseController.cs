@@ -657,7 +657,7 @@ namespace TrainingProgram.Areas.Manage.Controllers
             //  var sector = sectorRepository.Get().ToList()[0];
             List<Sector> sector = new List<Sector>
             {
-                sectorRepository.Get().FirstOrDefault()
+                sectorRepository.Get().FirstOrDefault()!
             };
 
             LocalReport localreport = new LocalReport(path);

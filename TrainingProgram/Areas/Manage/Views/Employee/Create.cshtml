@@ -26,20 +26,32 @@
 
             <div class="form-group">
                 <label asp-for="Gender" class="control-label"></label>
- @*                <input asp-for="Gender" class="form-control" />
-                <span asp-validation-for="Gender" class="text-danger"></span> *@
                 <select class="form-select" name="Gender">
                     @{
-                        <option value="">غير محدد</option>
+
+                        if (Model == null || Model.Gender == null)
+                        {
+                            <option value="" selected>غير محدد</option>
+                        }
+                        else
+                        {
+                            <option value="">غير محدد</option>
+                        }
                         foreach (var item in ViewBag.Gender)
                         {
-                            <option value="@item.Key">@item.Value</option>
+                            if (Model == null || Model.Gender != item.Key)
+                            {
+                                <option value="@item.Key">@item.Value</option>
+                            }
+                            else
+                            {
+                                <option value="@item.Key" selected>@item.Value</option>
+                            }
+
                         }
                     }
                 </select>
             </div>
-
-
             <div class="form-group">
                 <label asp-for="Major" class="control-label"></label>
                 <input asp-for="Major" class="form-control" />
@@ -57,26 +69,54 @@
             </div>
             <div class="form-group">
                 <label asp-for="SectorId" class="control-label"></label>
-               @*  <select asp-for="SectorId" class ="form-control" asp-items="ViewBag.SectorId"></select> *@
                 <select class="form-select" name="SectorId">
                     @{
-                        <option value="">غير محدد</option>
+                        if (Model == null || Model.SectorId == null)
+                        {
+                            <option value="" selected>غير محدد</option>
+                        }
+                        else
+                        {
+                            <option value="">غير محدد</option>
+                        }
                         foreach (var item in ViewBag.Sector)
                         {
-                            <option value="@item.Id">@item.Name</option>
+                            if (Model == null || Model.SectorId != item.Id)
+                            {
+                                <option value="@item.Id">@item.Name</option>
+                            }
+                            else
+                            {
+                                <option value="@item.Id" selected>@item.Name</option>
+                            }
+
                         }
                     }
                 </select>
             </div>
             <div class="form-group">
                 <label asp-for="DegreeId" class="control-label"></label>
-         @*        <select asp-for="DegreeId" class ="form-control" asp-items="ViewBag.DegreeId"></select> *@
                 <select class="form-select" name="DegreeId">
                     @{
-                        <option value="">غير محدد</option>
+                        if (Model == null || Model.DegreeId == null)
+                        {
+                            <option value="" selected>غير محدد</option>
+                        }
+                        else
+                        {
+                            <option value="">غير محدد</option>
+                        }
                         foreach (var item in ViewBag.Degree)
                         {
-                            <option value="@item.Id">@item.Name</option>
+                            if (Model == null || Model.DegreeId != item.Id)
+                            {
+                                <option value="@item.Id">@item.Name</option>
+                            }
+                            else
+                            {
+                                <option value="@item.Id" selected>@item.Name</option>
+                            }
+
                         }
                     }
                 </select>
@@ -94,15 +134,27 @@
             </div>
             <div class="form-group">
                 <label asp-for="Belong" class="control-label"></label>
-@*                 <input asp-for="Belong" class="form-control" />
-                <span asp-validation-for="Belong" class="text-danger"></span> *@
-
                 <select class="form-select" name="Belong">
                     @{
-                        <option value="">غير محدد</option>
+                        if (Model == null || Model.Belong == null)
+                        {
+                            <option value="" selected>غير محدد</option>
+                        }
+                        else
+                        {
+                            <option value="">غير محدد</option>
+                        }
                         foreach (var item in ViewBag.Belong)
                         {
-                            <option value="@item.Key">@item.Value</option>
+                            if (Model == null || Model.Belong != item.Key)
+                            {
+                                <option value="@item.Key">@item.Value</option>
+                            }
+                            else
+                            {
+                                <option value="@item.Key" selected>@item.Value</option>
+                            }
+
                         }
                     }
                 </select>

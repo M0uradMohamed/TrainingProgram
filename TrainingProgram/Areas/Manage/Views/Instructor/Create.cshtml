@@ -37,10 +37,25 @@
                 <label asp-for="DegreeId" class="control-label"></label>
                 <select class="form-select" name="DegreeId">
                     @{
-                        <option value="">غير محدد</option>
+                        if (Model == null || Model.DegreeId == null)
+                        {
+                            <option value="" selected>غير محدد</option>
+                        }
+                        else
+                        {
+                            <option value="">غير محدد</option>
+                        }
                         foreach (var item in ViewBag.Degree)
                         {
-                            <option value="@item.Id">@item.Name</option>
+                            if (Model == null || Model.DegreeId != item.Id)
+                            {
+                                <option value="@item.Id">@item.Name</option>
+                            }
+                            else
+                            {
+                                <option value="@item.Id" selected>@item.Name</option>
+                            }
+
                         }
                     }
                 </select>
@@ -54,10 +69,25 @@
                 <label asp-for="SectorId" class="control-label"></label>
                 <select class="form-select" name="SectorId">
                     @{
-                        <option value="">غير محدد</option>
+                        if (Model == null || Model.SectorId == null)
+                        {
+                            <option value="" selected>غير محدد</option>
+                        }
+                        else
+                        {
+                            <option value="">غير محدد</option>
+                        }
                         foreach (var item in ViewBag.Sector)
                         {
-                            <option value="@item.Id">@item.Name</option>
+                            if (Model == null || Model.SectorId != item.Id)
+                            {
+                                <option value="@item.Id">@item.Name</option>
+                            }
+                            else
+                            {
+                                <option value="@item.Id" selected>@item.Name</option>
+                            }
+
                         }
                     }
                 </select>
