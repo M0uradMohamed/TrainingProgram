@@ -129,8 +129,8 @@ namespace TrainingProgram.Areas.Manage.Controllers
             }
 
             var employee = employeeRepository.Get(includeProps:
-              [ e => e.Degree,
-                e => e.Sector]
+              [ e => e.Degree!,
+                e => e.Sector!]
               , expression: m => m.Id == id)
              .FirstOrDefault();
             if (employee == null)
@@ -242,16 +242,6 @@ namespace TrainingProgram.Areas.Manage.Controllers
         }
         public IActionResult Courses(int id)
         {
-           /* var employee = employeeRepository.Get(expression: e=> e.Id == id, includeProps : [e=>e.Trainees, e=>e.Courses] )
-                .Select(e=> new
-                {
-                    e.Id,
-                    e.FoundationId,
-                    e.Name,
-                    e.Job,
-                    e.WorkPlace,
-                    e.Trainees.
-                });*/
            var employee = employeeRepository.Get(expression: e =>e.Id == id).Select(e => new
            {
                e.Id,
@@ -266,7 +256,7 @@ namespace TrainingProgram.Areas.Manage.Controllers
                 .Select(e => new TraineeCourseVM
                 {
                     CourseId = e.CourseId,
-                    CourseName = e.Course.Name,
+                    CourseName = e.Course.Name!,
                     BeginningDate = e.Course.BeginningDate,
                     EndingDate = e.Course.EndingDate,
                     Estimate = e.Estimate, 

@@ -56,5 +56,8 @@ namespace Models.ViewModels
         [ValidateNever]
         [Display(Name = "الاميل")]
         public string? Email { get; set; }
+        [ValidateNever]
+        [Display(Name = "الحالة")]
+        public bool? Status { get; set; }
     }
 }

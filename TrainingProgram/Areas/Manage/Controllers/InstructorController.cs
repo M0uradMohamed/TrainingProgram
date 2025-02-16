@@ -21,20 +21,31 @@ namespace TrainingProgram.Areas.Manage.Controllers
         private readonly IInstructorRepository instructorRepository;
         private readonly IDegreeRepository degreeRepository;
         private readonly ISectorRepository sectorRepository;
+        private readonly ICourseInstructorRepository courseInstructorRepository;
+
         public InstructorController( IInstructorRepository instructorRepository,
-            IDegreeRepository degreeRepository, ISectorRepository sectorRepository )
+            IDegreeRepository degreeRepository, ISectorRepository sectorRepository 
+            ,ICourseInstructorRepository courseInstructorRepository)
         {
           
             this.instructorRepository = instructorRepository;
             this.degreeRepository = degreeRepository;
             this.sectorRepository = sectorRepository;
+            this.courseInstructorRepository = courseInstructorRepository;
         }
 
         // GET: Manage/Instructor
-        public IActionResult Index()
+        public IActionResult Index(string? Search )
         {
-            var instructors = instructorRepository.Get(includeProps: [e => e.Degree!, e => e.Sector! ]).ToList();
-            return View(instructors);
+            var instructors = instructorRepository.Get(includeProps: [e => e.Degree!, e => e.Sector! ]);
+            if(Search != null)
+            {
+                instructors = instructors.Where( e => e.Name!.Contains( Search.TrimStart().TrimEnd() ) || e.FoundationId!.Contains( Search.TrimStart().TrimEnd() )
+                    || e.PhoneNumber!.Contains(Search.TrimStart().TrimEnd()) );
+            }
+
+            ViewBag.Search = Search;
+            return View(instructors.ToList() );
         }
 
         // GET: Manage/Instructor/Details/5
@@ -92,7 +103,7 @@ namespace TrainingProgram.Areas.Manage.Controllers
                     PhoneNumber = instructorVM.PhoneNumber,
                     OtherPhoneNumber = instructorVM.OtherPhoneNumber,
                     Email = instructorVM.Email,
-
+                    Status = instructorVM.Status
 
                 };
                 if (instructor.FoundationId.All(char.IsDigit))
@@ -128,8 +139,8 @@ namespace TrainingProgram.Areas.Manage.Controllers
             }
 
             var instructor = instructorRepository.Get(includeProps:
-              [ e => e.Degree,
-                e => e.Sector]
+              [ e => e.Degree!,
+                e => e.Sector!]
                , expression: m => m.Id == id)
                .FirstOrDefault();
             if (instructor == null)
@@ -155,6 +166,7 @@ namespace TrainingProgram.Areas.Manage.Controllers
                 OtherPhoneNumber= instructor.OtherPhoneNumber,
                 PhoneNumber= instructor.PhoneNumber,
                 WorkPlace= instructor.WorkPlace,
+                Status= instructor.Status,
 
             };
 
@@ -202,6 +214,7 @@ namespace TrainingProgram.Areas.Manage.Controllers
                     PhoneNumber = instructorVM.PhoneNumber,
                     OtherPhoneNumber = instructorVM.OtherPhoneNumber,
                     Email = instructorVM.Email,
+                    Status=instructorVM.Status
                 };
                 if (instructor.FoundationId.All(char.IsDigit))
                 {
@@ -240,7 +253,30 @@ namespace TrainingProgram.Areas.Manage.Controllers
             instructorRepository.Commit();
             return RedirectToAction(nameof(Index));
         }
+        public IActionResult Courses(int id)
+        {
+            var instructor = instructorRepository.Get(expression: e => e.Id == id).Select(e => new
+            {
+                e.Id,
+                e.Name,
+                e.FoundationId,
+                e.PhoneNumber,
+                e.Status
+            }).FirstOrDefault();
+            ViewBag.Instructor = instructor;
 
+            var courses = courseInstructorRepository.Get(expression: e => e.InstructorId == id, includeProps: [e => e.Course])
+                .Select(e => new 
+                {
+                    e.CourseId,
+                   e.Course.Name,
+                     e.Course.BeginningDate,
+                    e.Course.EndingDate,
+                    e.Rating 
+                }).OrderBy(e => e.BeginningDate).ThenBy(e => e.EndingDate).ToList();
+            return View(courses);
+
+        }
         private bool InstructorExists(int id)
         {
             return instructorRepository.Get(tracked:false).Any(e => e.Id == id);

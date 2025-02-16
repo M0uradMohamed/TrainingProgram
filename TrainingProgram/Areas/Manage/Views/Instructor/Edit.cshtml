@@ -130,8 +130,20 @@
             </div>
             <div class="form-group">
                 <label asp-for="Email" class="control-label"></label>
-                <input asp-for="Email" class="form-control" />
+                <input asp-for="Email" class="form-control" type="email" />
                 <span asp-validation-for="Email" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Status" class="control-label"></label>
+                <div>
+                    <label>
+                        <input type="radio" asp-for="Status" value="true" class="toggle-radio" /> معتمد
+                    </label>
+                    <label>
+                        <input type="radio" asp-for="Status" value="false" class="toggle-radio" /> غير معتمد
+                    </label>
+                </div>
+                <span asp-validation-for="Status" class="text-danger"></span>
             </div>
             <div class="form-group">
                 <input type="submit" value="Save" class="btn btn-primary" />
@@ -147,3 +159,16 @@
 @section Scripts {
     @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
 }
+<script>
+    document.querySelectorAll(".toggle-radio").forEach(radio => {
+        radio.addEventListener("click", function (event) {
+            if (this.checked && this.dataset.wasChecked === "true") {
+                this.checked = false;
+                this.dataset.wasChecked = "false";
+            } else {
+                document.querySelectorAll(".toggle-radio").forEach(r => r.dataset.wasChecked = "false");
+                this.dataset.wasChecked = "true";
+            }
+        });
+    });
+</script>

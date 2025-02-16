@@ -24,7 +24,7 @@ namespace Models
         public string? PhoneNumber { get; set; }
         public string? OtherPhoneNumber { get; set; }
         public string? Email { get; set; }
-        public bool? Certified { get; set; } 
+        public bool? Status { get; set; } 
 
         public Degree? Degree { get; set; }
         public Sector? Sector { get; set; }

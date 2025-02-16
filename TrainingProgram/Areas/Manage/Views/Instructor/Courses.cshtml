@@ -1,0 +1,114 @@
+﻿@using Models.StaticData
+@*  @model IEnumerable<Models.CourseInstructor> *@
+@{
+  ViewData["Title"] = "Courses";
+   Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h1>Courses</h1>
+<div>
+
+   <dl class="row">
+        <dt class="col-sm-2">
+            اسم المحاضر :
+        </dt>
+        <dd class="col-sm-10">
+            @ViewBag.Instructor.Name
+        </dd>
+        <dt class="col-sm-2">
+            رقم المؤسسة :
+        </dt> 
+         <dd class="col-sm-10">
+            @ViewBag.Instructor.FoundationId
+        </dd>
+        <dt class="col-sm-2">
+            رقم الههاتف :
+        </dt>
+        <dd class="col-sm-10">
+            @ViewBag.Instructor.PhoneNumber
+        </dd>
+      
+        <dt class="col-sm-2">
+            الحالة :
+        </dt>
+        
+
+            @{
+                if(ViewBag.Instructor.Status != null )
+            {
+                    @if (ViewBag.Instructor.Status ==false)
+                    {
+                <dd class="col-sm-10">
+                        غير معتمد
+                    </dd>
+                }
+                else
+                {
+                    <dd class="col-sm-10">
+                         معتمد
+                    </dd>
+                }
+
+            }
+            }
+      
+    </dl>
+</div>
+<p>
+    <a asp-action="Create">Create New</a>
+</p>
+<table class="table table-bordered">
+    <thead class="table-secondary">
+        <tr>
+            <th>
+                اسم الدورة
+            </th>
+            <th>
+                تاريخ البداية
+            </th>
+            <th>
+                تاريخ النهاية
+            </th>
+            <th>
+                تقييم المحاضر
+            </th>
+
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+            <tr>
+
+    <td>
+                    @item.Name
+                </td>
+            
+                <td>
+                    @item.BeginningDate
+                </td>
+                <td>
+                    @item.EndingDate
+                </td>
+                <td>
+                    @item.Rating
+                </td>
+
+                <td>
+                    <a asp-action="Details" asp-controller="Course" asp-route-id="@item.CourseId" type="button" class="btn btn-info ">Details</a>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
+<style>
+    .table {
+        border: 2px solid black !important; /* حدود خارجية سوداء */
+    }
+
+        .table th, .table td {
+            border: 2px solid black !important; /* حدود داخلية سوداء */
+        }
+
+</style>
