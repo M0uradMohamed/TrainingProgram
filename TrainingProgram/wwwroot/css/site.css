@@ -20,3 +20,10 @@ html {
 body {
   margin-bottom: 60px;
 }
+.table {
+    border: 2px solid black !important; /* моФо нгялМи сФога */
+}
+
+    .table th, .table td {
+        border: 2px solid black !important; /* моФо огнАМи сФога */
+    }

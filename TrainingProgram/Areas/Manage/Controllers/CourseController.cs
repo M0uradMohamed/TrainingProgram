@@ -54,7 +54,7 @@ namespace TrainingProgram.Areas.Manage.Controllers
         // GET: Manage/Course
         public IActionResult Index(string? Name, DateOnly? BeginningDate, DateOnly? EndingDate, string? ImplementationPlace
             , string? ImplementedCenter, int? ImplementationTypeId, int? TotalImplementationId, Check? Check ,int? CourseNatureId
-            , string? Instructor)
+            , string? Instructor , bool Sort=false)
         {
 
 
@@ -146,6 +146,12 @@ namespace TrainingProgram.Areas.Manage.Controllers
                 ForthInstructorName = e.CoursesInstructors.Where(c => c.Position == Position.Fourth).Select(e => e.Instructor.Name).FirstOrDefault()
 
             });
+
+            if(!Sort)
+                courses = courses.OrderBy(e => e.BeginningDate).ThenBy(e => e.EndingDate);
+            else
+                courses = courses.OrderByDescending(e => e.BeginningDate).ThenByDescending(e => e.EndingDate);
+
             var Search = new
             {
                 Name,
@@ -157,7 +163,8 @@ namespace TrainingProgram.Areas.Manage.Controllers
                 TotalImplementationId,
                 Check,
                 CourseNatureId,
-                Instructor
+                Instructor,
+                Sort
             };
             ViewBag.Search = Search;
             ViewBag.ImplementationType = implementationTypeRepository.Get().ToList();
