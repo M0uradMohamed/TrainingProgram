@@ -35,7 +35,7 @@ namespace TrainingProgram.Areas.Manage.Controllers
 
         // GET: Manage/Employee
         public IActionResult Index(string? FoundationId, string? Name, string? Job, string? Department
-           , int? SectorId, int? DegreeId, string? WorkPlace)
+           , int? SectorId, int? DegreeId, string? WorkPlace , int page=1)
         {
             var employees = employeeRepository.Get(includeProps: [e => e.Degree!, e => e.Sector!]);
 
@@ -78,6 +78,11 @@ namespace TrainingProgram.Areas.Manage.Controllers
                 DegreeId,
                 WorkPlace
             };
+            double totalPages = Math.Ceiling((double)employees.Count() / 5);
+            employees = employees.Skip((page - 1) * 5).Take(5);
+
+            ViewBag.Pages = new { page, totalPages };
+
             ViewBag.Search = Search;
             ViewBag.Degree = degreeRepository.Get().ToList();
             ViewBag.Sector = sectorRepository.Get().ToList();
@@ -286,7 +291,7 @@ namespace TrainingProgram.Areas.Manage.Controllers
             }
             return RedirectToAction("Notfound", "Home");
         }
-        public IActionResult Courses(int id)
+        public IActionResult Courses(int id , int page =1 )
         {
             var employee = employeeRepository.Get(expression: e => e.Id == id).Select(e => new
             {
@@ -298,7 +303,7 @@ namespace TrainingProgram.Areas.Manage.Controllers
             }).FirstOrDefault();
             ViewBag.Employee = employee;
 
-            var courses = traineeRepository.Get(expression: e => e.EmployeeId == id, includeProps: [e => e.Course])
+            IQueryable<TraineeCourseVM> courses = traineeRepository.Get(expression: e => e.EmployeeId == id, includeProps: [e => e.Course])
                 .Select(e => new TraineeCourseVM
                 {
                     CourseId = e.CourseId,
@@ -317,8 +322,15 @@ namespace TrainingProgram.Areas.Manage.Controllers
                     WrittenExam = e.WrittenExam,
                     TotalMarks = e.TotalMarks
 
-                }).OrderBy(e => e.BeginningDate).ThenBy(e => e.EndingDate).ToList();
-            return View(courses);
+                }).OrderBy(e => e.BeginningDate).ThenBy(e => e.EndingDate);
+
+            double totalPages = Math.Ceiling((double)courses.Count() / 5);
+            courses = courses.Skip((page - 1) * 5).Take(5);
+
+            ViewBag.Pages = new { page, totalPages };
+
+
+            return View(courses.ToList());
 
         }
 

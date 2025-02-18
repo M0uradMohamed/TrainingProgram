@@ -28,9 +28,14 @@ namespace TrainingProgram.Areas.Manage.Controllers
         }
 
         // GET: Manage/Sector
-        public IActionResult Index()
+        public IActionResult Index(int page =1)
         {
-            return View(sectorRepository.Get().ToList());
+            var sectors = sectorRepository.Get();
+                           double totalPages = Math.Ceiling((double)sectors.Count() / 5);
+            sectors = sectors.Skip((page - 1) * 5).Take(5);
+
+            ViewBag.Pages = new { page, totalPages };
+            return View(sectors.ToList());
         }
 
         // GET: Manage/Sector/Details/5

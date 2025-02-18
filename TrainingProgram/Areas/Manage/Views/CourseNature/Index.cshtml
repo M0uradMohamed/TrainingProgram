@@ -8,11 +8,12 @@
 <h1>Index</h1>
 
 <p>
-    <a asp-action="Create">Create New</a>
+    <a asp-action="Create" class="btn btn-primary">Create New</a>
 </p>
 <table class="table table-striped table-bordered text-nowrap">
     <thead class="bg-primary text-white" style="background-color:#5D7B9D  ">
         <tr>
+            <th>#</th>
             <th>
                 @Html.DisplayNameFor(model => model.Name)
             </th>
@@ -20,23 +21,74 @@
         </tr>
     </thead>
     <tbody>
-@foreach (var item in Model) {
-        <tr>
-            <td>
-                @Html.DisplayFor(modelItem => item.Name)
-            </td>
-            <td>
+        @{
+            int index = (ViewBag.Pages.page * 5) - 4;
+        }
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>@index</td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Name)
+                </td>
+                <td>
                     <a asp-action="Edit" asp-route-id="@item.Id" type="button" class="btn btn-dark">Edit</a> |
                     <a asp-action="Details" asp-route-id="@item.Id" type="button" class="btn btn-info ">Details</a> |
                     <button type="button" class="btn btn-danger " data-bs-toggle="modal" data-bs-target="#deleteModal" data-courseNatureid="@item.Id">
                         <i class="bi bi-trash3"></i> Delete
                     </button>
-            </td>
-        </tr>
-}
+                </td>
+            </tr>
+            index++;
+        }
     </tbody>
 </table>
+@{
+    if (Model.Count() != 0)
+    {
+        <div style="display: flex; justify-content: center;">
+            <nav aria-label="Page navigation example">
+                <ul class="pagination" style="display: flex; justify-content: center; align-items: center;">
+                    <!-- Previous Button -->
+                    <li class="page-item @(ViewBag.Pages.page == 1 ? "disabled" : "")">
+                        <a href="#" class="page-link" onclick="changePage(@(ViewBag.Pages.page - 1))">
+                            <span aria-hidden="true">&laquo;</span>
+                        </a>
+                    </li>
 
+                    <!-- Page Numbers -->
+                    @if (ViewBag.Pages.totalPages > 0)
+                    {
+                        int currentPage = ViewBag.Pages.page;
+                        int totalPages = (int)ViewBag.Pages.totalPages;
+
+                        int startPage = Math.Max(1, currentPage - 1);
+                        int endPage = Math.Min(totalPages, startPage + 2);
+
+                        if (endPage - startPage < 2)
+                        {
+                            startPage = Math.Max(1, endPage - 2);
+                        }
+
+                        for (int i = startPage; i <= endPage; i++)
+                        {
+                            <li class="page-item @(i == currentPage ? "active" : "")">
+                                <a href="#" class="page-link" onclick="changePage(@i)">@i</a>
+                            </li>
+                        }
+                    }
+
+                    <!-- Next Button -->
+                    <li class="page-item @(ViewBag.Pages.page == ViewBag.Pages.totalPages ? "disabled" : "")">
+                        <a href="#" class="page-link" onclick="changePage(@(ViewBag.Pages.page + 1))">
+                            <span aria-hidden="true">&raquo;</span>
+                        </a>
+                    </li>
+                </ul>
+            </nav>
+        </div>
+    }
+}
 <!-- Modal -->
 <div class="modal fade" id="deleteModal" tabindex="-1" aria-labelledby="deleteModalLabel" aria-hidden="true">
     <div class="modal-dialog">
@@ -67,4 +119,13 @@
         var input = document.getElementById('courseNatureIdInput');
         input.value = id;
     });
+</script>
+<script>
+    function changePage(pageNumber) {
+        var totalPages = @ViewBag.Pages.totalPages;
+        if (pageNumber < 1 || pageNumber > totalPages) return;
+
+        document.getElementById("pageInput").value = pageNumber;
+        document.getElementById("searchForm").submit();
+    }
 </script>

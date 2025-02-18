@@ -35,7 +35,7 @@ namespace TrainingProgram.Areas.Manage.Controllers
         }
 
         // GET: Manage/Instructor
-        public IActionResult Index(string? Search )
+        public IActionResult Index(string? Search , int page=1 )
         {
             var instructors = instructorRepository.Get(includeProps: [e => e.Degree!, e => e.Sector! ]);
             if(Search != null)
@@ -43,7 +43,10 @@ namespace TrainingProgram.Areas.Manage.Controllers
                 instructors = instructors.Where( e => e.Name!.Contains( Search.TrimStart().TrimEnd() ) || e.FoundationId!.Contains( Search.TrimStart().TrimEnd() )
                     || e.PhoneNumber!.Contains(Search.TrimStart().TrimEnd()) );
             }
+            double totalPages = Math.Ceiling((double)instructors.Count() / 5);
+            instructors = instructors.Skip((page - 1) * 5).Take(5);
 
+            ViewBag.Pages = new { page, totalPages };
             ViewBag.Search = Search;
             return View(instructors.ToList() );
         }
@@ -253,7 +256,7 @@ namespace TrainingProgram.Areas.Manage.Controllers
             instructorRepository.Commit();
             return RedirectToAction(nameof(Index));
         }
-        public IActionResult Courses(int id)
+        public IActionResult Courses(int id,int page=1)
         {
             var instructor = instructorRepository.Get(expression: e => e.Id == id).Select(e => new
             {
@@ -265,16 +268,22 @@ namespace TrainingProgram.Areas.Manage.Controllers
             }).FirstOrDefault();
             ViewBag.Instructor = instructor;
 
-            var courses = courseInstructorRepository.Get(expression: e => e.InstructorId == id, includeProps: [e => e.Course])
-                .Select(e => new 
+            IQueryable<InstructorCoursesVM> courses = courseInstructorRepository.Get(expression: e => e.InstructorId == id, includeProps: [e => e.Course])
+                .Select(e => new InstructorCoursesVM
                 {
-                    e.CourseId,
-                   e.Course.Name,
-                     e.Course.BeginningDate,
-                    e.Course.EndingDate,
-                    e.Rating 
-                }).OrderBy(e => e.BeginningDate).ThenBy(e => e.EndingDate).ToList();
-            return View(courses);
+                 CourseId =   e.CourseId,
+                 Name =  e.Course.Name,
+                 BeginningDate =    e.Course.BeginningDate,
+                 EndingDate =   e.Course.EndingDate,
+                 Rating =   e.Rating 
+                }).OrderBy(e => e.BeginningDate).ThenBy(e => e.EndingDate);
+
+            double totalPages = Math.Ceiling((double)courses.Count() / 5);
+            courses = courses.Skip((page - 1) * 5).Take(5);
+
+            ViewBag.Pages = new { page, totalPages };
+
+            return View(courses.ToList());
 
         }
         private bool InstructorExists(int id)

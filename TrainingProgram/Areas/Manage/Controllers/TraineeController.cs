@@ -23,13 +23,13 @@ namespace TrainingProgram.Areas.Manage.Controllers
             this.traineeRepository = traineeRepository;
             this.employeeRepository = employeeRepository;
         }
-        public IActionResult index(string? EmployeeNumber, string? CourseName)
+        public IActionResult index(string? EmployeeNumber, string? CourseName, int page = 1)
         {
             var qtrainees = traineeRepository.Get(includeProps: [e => e.Employee, e => e.Course, e => e.Employee.Sector!]);
 
             if (CourseName != null)
             {
-                qtrainees = qtrainees.Where(e => e.Course.Name!.Contains(CourseName.Trim() ));
+                qtrainees = qtrainees.Where(e => e.Course.Name!.Contains(CourseName.Trim()));
             }
 
             if (EmployeeNumber != null)
@@ -42,9 +42,10 @@ namespace TrainingProgram.Areas.Manage.Controllers
 
                 qtrainees = qtrainees.Where(e => employeeList.Any(emp => e.Employee.FoundationId!.Contains(emp)));
             }
-  
-        IQueryable<TraineeEmployeeCourseVM> trainees = qtrainees.Select(e => new TraineeEmployeeCourseVM
+
+            IQueryable<TraineeEmployeeCourseVM> trainees = qtrainees.Select(e => new TraineeEmployeeCourseVM
             {
+                CourseId = e.CourseId,
                 FoundationId = e.Employee.FoundationId,
                 EmployeeName = e.Employee.Name,
                 Job = e.Employee.Job,
@@ -56,13 +57,17 @@ namespace TrainingProgram.Areas.Manage.Controllers
                 EndingDate = e.Course.EndingDate,
                 TotalMarks = e.TotalMarks
             });
+            double totalPages = Math.Ceiling((double)trainees.Count() / 5);
+            trainees = trainees.Skip((page - 1) * 5).Take(5);
+
+            ViewBag.Pages = new { page, totalPages };
 
             var search = new { EmployeeNumber, CourseName };
 
             ViewBag.Search = search;
-            return View(trainees);
+            return View(trainees.ToList());
         }
-        public IActionResult Course(int id)
+        public IActionResult Course(int id, int page = 1)
         {
 
             var Iscourse = courseRepository.Get(expression: e => e.Id == id).Any();
@@ -103,8 +108,13 @@ namespace TrainingProgram.Areas.Manage.Controllers
            TotalEvaluation = e.TotalEvaluation,
            WrittenExam = e.WrittenExam,
            TotalMarks = e.TotalMarks
-       }).ToList();
-            return View(trainees);
+       });
+
+            double totalPages = Math.Ceiling((double)trainees.Count() / 5);
+            trainees = trainees.Skip((page - 1) * 5).Take(5);
+
+            ViewBag.Pages = new { page, totalPages };
+            return View(trainees.ToList());
         }
 
         public IActionResult Create(int id)

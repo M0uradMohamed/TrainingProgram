@@ -31,7 +31,7 @@ namespace TrainingProgram.Areas.Manage.Controllers
         }
 
         // GET: Manage/CourseInstructor
-        public  IActionResult Index(int id)
+        public  IActionResult Index(int id , int page = 1)
         {
             var IsCourse = courseRepository.Get(expression: e => e.Id == id).Any();
 
@@ -51,9 +51,15 @@ namespace TrainingProgram.Areas.Manage.Controllers
 
             ViewBag.Course = course;
 
-            var courseInstructors = courseInstructorRepository.Get(expression:e=>e.CourseId ==id,includeProps:[e=>e.Instructor])
-                .OrderBy(e=>e.Position).ToList();
-            return View(courseInstructors);
+            IQueryable<CourseInstructor> courseInstructors = courseInstructorRepository.Get(expression:e=>e.CourseId ==id,includeProps:[e=>e.Instructor])
+                .OrderBy(e=>e.Position);
+
+            double totalPages = Math.Ceiling((double)courseInstructors.Count() / 5);
+            courseInstructors = courseInstructors.Skip((page - 1) * 5).Take(5);
+
+            ViewBag.Pages = new { page, totalPages };
+
+            return View(courseInstructors.ToList() );
         }
 
         // GET: Manage/CourseInstructor/Details/5

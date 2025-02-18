@@ -23,9 +23,14 @@ namespace TrainingProgram.Areas.Manage.Controllers
         }
 
         // GET: Manage/TrainingSpecialist
-        public IActionResult Index()
+        public IActionResult Index(int page =1)
         {
-            return View(trainingSpecialistRepository.Get().ToList());
+            var trainingSpecialists = trainingSpecialistRepository.Get();
+            double totalPages = Math.Ceiling((double)trainingSpecialists.Count() / 5);
+            trainingSpecialists = trainingSpecialists.Skip((page - 1) * 5).Take(5);
+
+            ViewBag.Pages = new { page, totalPages };
+            return View(trainingSpecialists.ToList());
         }
 
         // GET: Manage/TrainingSpecialist/Details/5

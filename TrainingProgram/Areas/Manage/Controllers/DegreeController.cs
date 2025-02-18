@@ -24,9 +24,15 @@ namespace TrainingProgram.Areas.Manage.Controllers
         }
 
         // GET: Manage/Degree
-        public IActionResult Index()
+        public IActionResult Index( int page =1 )
         {
-            return View(degreeRepository.Get().ToList());
+            var degrees = degreeRepository.Get();
+            double totalPages = Math.Ceiling((double)degrees.Count() / 5);
+            degrees = degrees.Skip((page - 1) * 5).Take(5);
+
+            ViewBag.Pages = new { page, totalPages };
+
+            return View(degrees.ToList());
         }
 
         // GET: Manage/Degree/Details/5

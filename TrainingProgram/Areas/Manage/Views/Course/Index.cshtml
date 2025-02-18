@@ -11,14 +11,17 @@
 
 <p>
 
-    <a asp-action="Create">Create New</a>
+    <a class="btn btn-primary" asp-action="Create">Create New</a>
 </p>
 <a asp-action="print" class="btn btn-success" target="_blank"> Print Report</a>
 
 <div class="row">
     <div class="col-7">
 
-        <form asp-action="index">
+        <form asp-action="index" id="searchForm">
+
+            <input type="hidden" name="Page" id="pageInput" value="@ViewBag.Pages.page" />
+
             <div class="form-group col-5">
                 <label class="control-label">برنامج</label>
                 <input name="Name" class="form-control" value="@ViewBag.Search.Name" />
@@ -33,17 +36,17 @@
             </div>
             <div class="form-group col-5">
                 <label name="ImplementationPlace" class="control-label">مكان التنفيذ </label>
-            <input name="ImplementationPlace" value="@ViewBag.Search.ImplementationPlace" class="form-control" />
+                <input name="ImplementationPlace" value="@ViewBag.Search.ImplementationPlace" class="form-control" />
             </div>
             <div class="form-group col-5">
                 <label name="ImplementedCenter" class="control-label">مركز التنفيذ</label>
-            <input name="ImplementedCenter" value="@ViewBag.Search.ImplementedCenter" class="form-control" />
+                <input name="ImplementedCenter" value="@ViewBag.Search.ImplementedCenter" class="form-control" />
             </div>
             <div class="form-group col-5">
                 <label name="ImplementationTypeId" class="control-label">نوع التنفيذ</label>
-                    <select class="form-select" name="ImplementationTypeId">
+                <select class="form-select" name="ImplementationTypeId">
                     @{
-                        if ( ViewBag.Search.ImplementationTypeId == null)
+                        if (ViewBag.Search.ImplementationTypeId == null)
                         {
                             <option value="" selected>غير محدد</option>
                         }
@@ -64,7 +67,7 @@
 
                         }
                     }
-                    </select>
+                </select>
             </div>
             <div class="form-group col-5">
                 <label name="TotalImplementationId" class="control-label">اجمالي التنفيذ</label>
@@ -148,13 +151,13 @@
                     }
                 </select>
             </div>
-               <div class="form-group col-5">
+            <div class="form-group col-5">
                 <label class="control-label">المدرب</label>
                 <input name="Instructor" class="form-control" value="@ViewBag.Search.Instructor" />
             </div>
             <div class="form-check form-switch col-3">
                 @{
-                   
+
                     if (ViewBag.Search.Sort)
                     {
                         <input class="form-check-input" name="Sort" value="true" checked type="checkbox">
@@ -173,258 +176,309 @@
         </div>
     </div>
 </div>
-<div >
+<div>
     <table class="table table-striped table-bordered text-nowrap">
         <thead class="bg-primary text-white" style="background-color:#5D7B9D  ">
             <tr>
-            <th>
-                @Html.DisplayNameFor(model => model.Name)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.TargetSector)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Participants)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.ImplementationPlace)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.DaysCount)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.ImplementedDays)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.BeginningDate)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.EndingDate)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.TraineesNumber)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Cost)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.ImplementedCenter)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.HoursNumber)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.ImplementationTypeName)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.TotalImplementationName)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.RoomNumber)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Material)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.CourseType)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Rating)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.ImplementationMonth)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.ActualCost)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Code)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Check)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.PdfFile)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Link)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.RatingSpecialist)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.TraineesRating)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.CourseNatureName)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.TrainingSpecialistName)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.EnterName)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.FirstInstructorName)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.SecondInstructorName)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.ThirdInstructorName)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.ForthInstructorName)
-            </th>
-            <th></th>
-        </tr>
-    </thead>
-    <tbody>
-        @foreach (var item in Model)
-        {
-            <tr>
-                <td>
-                    @Html.DisplayFor(modelItem => item.Name)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.TargetSector)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.Participants)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.ImplementationPlace)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.DaysCount)
-                </td>
-                <td >
-                    @Html.DisplayFor(modelItem => item.ImplementedDays)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.BeginningDate)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.EndingDate)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.TraineesNumber)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.Cost)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.ImplementedCenter)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.HoursNumber)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.ImplementationTypeName)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.TotalImplementationName)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.RoomNumber)
-                </td>
-                <td>
-                    @(item.Material.HasValue ? StaticData.material[item.Material.Value] : "")
-                </td>
-                <td>
-                    @{
-                        if (item.CourseType.HasValue)
-                        {
-
-                            @StaticData.courseType[item.CourseType.Value]
-                        }
-
-                    }
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.Rating)
-                </td>
-                <td>
-                    @{
-                        if (item.ImplementationMonth.HasValue)
-                        {
-
-                            @StaticData.implementationMonth[item.ImplementationMonth.Value]
-                        }
-
-                    }
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.ActualCost)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.Code)
-                </td>
-                <td>
-                    @{
-                        if (item.Check.HasValue)
-                        {
-
-                            @StaticData.check[item.Check.Value]
-                        }
-
-                    }
-                </td>
-                <td>
-                    @{
-                        if (item.PdfFile != null)
-                        {
-
-                            <a href="@Url.Action("DownloadFile", "course", new { fileName = item.PdfFile })" class="btn btn-primary">
-                                <i class="bi bi-download"></i>
-                            </a>
-                        }
-                    }
-                </td>
-                <td>
-                    <a href="@item.Link" target="_blank">@item.Link </a>
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.RatingSpecialist)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.TraineesRating)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.CourseNatureName)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.TrainingSpecialistName)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.EnterName)
-                </td>
-                <td>
-                    @item.FirstInstructorName
-                </td>
-                <td>
-                    @item.SecondInstructorName
-                </td>
-                <td>
-                    @item.ThirdInstructorName
-                </td>
-                <td>
-                    @item.ForthInstructorName
-                </td>
-                <td >
-                    <a asp-action="Edit" asp-route-id="@item.Id" type="button" class="btn btn-dark">Edit</a>
-                    <a asp-action="Details" asp-route-id="@item.Id" type="button" class="btn btn-info ">Details</a>
-                    <a asp-action="Course" asp-route-id="@item.Id" asp-controller="trainee" type="button" class="btn btn-primary ">المتدربين</a>
-                    <a asp-action="index" asp-route-id="@item.Id" asp-controller="CourseInstructor" type="button" class="btn btn-success ">المدربين</a>
-                    <button type="button" class="btn btn-danger " data-bs-toggle="modal" data-bs-target="#deleteModal" data-courseid="@item.Id">
-                        Delete
-                    </button>
-                </td>
+                <th>#</th>
+                <th>
+                    @Html.DisplayNameFor(model => model.Name)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.TargetSector)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.Participants)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.ImplementationPlace)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.DaysCount)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.ImplementedDays)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.BeginningDate)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.EndingDate)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.TraineesNumber)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.Cost)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.ImplementedCenter)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.HoursNumber)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.ImplementationTypeName)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.TotalImplementationName)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.RoomNumber)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.Material)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.CourseType)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.Rating)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.ImplementationMonth)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.ActualCost)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.Code)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.Check)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.PdfFile)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.Link)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.RatingSpecialist)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.TraineesRating)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.CourseNatureName)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.TrainingSpecialistName)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.EnterName)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.FirstInstructorName)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.SecondInstructorName)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.ThirdInstructorName)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.ForthInstructorName)
+                </th>
+                <th></th>
             </tr>
-        }
-    </tbody>
-</table>
+        </thead>
+        <tbody>
+            @{
+                int index = (ViewBag.Pages.page * 5) - 4;
+            }
+            @foreach (var item in Model)
+            {
+                <tr>
+                    <td>@index</td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Name)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.TargetSector)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Participants)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.ImplementationPlace)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.DaysCount)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.ImplementedDays)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.BeginningDate)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.EndingDate)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.TraineesNumber)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Cost)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.ImplementedCenter)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.HoursNumber)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.ImplementationTypeName)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.TotalImplementationName)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.RoomNumber)
+                    </td>
+                    <td>
+                        @(item.Material.HasValue ? StaticData.material[item.Material.Value] : "")
+                    </td>
+                    <td>
+                        @{
+                            if (item.CourseType.HasValue)
+                            {
+
+                                @StaticData.courseType[item.CourseType.Value]
+                            }
+
+                        }
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Rating)
+                    </td>
+                    <td>
+                        @{
+                            if (item.ImplementationMonth.HasValue)
+                            {
+
+                                @StaticData.implementationMonth[item.ImplementationMonth.Value]
+                            }
+
+                        }
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.ActualCost)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Code)
+                    </td>
+                    <td>
+                        @{
+                            if (item.Check.HasValue)
+                            {
+
+                                @StaticData.check[item.Check.Value]
+                            }
+
+                        }
+                    </td>
+                    <td>
+                        @{
+                            if (item.PdfFile != null)
+                            {
+
+                                <a href="@Url.Action("DownloadFile", "course", new { fileName = item.PdfFile })" class="btn btn-primary">
+                                    <i class="bi bi-download"></i>
+                                </a>
+                            }
+                        }
+                    </td>
+                    <td>
+                        <a href="@item.Link" target="_blank">@item.Link </a>
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.RatingSpecialist)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.TraineesRating)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.CourseNatureName)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.TrainingSpecialistName)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.EnterName)
+                    </td>
+                    <td>
+                        @item.FirstInstructorName
+                    </td>
+                    <td>
+                        @item.SecondInstructorName
+                    </td>
+                    <td>
+                        @item.ThirdInstructorName
+                    </td>
+                    <td>
+                        @item.ForthInstructorName
+                    </td>
+                    <td>
+                        <a asp-action="Edit" asp-route-id="@item.Id" type="button" class="btn btn-dark">Edit</a>
+                        <a asp-action="Details" asp-route-id="@item.Id" type="button" class="btn btn-info ">Details</a>
+                        <a asp-action="Course" asp-route-id="@item.Id" asp-controller="trainee" type="button" class="btn btn-primary ">المتدربين</a>
+                        <a asp-action="index" asp-route-id="@item.Id" asp-controller="CourseInstructor" type="button" class="btn btn-success ">المدربين</a>
+                        <button type="button" class="btn btn-danger " data-bs-toggle="modal" data-bs-target="#deleteModal" data-courseid="@item.Id">
+                            Delete
+                        </button>
+                    </td>
+                </tr>
+                index++;
+            }
+        </tbody>
+    </table>
 </div>
+@{
+    if(Model.Count() !=0)
+{
+<div style="display: flex; justify-content: center;">
+    <nav aria-label="Page navigation example">
+                    <ul class="pagination" style="display: flex; justify-content: center; align-items: center;">
+                        <!-- Previous Button -->
+                        <li class="page-item @(ViewBag.Pages.page == 1 ? "disabled" : "")">
+                            <a href="#" class="page-link" onclick="changePage(@(ViewBag.Pages.page - 1))">
+                                <span aria-hidden="true">&laquo;</span>
+                            </a>
+                        </li>
+
+                        <!-- Page Numbers -->
+                        @if (ViewBag.Pages.totalPages > 0)
+                        {
+                            int currentPage = ViewBag.Pages.page;
+                            int totalPages = (int)ViewBag.Pages.totalPages;
+
+                            int startPage = Math.Max(1, currentPage - 1);
+                            int endPage = Math.Min(totalPages, startPage + 2);
+
+                            if (endPage - startPage < 2)
+                            {
+                                startPage = Math.Max(1, endPage - 2);
+                            }
+
+                            for (int i = startPage; i <= endPage; i++)
+                            {
+                                <li class="page-item @(i == currentPage ? "active" : "")">
+                                    <a href="#" class="page-link" onclick="changePage(@i)">@i</a>
+                                </li>
+                            }
+                        }
+
+                        <!-- Next Button -->
+                        <li class="page-item @(ViewBag.Pages.page == ViewBag.Pages.totalPages ? "disabled" : "")">
+                            <a href="#" class="page-link" onclick="changePage(@(ViewBag.Pages.page + 1))">
+                                <span aria-hidden="true">&raquo;</span>
+                            </a>
+                        </li>
+                    </ul>
+    </nav>
+</div>
+}}
 <!-- Modal -->
 <div class="modal fade" id="deleteModal" tabindex="-1" aria-labelledby="deleteModalLabel" aria-hidden="true">
     <div class="modal-dialog">
@@ -455,4 +509,14 @@
         var input = document.getElementById('courseIdInput');
         input.value = id;
     });
+
+</script>
+<script>
+    function changePage(pageNumber) {
+        var totalPages = @ViewBag.Pages.totalPages;
+        if (pageNumber < 1 || pageNumber > totalPages) return;
+
+        document.getElementById("pageInput").value = pageNumber;
+        document.getElementById("searchForm").submit();
+    }
 </script>

@@ -8,6 +8,7 @@ namespace Models.ViewModels
 {
     public class TraineeEmployeeCourseVM
     {
+        public int CourseId { get; set; }
         public string? FoundationId { get; set; }
         public string? EmployeeName { get; set; }
         public string? Job { get; set; }

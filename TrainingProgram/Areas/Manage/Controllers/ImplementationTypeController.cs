@@ -23,9 +23,15 @@ namespace TrainingProgram.Areas.Manage.Controllers
         }
 
         // GET: Manage/ImplementationType
-        public IActionResult Index()
+        public IActionResult Index(int page = 1 )
         {
-            return View(implementationTypeRepository.Get().ToList());
+            var implementationTypes = implementationTypeRepository.Get();
+            double totalPages = Math.Ceiling((double)implementationTypes.Count() / 5);
+            implementationTypes = implementationTypes.Skip((page - 1) * 5).Take(5);
+
+            ViewBag.Pages = new { page, totalPages };
+
+            return View(implementationTypes.ToList());
         }
 
         // GET: Manage/ImplementationType/Details/5

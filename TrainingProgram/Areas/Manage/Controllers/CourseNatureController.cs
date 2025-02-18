@@ -24,9 +24,15 @@ namespace TrainingProgram.Areas.Manage.Controllers
         }
 
         // GET: Manage/CourseNature
-        public IActionResult Index()
+        public IActionResult Index( int page =1)
         {
-            return View(courseNatureRepository.Get().ToList());
+            var couresNaturs = courseNatureRepository.Get();
+
+            double totalPages = Math.Ceiling((double)couresNaturs.Count() / 5);
+            couresNaturs = couresNaturs.Skip((page - 1) * 5).Take(5);
+
+            ViewBag.Pages = new { page, totalPages };
+            return View(couresNaturs.ToList() );
         }
 
         // GET: Manage/CourseNature/Details/5

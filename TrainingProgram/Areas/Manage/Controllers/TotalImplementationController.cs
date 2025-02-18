@@ -23,9 +23,14 @@ namespace TrainingProgram.Areas.Manage.Controllers
         }
 
         // GET: Manage/TotalImplementation
-        public IActionResult Index()
+        public IActionResult Index(int page =1)
         {
-            return View(totalImplementationRepository.Get().ToList());
+          var totalImplementations  = totalImplementationRepository.Get();
+            double totalPages = Math.Ceiling((double)totalImplementations.Count() / 5);
+            totalImplementations = totalImplementations.Skip((page - 1) * 5).Take(5);
+
+            ViewBag.Pages = new { page, totalPages };
+            return View(totalImplementations.ToList());
         }
 
         // GET: Manage/TotalImplementation/Details/5

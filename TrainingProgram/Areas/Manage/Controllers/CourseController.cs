@@ -54,10 +54,8 @@ namespace TrainingProgram.Areas.Manage.Controllers
         // GET: Manage/Course
         public IActionResult Index(string? Name, DateOnly? BeginningDate, DateOnly? EndingDate, string? ImplementationPlace
             , string? ImplementedCenter, int? ImplementationTypeId, int? TotalImplementationId, Check? Check ,int? CourseNatureId
-            , string? Instructor , bool Sort=false)
+            , string? Instructor , bool Sort=false , int page=1)
         {
-
-
             IQueryable<Course> qcourses = courseRepository.Get(includeProps: [
                 e=>e.CourseNature!, e=>e.TotalImplementation! ,e=>e.ImplementationType! ,e=>e.TrainingSpecialist!
                 ]);
@@ -166,6 +164,13 @@ namespace TrainingProgram.Areas.Manage.Controllers
                 Instructor,
                 Sort
             };
+
+            double totalPages = Math.Ceiling((double)courses.Count() / 5);
+            courses = courses.Skip((page - 1) * 5).Take(5);
+
+            ViewBag.Pages = new { page, totalPages };
+
+
             ViewBag.Search = Search;
             ViewBag.ImplementationType = implementationTypeRepository.Get().ToList();
             ViewBag.TotalImplementation = totalImplementationRepository.Get().ToList();
