@@ -78,8 +78,8 @@ namespace TrainingProgram.Areas.Manage.Controllers
                 DegreeId,
                 WorkPlace
             };
-            double totalPages = Math.Ceiling((double)employees.Count() / 5);
-            employees = employees.Skip((page - 1) * 5).Take(5);
+            double totalPages = Math.Ceiling((double)employees.Count() / 50);
+            employees = employees.Skip((page - 1) * 50).Take(50);
 
             ViewBag.Pages = new { page, totalPages };
 

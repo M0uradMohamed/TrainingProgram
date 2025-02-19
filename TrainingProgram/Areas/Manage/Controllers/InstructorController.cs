@@ -43,8 +43,8 @@ namespace TrainingProgram.Areas.Manage.Controllers
                 instructors = instructors.Where( e => e.Name!.Contains( Search.TrimStart().TrimEnd() ) || e.FoundationId!.Contains( Search.TrimStart().TrimEnd() )
                     || e.PhoneNumber!.Contains(Search.TrimStart().TrimEnd()) );
             }
-            double totalPages = Math.Ceiling((double)instructors.Count() / 5);
-            instructors = instructors.Skip((page - 1) * 5).Take(5);
+            double totalPages = Math.Ceiling((double)instructors.Count() / 20);
+            instructors = instructors.Skip((page - 1) * 20).Take(20);
 
             ViewBag.Pages = new { page, totalPages };
             ViewBag.Search = Search;

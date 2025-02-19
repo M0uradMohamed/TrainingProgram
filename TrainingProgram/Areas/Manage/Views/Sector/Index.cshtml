@@ -133,3 +133,37 @@
         document.getElementById("searchForm").submit();
     }
 </script>
+<style>
+    .table-container {
+        max-height: 400px; /* التحكم في ارتفاع الجدول */
+        overflow-y: auto; /* تفعيل التمرير العمودي */
+        border: 2px solid black; /* حدود واضحة للجدول */
+        position: relative;
+    }
+
+    .table {
+        width: 100%;
+        border-collapse: separate;
+        border-spacing: 0; /* إزالة الفراغات بين الحدود */
+    }
+
+        .table thead {
+            position: sticky;
+            top: 0;
+            color: white;
+            z-index: 2;
+        }
+
+        .table th {
+            text-align: left;
+            padding: 10px;
+            border: 2px solid black; /* حدود ثابتة للهيدر */
+            border-bottom: 2px solid black !important; /* تأكيد ثبات الحد السفلي */
+        }
+
+        .table tbody td {
+            border: 2px solid black; /* تأكيد ظهور الحدود داخل الجدول */
+        }
+
+
+</style>
