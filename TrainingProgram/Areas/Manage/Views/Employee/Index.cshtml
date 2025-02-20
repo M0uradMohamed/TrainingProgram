@@ -1,4 +1,4 @@
-﻿@using Models.StaticData
+﻿﻿@using Models.StaticData
 @model IEnumerable<Models.Employee>
 
 @{
@@ -9,7 +9,7 @@
 <h1>Index</h1>
 
 <p>
-    <a asp-action="Create" class="btn btn-primary">Create New</a>
+    <a asp-action="Create">Create New</a>
 </p>
 <div class="row col-12">
     <div class="card col-3">
@@ -17,10 +17,7 @@
             <div class="row">
                 <div class="col-12">
 
-                    <form asp-action="index" id="searchForm">
-
-                        <input type="hidden" name="Page" id="pageInput" value="@ViewBag.Pages.page" />
-
+                    <form asp-action="index">
                         <div class="form-group ">
                             <label for="FoundationId" class="control-label">رقم المؤسسة</label>
                             <input name="FoundationId" class="form-control" value="@ViewBag.Search.FoundationId" />
@@ -37,7 +34,7 @@
                             <label for="Department" class="control-label">الادارة العامة</label>
                             <input name="Department" value="@ViewBag.Search.Department" class="form-control" />
                         </div>
-                        <div class="form-group ">
+                        <div class="form-group">
                             <label for="SectorId" class="control-label">القطاع</label>
                             <select class="form-select" name="SectorId">
                                 @{
@@ -91,13 +88,17 @@
                                 }
                             </select>
                         </div>
-                        <div class="form-group mb-3">
+                        <div class="form-group ">
                             <label for="WorkPlace" class="control-label">مكان العمل</label>
                             <input name="WorkPlace" class="form-control" value="@ViewBag.Search.WorkPlace" />
                         </div>
-                        <div class"row ">
-                            <input type="submit" value="search" class="btn btn-primary" />
-                            <a type="" asp-action="index" class="btn btn-danger "> reset</a>
+                        <div class="row mt-2">
+                            <div class="col-3 ms-3">
+                                <input type="submit" value="search" class="btn btn-primary" />
+                            </div>
+                            <div class="col-6 me-6">
+                                <a type="button" asp-action="index" class="btn btn-danger "> reset</a>
+                            </div>
                         </div>
                     </form>
                 </div>
@@ -149,64 +150,64 @@
                 </tr>
             </thead>
             <tbody>
-                        @{
-                            int index = (ViewBag.Pages.page * 50) - 49;
-                        }
-                        @foreach (var item in Model)
-                        {
+                @{
+                    int index = (ViewBag.Pages.page * 50) - 49;
+                }
+                @foreach (var item in Model)
+                {
                     <tr>
                         <td>@index</td>
                         <td>
-                                    @Html.DisplayFor(modelItem => item.FoundationId)
+                            @Html.DisplayFor(modelItem => item.FoundationId)
                         </td>
                         <td>
-                                    @Html.DisplayFor(modelItem => item.Name)
+                            @Html.DisplayFor(modelItem => item.Name)
                         </td>
                         <td>
-                                    @{
-                                        if (item.Gender.HasValue)
-                                        {
+                            @{
+                                if (item.Gender.HasValue)
+                                {
 
-                                            @StaticData.gender[item.Gender.Value]
-                                        }
+                                    @StaticData.gender[item.Gender.Value]
+                                }
 
-                                    }
+                            }
                         </td>
                         <td>
-                                    @Html.DisplayFor(modelItem => item.Major)
+                            @Html.DisplayFor(modelItem => item.Major)
                         </td>
                         <td>
-                                    @Html.DisplayFor(modelItem => item.Job)
+                            @Html.DisplayFor(modelItem => item.Job)
                         </td>
                         <td>
-                                    @Html.DisplayFor(modelItem => item.Department)
+                            @Html.DisplayFor(modelItem => item.Department)
                         </td>
                         <td>
-                                    @Html.DisplayFor(modelItem => item.WorkPlace)
+                            @Html.DisplayFor(modelItem => item.WorkPlace)
                         </td>
                         <td>
-                                    @Html.DisplayFor(modelItem => item.PhoneNumber)
+                            @Html.DisplayFor(modelItem => item.PhoneNumber)
                         </td>
                         <td>
-                                    @{
-                                        if (item.Belong.HasValue)
-                                        {
-                                            @StaticData.belong[item.Belong.Value]
-                                            ;
-                                        }
-                                    }
+                            @{
+                                if (item.Belong.HasValue)
+                                {
+                                    @StaticData.belong[item.Belong.Value]
+                                    ;
+                                }
+                            }
                         </td>
                         <td>
-                                    @Html.DisplayFor(modelItem => item.CompanyNameForForeign)
+                            @Html.DisplayFor(modelItem => item.CompanyNameForForeign)
                         </td>
                         <td>
-                                    @Html.DisplayFor(modelItem => item.Sector!.Name)
+                            @Html.DisplayFor(modelItem => item.Sector!.Name)
                         </td>
                         <td>
-                                    @Html.DisplayFor(modelItem => item.Degree!.Name)
+                            @Html.DisplayFor(modelItem => item.Degree!.Name)
                         </td>
                         <td>
-                            <a asp-action="Edit" asp-route-id="@item.Id"  class="btn btn-dark">Edit</a>
+                            <a asp-action="Edit" asp-route-id="@item.Id" type="button" class="btn btn-dark">Edit</a>
                             <a asp-action="Details" asp-route-id="@item.Id" type="button" class="btn btn-info ">Details</a>
                             <button type="button" class="btn btn-danger " data-bs-toggle="modal" data-bs-target="#deleteModal" data-employeeid="@item.Id">
                                 Delete
@@ -214,58 +215,61 @@
                             <a asp-action="Courses" asp-route-id="@item.Id" type="button" class="btn btn-success ">الدورات</a>
                         </td>
                     </tr>
-                            index++;
-                        }
+                    index++;
+                }
             </tbody>
         </table>
     </div>
 </div>
-                        @{
-                            if (Model.Count() != 0)
+
+<div>
+    @{
+        if (Model.Count() != 0)
+        {
+            <div style="display: flex; justify-content: center;">
+                <nav aria-label="Page navigation example">
+                    <ul class="pagination" style="display: flex; justify-content: center; align-items: center;">
+                        <!-- Previous Button -->
+                        <li class="page-item @(ViewBag.Pages.page == 1 ? "disabled" : "")">
+                            <a href="#" class="page-link" onclick="changePage(@(ViewBag.Pages.page - 1))">
+                                <span aria-hidden="true">&laquo;</span>
+                            </a>
+                        </li>
+
+                        <!-- Page Numbers -->
+                        @if (ViewBag.Pages.totalPages > 0)
+                        {
+                            int currentPage = ViewBag.Pages.page;
+                            int totalPages = (int)ViewBag.Pages.totalPages;
+
+                            int startPage = Math.Max(1, currentPage - 1);
+                            int endPage = Math.Min(totalPages, startPage + 2);
+
+                            if (endPage - startPage < 2)
                             {
-        <div style="display: flex; justify-content: center;">
-            <nav aria-label="Page navigation example">
-                <ul class="pagination" style="display: flex; justify-content: center; align-items: center;">
-                    <!-- Previous Button -->
-                    <li class="page-item @(ViewBag.Pages.page == 1 ? "disabled" : "")">
-                        <a href="#" class="page-link" onclick="changePage(@(ViewBag.Pages.page - 1))">
-                            <span aria-hidden="true">&laquo;</span>
-                        </a>
-                    </li>
+                                startPage = Math.Max(1, endPage - 2);
+                            }
 
-                    <!-- Page Numbers -->
-                                            @if (ViewBag.Pages.totalPages > 0)
-                                            {
-                                                int currentPage = ViewBag.Pages.page;
-                                                int totalPages = (int)ViewBag.Pages.totalPages;
-
-                                                int startPage = Math.Max(1, currentPage - 1);
-                                                int endPage = Math.Min(totalPages, startPage + 2);
-
-                                                if (endPage - startPage < 2)
-                                                {
-                                                    startPage = Math.Max(1, endPage - 2);
-                                                }
-
-                                                for (int i = startPage; i <= endPage; i++)
-                                                {
-                            <li class="page-item @(i == currentPage ? "active" : "")">
-                                <a href="#" class="page-link" onclick="changePage(@i)">@i</a>
-                            </li>
-                                                }
-                                            }
-
-                    <!-- Next Button -->
-                    <li class="page-item @(ViewBag.Pages.page == ViewBag.Pages.totalPages ? "disabled" : "")">
-                        <a href="#" class="page-link" onclick="changePage(@(ViewBag.Pages.page + 1))">
-                            <span aria-hidden="true">&raquo;</span>
-                        </a>
-                    </li>
-                </ul>
-            </nav>
-        </div>
+                            for (int i = startPage; i <= endPage; i++)
+                            {
+                                <li class="page-item @(i == currentPage ? "active" : "")">
+                                    <a href="#" class="page-link" onclick="changePage(@i)">@i</a>
+                                </li>
                             }
                         }
+
+                        <!-- Next Button -->
+                        <li class="page-item @(ViewBag.Pages.page == ViewBag.Pages.totalPages ? "disabled" : "")">
+                            <a href="#" class="page-link" onclick="changePage(@(ViewBag.Pages.page + 1))">
+                                <span aria-hidden="true">&raquo;</span>
+                            </a>
+                        </li>
+                    </ul>
+                </nav>
+            </div>
+        }
+    }
+</div>
 <!-- Modal -->
 <div class="modal fade" id="deleteModal" tabindex="-1" aria-labelledby="deleteModalLabel" aria-hidden="true">
     <div class="modal-dialog">
