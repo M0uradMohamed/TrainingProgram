@@ -59,5 +59,12 @@ namespace Models.ViewModels
         [ValidateNever]
         [Display(Name = "الحالة")]
         public bool? Status { get; set; }
+
+        [ValidateNever]
+        [Display(Name = "القطاع")]
+        public string? Sector { get; set; }
+        [ValidateNever]
+        [Display(Name = "الدرجة")]
+        public string? Degree { get; set; }
     }
 }

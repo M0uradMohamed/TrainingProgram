@@ -113,7 +113,17 @@
                     }
                 </td>
                 <td>
-                    @item.Notes
+                        @{
+                            if (item.Notes != null)
+                            {
+
+                                @foreach (var note in item.Notes!.Split("\n"))
+                                {
+                                <p>@note</p>
+                                }
+
+                            }
+                        }
                 </td>
                 <td>
                     @item.File

@@ -1,5 +1,5 @@
 ﻿@using Models.StaticData
-@model Models.Employee
+@model Models.ViewModels.EmployeeVM
 
 @{
     ViewData["Title"] = "Details";
@@ -11,97 +11,167 @@
 <div>
     <h4>Employee</h4>
     <hr />
-    <dl class="row">
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.FoundationId)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.FoundationId)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Name)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Name)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Gender)
-        </dt>
-        <dd class = "col-sm-10">
-            @{
-                if (Model.Gender.HasValue)
-                {
 
-                    @StaticData.gender[Model.Gender.Value]
-                    ;
+    <div class="row">
+        <div class="col-2">
+            <h4><b>@Html.DisplayNameFor(model => model.FoundationId)</b></h4>
+        </div>
+        <div class="col-1">
+            <h4>:</h4>
+        </div>
+        <div class="col-2">
+            <h4>@Html.DisplayFor(model => model.FoundationId)</h4>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-2">
+            <h4><b>@Html.DisplayNameFor(model => model.Name)</b></h4>
+        </div>
+        <div class="col-1">
+            <h4>:</h4>
+        </div>
+        <div class="col-2">
+            <h4>@Html.DisplayFor(model => model.Name)</h4>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-2">
+            <h4><b>@Html.DisplayNameFor(model => model.Gender)</b></h4>
+        </div>
+        <div class="col-1">
+            <h4>:</h4>
+        </div>
+        <div class="col-2">
+            <h4>
+                @{
+                    if (Model.Gender.HasValue)
+                    {
+                        @StaticData.gender[Model.Gender.Value]
+                    }
                 }
+            </h4>
+        </div>
+    </div>
 
-            }
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Major)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Major)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Job)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Job)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Department)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Department)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.WorkPlace)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.WorkPlace)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.PhoneNumber)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.PhoneNumber)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Belong)
-        </dt>
-        <dd class = "col-sm-10">
-            @{
-                if (Model.Belong.HasValue)
-                {
+    <div class="row">
+        <div class="col-2">
+            <h4><b>@Html.DisplayNameFor(model => model.Major)</b></h4>
+        </div>
+        <div class="col-1">
+            <h4>:</h4>
+        </div>
+        <div class="col-2">
+            <h4>@Html.DisplayFor(model => model.Major)</h4>
+        </div>
+    </div>
 
-                    @StaticData.belong[Model.Belong.Value]
-                    ;
+    <div class="row">
+        <div class="col-2">
+            <h4><b>@Html.DisplayNameFor(model => model.Job)</b></h4>
+        </div>
+        <div class="col-1">
+            <h4>:</h4>
+        </div>
+        <div class="col-2">
+            <h4>@Html.DisplayFor(model => model.Job)</h4>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-2">
+            <h4><b>@Html.DisplayNameFor(model => model.Department)</b></h4>
+        </div>
+        <div class="col-1">
+            <h4>:</h4>
+        </div>
+        <div class="col-2">
+            <h4>@Html.DisplayFor(model => model.Department)</h4>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-2">
+            <h4><b>@Html.DisplayNameFor(model => model.WorkPlace)</b></h4>
+        </div>
+        <div class="col-1">
+            <h4>:</h4>
+        </div>
+        <div class="col-2">
+            <h4>@Html.DisplayFor(model => model.WorkPlace)</h4>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-2">
+            <h4><b>@Html.DisplayNameFor(model => model.PhoneNumber)</b></h4>
+        </div>
+        <div class="col-1">
+            <h4>:</h4>
+        </div>
+        <div class="col-2">
+            <h4>@Html.DisplayFor(model => model.PhoneNumber)</h4>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-2">
+            <h4><b>@Html.DisplayNameFor(model => model.Belong)</b></h4>
+        </div>
+        <div class="col-1">
+            <h4>:</h4>
+        </div>
+        <div class="col-2">
+            <h4>
+                @{
+                    if (Model.Belong.HasValue)
+                    {
+                        @StaticData.belong[Model.Belong.Value]
+                    }
                 }
+            </h4>
+        </div>
+    </div>
 
-            }
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.CompanyNameForForeign)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.CompanyNameForForeign)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Sector)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Sector.Name)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Degree)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Degree.Name)
-        </dd>
-    </dl>
+    <div class="row">
+        <div class="col-2">
+            <h4><b>@Html.DisplayNameFor(model => model.CompanyNameForForeign)</b></h4>
+        </div>
+        <div class="col-1">
+            <h4>:</h4>
+        </div>
+        <div class="col-2">
+            <h4>@Html.DisplayFor(model => model.CompanyNameForForeign)</h4>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-2">
+            <h4><b>@Html.DisplayNameFor(model => model.Sector)</b></h4>
+        </div>
+        <div class="col-1">
+            <h4>:</h4>
+        </div>
+        <div class="col-2">
+            <h4>@Html.DisplayFor(model => model.Sector)</h4>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-2">
+            <h4><b>@Html.DisplayNameFor(model => model.Degree)</b></h4>
+        </div>
+        <div class="col-1">
+            <h4>:</h4>
+        </div>
+        <div class="col-2">
+            <h4>@Html.DisplayFor(model => model.Degree)</h4>
+        </div>
+    </div>
+
 </div>
+
 <div>
     <a asp-action="Edit" asp-route-id="@Model?.Id">Edit</a> |
     <a asp-action="Index">Back to List</a>

@@ -37,7 +37,23 @@ namespace TrainingProgram.Areas.Manage.Controllers
         public IActionResult Index(string? FoundationId, string? Name, string? Job, string? Department
            , int? SectorId, int? DegreeId, string? WorkPlace , int page=1)
         {
-            var employees = employeeRepository.Get(includeProps: [e => e.Degree!, e => e.Sector!]);
+            var employees = employeeRepository.Get(includeProps: [e => e.Degree!, e => e.Sector!])
+                .Select(e=> new EmployeeVM 
+                {
+                    Id=e.Id,
+                    Name=e.Name,
+                    Gender=e.Gender,
+                    Belong=e.Belong,
+                    FoundationId=e.FoundationId,
+                    Department=e.Department,
+                    Job=e.Job,
+                    PhoneNumber=e.PhoneNumber,
+                    WorkPlace=e.WorkPlace,
+                    Major=e.Major,
+                    CompanyNameForForeign=e.CompanyNameForForeign,
+                    Degree=e.Degree!.Name,
+                    Sector=e.Sector!.Name
+                });
 
             if (FoundationId != null)
             {
@@ -101,7 +117,22 @@ namespace TrainingProgram.Areas.Manage.Controllers
             var employee = employeeRepository.Get(includeProps:
                [ e => e.Degree!,
                 e => e.Sector!]
-                , expression: m => m.Id == id)
+                , expression: m => m.Id == id).Select(e => new EmployeeVM
+                {
+                    Id = e.Id,
+                    Name = e.Name,
+                    Gender = e.Gender,
+                    Belong = e.Belong,
+                    FoundationId = e.FoundationId,
+                    Department = e.Department,
+                    Job = e.Job,
+                    PhoneNumber = e.PhoneNumber,
+                    WorkPlace = e.WorkPlace,
+                    Major = e.Major,
+                    CompanyNameForForeign = e.CompanyNameForForeign,
+                    Degree = e.Degree!.Name,
+                    Sector = e.Sector!.Name
+                })
                 .FirstOrDefault();
             if (employee == null)
             {

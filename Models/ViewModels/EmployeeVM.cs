@@ -46,7 +46,13 @@ namespace Models.ViewModels
         [Display(Name = "التبعية")]
         public Belong? Belong { get; set; }
         [ValidateNever]
-        [Display(Name = "اسم الشركة للغير نابع")]
+        [Display(Name = "اسم الشركة التابعة")]
         public string? CompanyNameForForeign { get; set; }
+        [ValidateNever]
+        [Display(Name = "القطاع")]
+        public string? Sector { get; set; }
+        [ValidateNever]
+        [Display(Name = "الدرجة")]
+        public string? Degree { get; set; }
     }
 }

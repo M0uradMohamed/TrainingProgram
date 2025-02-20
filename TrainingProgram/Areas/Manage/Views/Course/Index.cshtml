@@ -15,7 +15,7 @@
 </p>
 <div class="row col-12 mb-2">
     <div class="col-2">
-<a asp-action="print" class="btn btn-success" target="_blank"> Print Report</a>
+        <a asp-action="print" class="btn btn-success" target="_blank"> Print Report</a>
     </div>
 </div>
 <div class="row col-12">
@@ -164,30 +164,30 @@
                         <div class="form-check form-switch row mt-2">
                             <div class="col-4 me-4">
 
-                            @{
+                                @{
 
-                                if (ViewBag.Search.Sort)
-                                {
-                                    <input class="form-check-input" name="Sort" value="true" checked type="checkbox">
+                                    if (ViewBag.Search.Sort)
+                                    {
+                                        <input class="form-check-input" name="Sort" value="true" checked type="checkbox">
+                                    }
+                                    else
+                                    {
+                                        <input class="form-check-input" name="Sort" value="true" type="checkbox">
+                                    }
                                 }
-                                else
-                                {
-                                    <input class="form-check-input" name="Sort" value="true" type="checkbox">
-                                }
-                            }
                             </div>
                             <div class="col-8 ms-4">
-                            <label class="form-check-label" for="Sort">ترتيب تنازلي</label>
+                                <label class="form-check-label" for="Sort">ترتيب تنازلي</label>
                             </div>
                         </div>
-                    <div class="row">
-                    <div class="col-4">
-                        <input type="submit" value="search" class="btn btn-primary" />
-                    </div>
-                    <div class="col-8">
-                        <a type="button" asp-action="index" class="btn btn-danger "> reset</a>
-                    </div>
-                    </div>
+                        <div class="row">
+                            <div class="col-4">
+                                <input type="submit" value="search" class="btn btn-primary" />
+                            </div>
+                            <div class="col-8">
+                                <a type="button" asp-action="index" class="btn btn-danger "> reset</a>
+                            </div>
+                        </div>
                     </form>
                 </div>
             </div>
@@ -302,7 +302,7 @@
             </thead>
             <tbody>
                 @{
-                    int index = (ViewBag.Pages.page * 5) - 4;
+                    int index = (ViewBag.Pages.page * 30) - 29;
                 }
                 @foreach (var item in Model)
                 {
@@ -439,11 +439,11 @@
                         <td>
                             <a asp-action="Edit" asp-route-id="@item.Id" type="button" class="btn btn-dark">Edit</a>
                             <a asp-action="Details" asp-route-id="@item.Id" type="button" class="btn btn-info ">Details</a>
-                            <a asp-action="Course" asp-route-id="@item.Id" asp-controller="trainee" type="button" class="btn btn-primary ">المتدربين</a>
-                            <a asp-action="index" asp-route-id="@item.Id" asp-controller="CourseInstructor" type="button" class="btn btn-success ">المدربين</a>
                             <button type="button" class="btn btn-danger " data-bs-toggle="modal" data-bs-target="#deleteModal" data-courseid="@item.Id">
                                 Delete
                             </button>
+                            <a asp-action="index" asp-route-id="@item.Id" asp-controller="CourseInstructor" type="button" class="btn btn-success ">المدربين</a>
+                            <a asp-action="Course" asp-route-id="@item.Id" asp-controller="trainee" type="button" class="btn btn-primary ">المتدربين</a>
                         </td>
                     </tr>
                     index++;
@@ -459,6 +459,13 @@
             <div style="display: flex; justify-content: center;">
                 <nav aria-label="Page navigation example">
                     <ul class="pagination" style="display: flex; justify-content: center; align-items: center;">
+                        <!-- First Button -->
+                        <li class="page-item @(ViewBag.Pages.page == 1 ? "disabled" : "")">
+                            <a href="#" class="page-link" onclick="changePage(1)">
+                                 First
+                            </a>
+                        </li>
+
                         <!-- Previous Button -->
                         <li class="page-item @(ViewBag.Pages.page == 1 ? "disabled" : "")">
                             <a href="#" class="page-link" onclick="changePage(@(ViewBag.Pages.page - 1))">
@@ -494,12 +501,20 @@
                                 <span aria-hidden="true">&raquo;</span>
                             </a>
                         </li>
+
+                        <!-- Last Button -->
+                        <li class="page-item @(ViewBag.Pages.page == ViewBag.Pages.totalPages ? "disabled" : "")">
+                            <a href="#" class="page-link" onclick="changePage(@ViewBag.Pages.totalPages)">
+                                Last 
+                            </a>
+                        </li>
                     </ul>
                 </nav>
             </div>
         }
     }
 </div>
+
 <!-- Modal -->
 <div class="modal fade" id="deleteModal" tabindex="-1" aria-labelledby="deleteModalLabel" aria-hidden="true">
     <div class="modal-dialog">

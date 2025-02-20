@@ -37,14 +37,36 @@ namespace TrainingProgram.Areas.Manage.Controllers
         // GET: Manage/Instructor
         public IActionResult Index(string? Search , int page=1 )
         {
-            var instructors = instructorRepository.Get(includeProps: [e => e.Degree!, e => e.Sector! ]);
+            var qinstructors = instructorRepository.Get(includeProps: [e => e.Degree!, e => e.Sector! ]);
             if(Search != null)
             {
-                instructors = instructors.Where( e => e.Name!.Contains( Search.TrimStart().TrimEnd() ) || e.FoundationId!.Contains( Search.TrimStart().TrimEnd() )
+                qinstructors =qinstructors.Where( e => e.Name!.Contains( Search.TrimStart().TrimEnd() ) || e.FoundationId!.Contains( Search.TrimStart().TrimEnd() )
                     || e.PhoneNumber!.Contains(Search.TrimStart().TrimEnd()) );
             }
-            double totalPages = Math.Ceiling((double)instructors.Count() / 20);
-            instructors = instructors.Skip((page - 1) * 20).Take(20);
+            double totalPages = Math.Ceiling((double)qinstructors.Count() / 20);
+            qinstructors = qinstructors.Skip((page - 1) * 20).Take(20);
+
+         IQueryable<InstructorVM>instructors = qinstructors.Select(e => new InstructorVM
+            {
+                Id = e.Id,
+                Name = e.Name,
+                FoundationId = e.FoundationId,
+                AcademicDegree = e.AcademicDegree,
+                AcademicDegreeeDate = e.AcademicDegreeeDate,
+                Email = e.Email,
+                BirthDate = e.BirthDate,
+                HiringDate = e.HiringDate,
+                GraduationeDate = e.GraduationeDate,
+                Major=e.Major,
+                PhoneNumber=e.PhoneNumber,
+                OtherPhoneNumber=e.OtherPhoneNumber,
+                Status=e.Status,
+                WorkPlace=e.WorkPlace,
+                Department=e.Department,
+                Degree = e.Degree!.Name,
+                Sector=e.Sector!.Name
+                
+            });
 
             ViewBag.Pages = new { page, totalPages };
             ViewBag.Search = Search;

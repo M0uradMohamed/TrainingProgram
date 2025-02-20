@@ -1,4 +1,4 @@
-﻿@model IEnumerable<Models.Instructor>
+﻿@model IEnumerable<Models.ViewModels.InstructorVM>
 
 @{
     ViewData["Title"] = "Index";
@@ -22,10 +22,10 @@
         </div>
         <div class="row col-4 mt-2 mb-2">
             <div class="col-1 ms-4">
-            <input type="submit" value="search" class="btn btn-primary" />
+                <input type="submit" value="search" class="btn btn-primary" />
             </div>
             <div class="col-1 me-4">
-            <a type="button" asp-action="index" class="btn btn-danger "> reset</a>
+                <a type="button" asp-action="index" class="btn btn-danger "> reset</a>
             </div>
         </div>
     </form>
@@ -33,7 +33,7 @@
 
 <div class="table-container">
     <table class="table table-striped table-bordered text-nowrap">
-        <thead class="bg-primary text-white">
+        <thead class="bg-primary text-white" style="background-color:#5D7B9D  ">
             <tr>
                 <th>#</th>
                 <th>@Html.DisplayNameFor(model => model.FoundationId)</th>
@@ -76,8 +76,8 @@
                     <td>@Html.DisplayFor(modelItem => item.PhoneNumber)</td>
                     <td>@Html.DisplayFor(modelItem => item.OtherPhoneNumber)</td>
                     <td>@Html.DisplayFor(modelItem => item.Email)</td>
-                    <td>@Html.DisplayFor(modelItem => item.Degree!.Name)</td>
-                    <td>@Html.DisplayFor(modelItem => item.Sector!.Name)</td>
+                    <td>@Html.DisplayFor(modelItem => item.Degree!)</td>
+                    <td>@Html.DisplayFor(modelItem => item.Sector!)</td>
                     <td>
                         @if (item.Status != null)
                         {
@@ -218,7 +218,6 @@
         }
 
         .table th {
-            text-align: left;
             padding: 10px;
             border: 2px solid black; /* حدود ثابتة للهيدر */
             border-bottom: 2px solid black !important; /* تأكيد ثبات الحد السفلي */

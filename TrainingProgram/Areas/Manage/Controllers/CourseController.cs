@@ -165,8 +165,8 @@ namespace TrainingProgram.Areas.Manage.Controllers
                 Sort
             };
 
-            double totalPages = Math.Ceiling((double)courses.Count() / 5);
-            courses = courses.Skip((page - 1) * 5).Take(5);
+            double totalPages = Math.Ceiling((double)courses.Count() / 30);
+            courses = courses.Skip((page - 1) * 30).Take(30);
 
             ViewBag.Pages = new { page, totalPages };
 
