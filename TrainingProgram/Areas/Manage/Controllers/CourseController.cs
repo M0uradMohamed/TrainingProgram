@@ -626,6 +626,11 @@ namespace TrainingProgram.Areas.Manage.Controllers
                         System.IO.File.Delete(filePath);
                     }
                 }
+                string courseFilesPath = Path.Combine(Directory.GetCurrentDirectory(), $"wwwroot\\TraineesFiles\\Course{course.Id}");
+                if (Directory.Exists(courseFilesPath))
+                {
+                    Directory.Delete(courseFilesPath, true);
+                }
 
                 courseRepository.Delete(course);
 
