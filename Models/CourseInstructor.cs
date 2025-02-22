@@ -15,8 +15,8 @@ namespace Models
         public double? Rating { get; set; }
         public Position Position { get; set; }
 
-        public Course Course { get; set; }
-        public Instructor Instructor { get; set; }
+        public Course? Course { get; set; }
+        public Instructor? Instructor { get; set; }
         
 
     }

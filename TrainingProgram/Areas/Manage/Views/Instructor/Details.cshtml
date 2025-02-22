@@ -1,4 +1,4 @@
-﻿@model Models.Instructor
+﻿@model Models.ViewModels.InstructorVM
 
 @{
     ViewData["Title"] = "Details";
@@ -92,13 +92,32 @@
     <div class="row">
         <div class="col-2"><h4><b>@Html.DisplayNameFor(model => model.Degree)</b></h4></div>
         <div class="col-1"><h4>:</h4></div>
-        <div class="col-2"><h4>@Html.DisplayFor(model => model.Degree!.Name)</h4></div>
+        <div class="col-2"><h4>@Html.DisplayFor(model => model.Degree)</h4></div>
     </div>
 
     <div class="row">
         <div class="col-2"><h4><b>@Html.DisplayNameFor(model => model.Sector)</b></h4></div>
         <div class="col-1"><h4>:</h4></div>
-        <div class="col-2"><h4>@Html.DisplayFor(model => model.Sector!.Name)</h4></div>
+        <div class="col-2"><h4>@Html.DisplayFor(model => model.Sector)</h4></div>
+    </div> 
+    <div class="row">
+        <div class="col-2"><h4><b>@Html.DisplayNameFor(model => model.Status)</b></h4></div>
+        <div class="col-1"><h4>:</h4></div>
+        <div class="col-2">
+            <h4>
+                @if (Model.Status != null)
+                {
+                    @if (Model.Status == false)
+                    {
+                        <span>غير معتمد</span>
+                    }
+                    else
+                    {
+                        <span>معتمد</span>
+                    }
+                }
+            </h4>
+        </div>
     </div>
 </div>
 

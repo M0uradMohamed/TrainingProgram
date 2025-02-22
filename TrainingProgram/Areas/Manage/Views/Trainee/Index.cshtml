@@ -20,30 +20,30 @@
         <div class="form-group">
             <label name="Estimate" class="form-label">تقدير</label>
             <select class="form-select" name="Estimate">
-                    @{
+                @{
 
                     if (ViewBag.Search.Estimate == null)
+                    {
+                        <option value="" selected>غير محدد</option>
+                    }
+                    else
+                    {
+                        <option value="">غير محدد</option>
+                    }
+                    foreach (var item in ViewBag.Estimate)
+                    {
+                        if (ViewBag.Search.Estimate == item.Key)
                         {
-                            <option value="" selected>غير محدد</option>
+                            <option value="@item.Key" selected>@item.Value</option>
                         }
                         else
                         {
-                            <option value="">غير محدد</option>
+                            <option value="@item.Key">@item.Value</option>
                         }
-                    foreach (var item in ViewBag.Estimate)
-                        {
-                        if (ViewBag.Search.Estimate == item.Key)
-                            {
-                                <option value="@item.Key" selected>@item.Value</option>
-                            }
-                            else
-                            {
-                                <option value="@item.Key">@item.Value</option>
-                            }
 
-                        }
                     }
-                </select>
+                }
+            </select>
         </div>
 
         <input type="hidden" name="Page" id="pageInput" value="@ViewBag.Pages.page" />
@@ -59,90 +59,92 @@
 
 
 
-<table class="table table-striped table-bordered text-nowrap">
-    <thead class="bg-primary text-white" style="background-color:#5D7B9D  ">
-        <tr>
-            <th>#</th>
-            <th>
-                @Html.DisplayNameFor(model => model.FoundationId)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.EmployeeName)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Job)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Department)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.SectorName)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.WorkPlace)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.CourseName)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.BeginningDate)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.EndingDate)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.TotalMarks)
-            </th>
-            <th></th>
-        </tr>
-    </thead>
-    <tbody>
-        @{
-            int index = (ViewBag.Pages.page * 50) - 49;
-        }
-        @foreach (var item in Model)
-        {
+<div class="table-container">
+    <table class="table table-striped table-bordered text-nowrap">
+        <thead class="bg-primary text-white" style="background-color:#5D7B9D  ">
             <tr>
-                <td>@index</td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.FoundationId)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.EmployeeName)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.Job)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.Department)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.SectorName)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.WorkPlace)
-                </td>
-
-                <td>
-                    @Html.DisplayFor(modelItem => item.CourseName)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.BeginningDate)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.EndingDate)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.TotalMarks)
-                </td>
-                <td>
-                    <a asp-action="course" asp-controller="trainee" asp-route-id="@item.CourseId" type="button" class="btn btn-info ">Details</a>
-                </td>
+                <th>#</th>
+                <th>
+                    @Html.DisplayNameFor(model => model.FoundationId)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.EmployeeName)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.Job)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.Department)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.SectorName)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.WorkPlace)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.CourseName)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.BeginningDate)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.EndingDate)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.TotalMarks)
+                </th>
+                <th></th>
             </tr>
-            index++;
-        }
-    </tbody>
-</table>
+        </thead>
+        <tbody>
+            @{
+                int index = (ViewBag.Pages.page * 50) - 49;
+            }
+            @foreach (var item in Model)
+            {
+                <tr>
+                    <td>@index</td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.FoundationId)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.EmployeeName)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Job)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Department)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.SectorName)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.WorkPlace)
+                    </td>
+
+                    <td>
+                        @Html.DisplayFor(modelItem => item.CourseName)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.BeginningDate)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.EndingDate)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.TotalMarks)
+                    </td>
+                    <td>
+                        <a asp-action="course" asp-controller="trainee" asp-route-id="@item.CourseId" type="button" class="btn btn-info ">Details</a>
+                    </td>
+                </tr>
+                index++;
+            }
+        </tbody>
+    </table>
+</div>
 <div class="mt-2">
     @{
         if (Model.Count() != 0)
@@ -215,3 +217,35 @@
         document.getElementById("searchForm").submit();
     }
 </script>
+<style>
+    .table-container {
+        max-height: 750px; /* التحكم في ارتفاع الجدول */
+        overflow-y: auto; /* تفعيل التمرير العمودي */
+        border: 2px solid black; /* حدود واضحة للجدول */
+        position: relative;
+    }
+
+    .table {
+        width: 100%;
+        border-collapse: separate;
+        border-spacing: 0; /* إزالة الفراغات بين الحدود */
+    }
+
+        .table thead {
+            position: sticky;
+            top: 0;
+            color: white;
+            z-index: 2;
+        }
+
+        .table th {
+            padding: 10px;
+            border: 2px solid black; /* حدود ثابتة للهيدر */
+            border-bottom: 2px solid black !important; /* تأكيد ثبات الحد السفلي */
+        }
+
+        .table tbody td {
+            border: 2px solid black; /* تأكيد ظهور الحدود داخل الجدول */
+        }
+
+</style>

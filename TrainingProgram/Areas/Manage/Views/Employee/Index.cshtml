@@ -17,7 +17,11 @@
             <div class="row">
                 <div class="col-12">
 
-                    <form asp-action="index">
+                    <form asp-action="index" id="searchForm">
+
+                        <input type="hidden" name="Page" id="pageInput" value="@ViewBag.Pages.page" />
+
+
                         <div class="form-group ">
                             <label for="FoundationId" class="control-label">رقم المؤسسة</label>
                             <input name="FoundationId" class="form-control" value="@ViewBag.Search.FoundationId" />

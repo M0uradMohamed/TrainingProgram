@@ -31,9 +31,10 @@
             @ViewBag.Course.EndingDate
         </dd>
         <dt class="col-sm-2">
-            المدرب الاساسي :
+            المدرب الاول :
         </dt>
         <dd class="col-sm-10">
+            @ViewBag.Course.Instructor
         </dd>
         <dt class="col-sm-2">
             مكان التنفيذ :
@@ -192,7 +193,6 @@
                     </td>
                     <td>
                         <a asp-action="Edit" asp-route-id="@ViewBag.Course.Id" asp-route-EmployeeId="@item.EmployeeId" type="button" class="btn btn-dark">Edit</a>
-                        <a asp-action="Details" asp-route-id="@ViewBag.Course.Id" asp-route-EmployeeId="@item.EmployeeId" type="button" class="btn btn-info ">Details</a>
                         <button type="button" class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#deleteModal"
                                 data-courseid="@ViewBag.Course.Id" data-employeeid="@item.EmployeeId">
                             Delete

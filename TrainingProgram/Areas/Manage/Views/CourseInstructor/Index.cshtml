@@ -11,6 +11,9 @@
 <p>
     <a asp-action="Create" asp-route-id="@ViewBag.Course.Id" class="btn btn-primary">Create New</a>
 </p>
+<form asp-action="index" id="searchForm">
+    <input type="hidden" name="Page" id="pageInput" value="@ViewBag.Pages.page" />
+</form>
 <div>
     <dl class="row">
         <dt class="col-sm-2">
@@ -44,16 +47,16 @@
         <tr>
             <th>#</th>
             <th>
-                @Html.DisplayNameFor(model => model.Instructor)
+                الاسم
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.CourseNotes)
+               ملاحظات الدورة
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.Rating)
+               تقييم المدرب
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.Position)
+               ترتيب المدرب
             </th>
             <th></th>
         </tr>
@@ -67,7 +70,7 @@
             <tr>
                 <td>@index</td>
                 <td>
-                    @Html.DisplayFor(modelItem => item.Instructor.Name)
+                    @Html.DisplayFor(modelItem => item.Instructor!.Name)
                 </td>
                 <td>    
                 @{

@@ -83,7 +83,27 @@ namespace TrainingProgram.Areas.Manage.Controllers
             var instructor = instructorRepository.Get(includeProps:
                [ e => e.Degree!,
                 e => e.Sector!]
-                , expression: m => m.Id == id)
+                , expression: m => m.Id == id).Select(e => new InstructorVM
+                {
+                    Id = e.Id,
+                    Name = e.Name,
+                    FoundationId = e.FoundationId,
+                    AcademicDegree = e.AcademicDegree,
+                    AcademicDegreeeDate = e.AcademicDegreeeDate,
+                    Email = e.Email,
+                    BirthDate = e.BirthDate,
+                    HiringDate = e.HiringDate,
+                    GraduationeDate = e.GraduationeDate,
+                    Major = e.Major,
+                    PhoneNumber = e.PhoneNumber,
+                    OtherPhoneNumber = e.OtherPhoneNumber,
+                    Status = e.Status,
+                    WorkPlace = e.WorkPlace,
+                    Department = e.Department,
+                    Degree = e.Degree!.Name,
+                    Sector = e.Sector!.Name
+
+                })
                 .FirstOrDefault();
             if (instructor == null)
             {

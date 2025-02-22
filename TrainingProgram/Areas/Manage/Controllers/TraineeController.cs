@@ -3,6 +3,7 @@ using DataAccess.Repository;
 using DataAccess.Repository.IRepository;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.ModelBinding;
+using Microsoft.EntityFrameworkCore;
 using Models;
 using Models.EnumClasses;
 using Models.StaticData;
@@ -24,7 +25,7 @@ namespace TrainingProgram.Areas.Manage.Controllers
             this.traineeRepository = traineeRepository;
             this.employeeRepository = employeeRepository;
         }
-        public IActionResult index(string? EmployeeNumber, string? CourseName, Estimate? Estimate, int page = 1 )
+        public IActionResult index(string? EmployeeNumber, string? CourseName, Estimate? Estimate, int page = 1)
         {
             var qtrainees = traineeRepository.Get(includeProps: [e => e.Employee!, e => e.Course!, e => e.Employee!.Sector!]);
 
@@ -67,7 +68,7 @@ namespace TrainingProgram.Areas.Manage.Controllers
 
             ViewBag.Pages = new { page, totalPages };
 
-            var search = new { EmployeeNumber, CourseName ,Estimate};
+            var search = new { EmployeeNumber, CourseName, Estimate };
 
             ViewBag.Search = search;
             ViewBag.Estimate = StaticData.estimate;
@@ -84,14 +85,18 @@ namespace TrainingProgram.Areas.Manage.Controllers
                 return RedirectToAction("Notfound", "Home");
 
             }
-            var course = courseRepository.Get(expression: e => e.Id == id, includeProps: [e => e.Instructors!]).Select(e => new
-            {
-                e.Id,
-                e.Name,
-                e.BeginningDate,
-                e.EndingDate,
-                e.ImplementationPlace
-            }).FirstOrDefault();
+            var qcourse = courseRepository.Get(expression: e => e.Id == id);
+            var course = qcourse.Include(e => e.CoursesInstructors).ThenInclude(e => e.Instructor)
+         .Select(e => new
+         {
+             e.Id,
+             e.Name,
+             e.BeginningDate,
+             e.EndingDate,
+             e.ImplementationPlace,
+             Instructor = e.CoursesInstructors.Where(e => e.Position == Position.First).Select(e => e.Instructor!.Name).FirstOrDefault()
+
+         }).FirstOrDefault();
 
             ViewBag.Course = course;
 
@@ -206,7 +211,7 @@ namespace TrainingProgram.Areas.Manage.Controllers
                     EmployeeId = traineeVM.EmployeeId,
                     Estimate = traineeVM.Estimate,
                     Notes = traineeVM.Notes,
-                    SecondNotes=traineeVM.SecondNotes,
+                    SecondNotes = traineeVM.SecondNotes,
                     AbsenceDays = traineeVM.AbsenceDays ?? 0,
                     AttendanceAndDeparture = traineeVM.AttendanceAndDeparture ?? 0,
                     AdherenceMark = traineeVM.AdherenceMark ?? 0,
@@ -297,7 +302,7 @@ namespace TrainingProgram.Areas.Manage.Controllers
                      AdherenceMark = e.AdherenceMark,
                      InteractionMark = e.InteractionMark,
                      Notes = e.Notes,
-                     SecondNotes=e.SecondNotes,
+                     SecondNotes = e.SecondNotes,
                      File = e.File,
                      TotalMarks = e.TotalMarks,
                      WrittenExam = e.WrittenExam,
@@ -336,7 +341,7 @@ namespace TrainingProgram.Areas.Manage.Controllers
                     EmployeeId = traineeVM.EmployeeId,
                     Estimate = traineeVM.Estimate,
                     Notes = traineeVM.Notes,
-                    SecondNotes=traineeVM.SecondNotes,
+                    SecondNotes = traineeVM.SecondNotes,
                     File = traineeVM.File,
                     AbsenceDays = traineeVM.AbsenceDays ?? 0,
                     AttendanceAndDeparture = traineeVM.AttendanceAndDeparture ?? 0,

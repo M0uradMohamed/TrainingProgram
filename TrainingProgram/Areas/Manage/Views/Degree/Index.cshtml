@@ -10,6 +10,9 @@
 <p>
     <a asp-action="Create" class="btn btn-primary">Create New</a>
 </p>
+<form asp-action="index" id="searchForm">
+    <input type="hidden" name="Page" id="pageInput" value="@ViewBag.Pages.page" />
+</form>
 <table class="table table-striped table-bordered text-nowrap">
     <thead class="bg-primary text-white" style="background-color:#5D7B9D  ">
         <tr>
@@ -32,8 +35,8 @@
                     @Html.DisplayFor(modelItem => item.Name)
                 </td>
                 <td>
-                    <a asp-action="Edit" asp-route-id="@item.Id" type="button" class="btn btn-dark">Edit</a> 
-                    <a asp-action="Details" asp-route-id="@item.Id" type="button" class="btn btn-info ">Details</a> 
+                    <a asp-action="Edit" asp-route-id="@item.Id" type="button" class="btn btn-dark">Edit</a>
+                    <a asp-action="Details" asp-route-id="@item.Id" type="button" class="btn btn-info ">Details</a>
                     <button type="button" class="btn btn-danger " data-bs-toggle="modal" data-bs-target="#deleteModal" data-degreeid="@item.Id">
                         <i class="bi bi-trash3"></i> Delete
                     </button>

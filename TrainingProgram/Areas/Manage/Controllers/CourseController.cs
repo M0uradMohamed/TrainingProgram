@@ -99,7 +99,7 @@ namespace TrainingProgram.Areas.Manage.Controllers
             }
             if (Instructor != null)
             {
-                qcourses = qcourses.Where(e => e.CoursesInstructors.Any(c => c.Instructor.Name!.Contains(Instructor.TrimStart().TrimEnd() ) ));
+                qcourses = qcourses.Where(e => e.CoursesInstructors.Any(c => c.Instructor!.Name!.Contains(Instructor.TrimStart().TrimEnd() ) ));
              }
 
 
@@ -138,10 +138,10 @@ namespace TrainingProgram.Areas.Manage.Controllers
                 TraineesRating = e.TraineesRating,
                 CourseNatureName = e.CourseNature!.Name,
                 TrainingSpecialistName = e.TrainingSpecialist!.Name,
-                FirstInstructorName = e.CoursesInstructors.Where(c => c.Position == Position.First).Select(e => e.Instructor.Name).FirstOrDefault(),
-                SecondInstructorName = e.CoursesInstructors.Where(c => c.Position == Position.Second).Select(e => e.Instructor.Name).FirstOrDefault(),
-                ThirdInstructorName = e.CoursesInstructors.Where(c => c.Position == Position.Third).Select(e => e.Instructor.Name).FirstOrDefault(),
-                ForthInstructorName = e.CoursesInstructors.Where(c => c.Position == Position.Fourth).Select(e => e.Instructor.Name).FirstOrDefault()
+                FirstInstructorName = e.CoursesInstructors.Where(c => c.Position == Position.First).Select(e => e.Instructor!.Name).FirstOrDefault(),
+                SecondInstructorName = e.CoursesInstructors.Where(c => c.Position == Position.Second).Select(e => e.Instructor!.Name).FirstOrDefault(),
+                ThirdInstructorName = e.CoursesInstructors.Where(c => c.Position == Position.Third).Select(e => e.Instructor!.Name).FirstOrDefault(),
+                ForthInstructorName = e.CoursesInstructors.Where(c => c.Position == Position.Fourth).Select(e => e.Instructor!.Name).FirstOrDefault()
 
             });
 

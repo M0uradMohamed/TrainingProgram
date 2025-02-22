@@ -51,7 +51,7 @@ namespace TrainingProgram.Areas.Manage.Controllers
 
             ViewBag.Course = course;
 
-            IQueryable<CourseInstructor> courseInstructors = courseInstructorRepository.Get(expression:e=>e.CourseId ==id,includeProps:[e=>e.Instructor])
+            IQueryable<CourseInstructor> courseInstructors = courseInstructorRepository.Get(expression:e=>e.CourseId ==id,includeProps:[e=>e.Instructor!])
                 .OrderBy(e=>e.Position);
 
             double totalPages = Math.Ceiling((double)courseInstructors.Count() / 5);
@@ -137,8 +137,8 @@ namespace TrainingProgram.Areas.Manage.Controllers
                 }).FirstOrDefault();
 
                 var similerCourse = courseInstructorRepository.Get(expression: e => e.InstructorId == courseInstructorVM.InstructorId && e.Position == Position.First ,
-                    includeProps: [e=>e.Course]).ToList()
-               .Any(e => course!.BeginningDate <= e.Course.EndingDate &&
+                    includeProps: [e=>e.Course!]).ToList()
+               .Any(e => course!.BeginningDate <= e.Course!.EndingDate &&
                              course.EndingDate >= e.Course.BeginningDate);
 
                 if (similerCourse)
@@ -209,7 +209,7 @@ namespace TrainingProgram.Areas.Manage.Controllers
             var instructor = courseInstructorRepository.Get(expression: e => e.CourseId == id &&
             e.InstructorId == instructorId, tracked:false). Select(e=> new
             {
-                e.Instructor.Name, e.Position
+                e.Instructor!.Name, e.Position
             }).FirstOrDefault();
 
             ViewBag.Instructor = instructor;
