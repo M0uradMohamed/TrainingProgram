@@ -32,8 +32,8 @@
                     @Html.DisplayFor(modelItem => item.Name)
                 </td>
                 <td>
-                    <a asp-action="Edit" asp-route-id="@item.Id" type="button" class="btn btn-dark">Edit</a> |
-                    <a asp-action="Details" asp-route-id="@item.Id" type="button" class="btn btn-info ">Details</a> |
+                    <a asp-action="Edit" asp-route-id="@item.Id" type="button" class="btn btn-dark">Edit</a> 
+                    <a asp-action="Details" asp-route-id="@item.Id" type="button" class="btn btn-info ">Details</a> 
                     <button type="button" class="btn btn-danger " data-bs-toggle="modal" data-bs-target="#deleteModal" data-implementationTypeid="@item.Id">
                         <i class="bi bi-trash3"></i> Delete
                     </button>
@@ -43,52 +43,68 @@
         }
     </tbody>
 </table>
-@{
-    if (Model.Count() != 0)
-    {
-        <div style="display: flex; justify-content: center;">
-            <nav aria-label="Page navigation example">
-                <ul class="pagination" style="display: flex; justify-content: center; align-items: center;">
-                    <!-- Previous Button -->
-                    <li class="page-item @(ViewBag.Pages.page == 1 ? "disabled" : "")">
-                        <a href="#" class="page-link" onclick="changePage(@(ViewBag.Pages.page - 1))">
-                            <span aria-hidden="true">&laquo;</span>
-                        </a>
-                    </li>
+<div class="mt-2">
+    @{
+        if (Model.Count() != 0)
+        {
+            <div style="display: flex; justify-content: center;">
+                <nav aria-label="Page navigation example">
+                    <ul class="pagination" style="display: flex; justify-content: center; align-items: center;">
+                        <!-- First Button -->
+                        <li class="page-item @(ViewBag.Pages.page == 1 ? "disabled" : "")">
+                            <a href="#" class="page-link" onclick="changePage(1)">
+                                First
+                            </a>
+                        </li>
 
-                    <!-- Page Numbers -->
-                    @if (ViewBag.Pages.totalPages > 0)
-                    {
-                        int currentPage = ViewBag.Pages.page;
-                        int totalPages = (int)ViewBag.Pages.totalPages;
+                        <!-- Previous Button -->
+                        <li class="page-item @(ViewBag.Pages.page == 1 ? "disabled" : "")">
+                            <a href="#" class="page-link" onclick="changePage(@(ViewBag.Pages.page - 1))">
+                                <span aria-hidden="true">&laquo;</span>
+                            </a>
+                        </li>
 
-                        int startPage = Math.Max(1, currentPage - 1);
-                        int endPage = Math.Min(totalPages, startPage + 2);
-
-                        if (endPage - startPage < 2)
+                        <!-- Page Numbers -->
+                        @if (ViewBag.Pages.totalPages > 0)
                         {
-                            startPage = Math.Max(1, endPage - 2);
+                            int currentPage = ViewBag.Pages.page;
+                            int totalPages = (int)ViewBag.Pages.totalPages;
+
+                            int startPage = Math.Max(1, currentPage - 1);
+                            int endPage = Math.Min(totalPages, startPage + 2);
+
+                            if (endPage - startPage < 2)
+                            {
+                                startPage = Math.Max(1, endPage - 2);
+                            }
+
+                            for (int i = startPage; i <= endPage; i++)
+                            {
+                                <li class="page-item @(i == currentPage ? "active" : "")">
+                                    <a href="#" class="page-link" onclick="changePage(@i)">@i</a>
+                                </li>
+                            }
                         }
 
-                        for (int i = startPage; i <= endPage; i++)
-                        {
-                            <li class="page-item @(i == currentPage ? "active" : "")">
-                                <a href="#" class="page-link" onclick="changePage(@i)">@i</a>
-                            </li>
-                        }
-                    }
+                        <!-- Next Button -->
+                        <li class="page-item @(ViewBag.Pages.page == ViewBag.Pages.totalPages ? "disabled" : "")">
+                            <a href="#" class="page-link" onclick="changePage(@(ViewBag.Pages.page + 1))">
+                                <span aria-hidden="true">&raquo;</span>
+                            </a>
+                        </li>
 
-                    <!-- Next Button -->
-                    <li class="page-item @(ViewBag.Pages.page == ViewBag.Pages.totalPages ? "disabled" : "")">
-                        <a href="#" class="page-link" onclick="changePage(@(ViewBag.Pages.page + 1))">
-                            <span aria-hidden="true">&raquo;</span>
-                        </a>
-                    </li>
-                </ul>
-            </nav>
-        </div>
+                        <!-- Last Button -->
+                        <li class="page-item @(ViewBag.Pages.page == ViewBag.Pages.totalPages ? "disabled" : "")">
+                            <a href="#" class="page-link" onclick="changePage(@ViewBag.Pages.totalPages)">
+                                Last
+                            </a>
+                        </li>
+                    </ul>
+                </nav>
+            </div>
+        }
     }
-}
+</div>
 <!-- Modal -->
 <div class="modal fade" id="deleteModal" tabindex="-1" aria-labelledby="deleteModalLabel" aria-hidden="true">
     <div class="modal-dialog">

@@ -4,6 +4,7 @@ using DataAccess.Repository.IRepository;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.ModelBinding;
 using Models;
+using Models.EnumClasses;
 using Models.StaticData;
 using Models.ViewModels;
 
@@ -23,7 +24,7 @@ namespace TrainingProgram.Areas.Manage.Controllers
             this.traineeRepository = traineeRepository;
             this.employeeRepository = employeeRepository;
         }
-        public IActionResult index(string? EmployeeNumber, string? CourseName, int page = 1)
+        public IActionResult index(string? EmployeeNumber, string? CourseName, Estimate? Estimate, int page = 1 )
         {
             var qtrainees = traineeRepository.Get(includeProps: [e => e.Employee!, e => e.Course!, e => e.Employee!.Sector!]);
 
@@ -42,6 +43,10 @@ namespace TrainingProgram.Areas.Manage.Controllers
 
                 qtrainees = qtrainees.Where(e => employeeList.Any(emp => e.Employee!.FoundationId!.Contains(emp)));
             }
+            if (Estimate != null)
+            {
+                qtrainees = qtrainees.Where(e => e.Estimate == Estimate);
+            }
 
             IQueryable<TraineeEmployeeCourseVM> trainees = qtrainees.Select(e => new TraineeEmployeeCourseVM
             {
@@ -57,14 +62,16 @@ namespace TrainingProgram.Areas.Manage.Controllers
                 EndingDate = e.Course.EndingDate,
                 TotalMarks = e.TotalMarks
             });
-            double totalPages = Math.Ceiling((double)trainees.Count() / 5);
-            trainees = trainees.Skip((page - 1) * 5).Take(5);
+            double totalPages = Math.Ceiling((double)trainees.Count() / 50);
+            trainees = trainees.Skip((page - 1) * 50).Take(50);
 
             ViewBag.Pages = new { page, totalPages };
 
-            var search = new { EmployeeNumber, CourseName };
+            var search = new { EmployeeNumber, CourseName ,Estimate};
 
             ViewBag.Search = search;
+            ViewBag.Estimate = StaticData.estimate;
+
             return View(trainees.ToList());
         }
         public IActionResult Course(int id, int page = 1)

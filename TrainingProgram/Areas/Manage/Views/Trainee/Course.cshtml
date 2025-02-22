@@ -47,208 +47,226 @@
 <p>
     <a asp-action="Create" asp-route-id="@ViewBag.Course.Id" class="btn btn-primary">Create New</a>
 </p>
-<table class="table table-striped table-bordered text-nowrap">
-    <thead class="bg-primary text-white" style="background-color:#5D7B9D  ">
-        <tr>
-            <th>#</th>
-            <th>
-                @Html.DisplayNameFor(model => model.EmployeeFoundationId)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.EmployeeName)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Job)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.WorkPlace)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.AbsenceDays)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.AttendanceAndDeparture)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.AdherenceMark)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.InteractionMark)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.ActivitiesMark)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.TotalEvaluation)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.WrittenExam)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.TotalMarks)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Estimate)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Notes)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.SecondNotes)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.File)
-            </th>
-            <th></th>
-        </tr>
-    </thead>
-    <tbody>
-        @{
-            int index = (ViewBag.Pages.page * 5) - 4;
-        }
-        @foreach (var item in Model)
-        {
+<div class="table-container">
+    <table class="table table-striped table-bordered text-nowrap">
+        <thead class="bg-primary text-white" style="background-color:#5D7B9D  ">
             <tr>
-                <td>@index</td>
-                <td>
-                    @item.EmployeeFoundationId
-                </td>
-                <td>
-                    @item.EmployeeName
-                </td>
-                <td>
-                    @item.Job
-                </td>
-                <td>
-                    @item.WorkPlace
-                </td>
-                <td>
-                    @item.AbsenceDays
-                </td>
-                <td>
-                    @item.AttendanceAndDeparture
-                </td>
-                <td>
-                    @item.AdherenceMark
-                </td>
-                <td>
-                    @item.InteractionMark
-                </td>
-                <td>
-                    @item.ActivitiesMark
-                </td>
-                <td>
-                    @item.TotalEvaluation
-                </td>
-                <td>
-                    @item.WrittenExam
-                </td>
-                <td>
-                    @item.TotalMarks
-                </td>
-                <td>
-                    @{
-                        if (item.Estimate.HasValue)
-                        {
-
-                            @StaticData.estimate[item.Estimate.Value]
-                        }
-
-                    }
-                </td>
-                <td>
-                    @{
-                        if (item.Notes != null)
-                        {
-                            @foreach (var note in item.Notes!.Split("\n"))
-                            {
-                                <p>@note</p>
-                            }
-                        }
-                    }
-                </td>
-                <td>
-                    @{
-                        if (item.SecondNotes != null)
-                        {
-                            @foreach (var note in item.SecondNotes!.Split("\n"))
-                            {
-                                <p>@note</p>
-                            }
-                        }
-                    }
-                </td>
-                <td>
-                    @{
-                        if (item.File != null)
-                        {
-
-                            <a href="@Url.Action("DownloadFile", "trainee", new { fileName = item.File , id = @ViewBag.Course.Id})" class="btn btn-primary">
-                                <i class="bi bi-download"></i>
-                            </a>
-                        }
-                    }
-                </td>
-                <td>
-                    <a asp-action="Edit" asp-route-id="@ViewBag.Course.Id" asp-route-EmployeeId="@item.EmployeeId" type="button" class="btn btn-dark">Edit</a>
-                    <a asp-action="Details" asp-route-id="@ViewBag.Course.Id" asp-route-EmployeeId="@item.EmployeeId" type="button" class="btn btn-info ">Details</a>
-                    <button type="button" class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#deleteModal"
-                            data-courseid="@ViewBag.Course.Id" data-employeeid="@item.EmployeeId">
-                        Delete
-                    </button>
-                </td>
+                <th>#</th>
+                <th>
+                    @Html.DisplayNameFor(model => model.EmployeeFoundationId)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.EmployeeName)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.Job)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.WorkPlace)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.AbsenceDays)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.AttendanceAndDeparture)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.AdherenceMark)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.InteractionMark)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.ActivitiesMark)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.TotalEvaluation)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.WrittenExam)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.TotalMarks)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.Estimate)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.Notes)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.SecondNotes)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.File)
+                </th>
+                <th></th>
             </tr>
-            index++;
+        </thead>
+        <tbody>
+            @{
+                int index = (ViewBag.Pages.page * 5) - 4;
+            }
+            @foreach (var item in Model)
+            {
+                <tr>
+                    <td>@index</td>
+                    <td>
+                        @item.EmployeeFoundationId
+                    </td>
+                    <td>
+                        @item.EmployeeName
+                    </td>
+                    <td>
+                        @item.Job
+                    </td>
+                    <td>
+                        @item.WorkPlace
+                    </td>
+                    <td>
+                        @item.AbsenceDays
+                    </td>
+                    <td>
+                        @item.AttendanceAndDeparture
+                    </td>
+                    <td>
+                        @item.AdherenceMark
+                    </td>
+                    <td>
+                        @item.InteractionMark
+                    </td>
+                    <td>
+                        @item.ActivitiesMark
+                    </td>
+                    <td>
+                        @item.TotalEvaluation
+                    </td>
+                    <td>
+                        @item.WrittenExam
+                    </td>
+                    <td>
+                        @item.TotalMarks
+                    </td>
+                    <td>
+                        @{
+                            if (item.Estimate.HasValue)
+                            {
+
+                                @StaticData.estimate[item.Estimate.Value]
+                            }
+
+                        }
+                    </td>
+                    <td>
+                        @{
+                            if (item.Notes != null)
+                            {
+                                @foreach (var note in item.Notes!.Split("\n"))
+                                {
+                                    <p>@note</p>
+                                }
+                            }
+                        }
+                    </td>
+                    <td>
+                        @{
+                            if (item.SecondNotes != null)
+                            {
+                                @foreach (var note in item.SecondNotes!.Split("\n"))
+                                {
+                                    <p>@note</p>
+                                }
+                            }
+                        }
+                    </td>
+                    <td>
+                        @{
+                            if (item.File != null)
+                            {
+
+                                <a href="@Url.Action("DownloadFile", "trainee", new { fileName = item.File , id = @ViewBag.Course.Id})" class="btn btn-primary">
+                                    <i class="bi bi-download"></i>
+                                </a>
+                            }
+                        }
+                    </td>
+                    <td>
+                        <a asp-action="Edit" asp-route-id="@ViewBag.Course.Id" asp-route-EmployeeId="@item.EmployeeId" type="button" class="btn btn-dark">Edit</a>
+                        <a asp-action="Details" asp-route-id="@ViewBag.Course.Id" asp-route-EmployeeId="@item.EmployeeId" type="button" class="btn btn-info ">Details</a>
+                        <button type="button" class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#deleteModal"
+                                data-courseid="@ViewBag.Course.Id" data-employeeid="@item.EmployeeId">
+                            Delete
+                        </button>
+                    </td>
+                </tr>
+                index++;
+            }
+        </tbody>
+    </table>
+</div>
+
+<div class="mt-2">
+    @{
+        if (Model.Count() != 0)
+        {
+            <div style="display: flex; justify-content: center;">
+                <nav aria-label="Page navigation example">
+                    <ul class="pagination" style="display: flex; justify-content: center; align-items: center;">
+                        <!-- First Button -->
+                        <li class="page-item @(ViewBag.Pages.page == 1 ? "disabled" : "")">
+                            <a href="#" class="page-link" onclick="changePage(1)">
+                                First
+                            </a>
+                        </li>
+
+                        <!-- Previous Button -->
+                        <li class="page-item @(ViewBag.Pages.page == 1 ? "disabled" : "")">
+                            <a href="#" class="page-link" onclick="changePage(@(ViewBag.Pages.page - 1))">
+                                <span aria-hidden="true">&laquo;</span>
+                            </a>
+                        </li>
+
+                        <!-- Page Numbers -->
+                        @if (ViewBag.Pages.totalPages > 0)
+                        {
+                            int currentPage = ViewBag.Pages.page;
+                            int totalPages = (int)ViewBag.Pages.totalPages;
+
+                            int startPage = Math.Max(1, currentPage - 1);
+                            int endPage = Math.Min(totalPages, startPage + 2);
+
+                            if (endPage - startPage < 2)
+                            {
+                                startPage = Math.Max(1, endPage - 2);
+                            }
+
+                            for (int i = startPage; i <= endPage; i++)
+                            {
+                                <li class="page-item @(i == currentPage ? "active" : "")">
+                                    <a href="#" class="page-link" onclick="changePage(@i)">@i</a>
+                                </li>
+                            }
+                        }
+
+                        <!-- Next Button -->
+                        <li class="page-item @(ViewBag.Pages.page == ViewBag.Pages.totalPages ? "disabled" : "")">
+                            <a href="#" class="page-link" onclick="changePage(@(ViewBag.Pages.page + 1))">
+                                <span aria-hidden="true">&raquo;</span>
+                            </a>
+                        </li>
+
+                        <!-- Last Button -->
+                        <li class="page-item @(ViewBag.Pages.page == ViewBag.Pages.totalPages ? "disabled" : "")">
+                            <a href="#" class="page-link" onclick="changePage(@ViewBag.Pages.totalPages)">
+                                Last
+                            </a>
+                        </li>
+                    </ul>
+                </nav>
+            </div>
         }
-    </tbody>
-</table>
-
-@{
-    if (Model.Count() != 0)
-    {
-        <div style="display: flex; justify-content: center;">
-            <nav aria-label="Page navigation example">
-                <ul class="pagination" style="display: flex; justify-content: center; align-items: center;">
-                    <!-- Previous Button -->
-                    <li class="page-item @(ViewBag.Pages.page == 1 ? "disabled" : "")">
-                        <a href="#" class="page-link" onclick="changePage(@(ViewBag.Pages.page - 1))">
-                            <span aria-hidden="true">&laquo;</span>
-                        </a>
-                    </li>
-
-                    <!-- Page Numbers -->
-                    @if (ViewBag.Pages.totalPages > 0)
-                    {
-                        int currentPage = ViewBag.Pages.page;
-                        int totalPages = (int)ViewBag.Pages.totalPages;
-
-                        int startPage = Math.Max(1, currentPage - 1);
-                        int endPage = Math.Min(totalPages, startPage + 2);
-
-                        if (endPage - startPage < 2)
-                        {
-                            startPage = Math.Max(1, endPage - 2);
-                        }
-
-                        for (int i = startPage; i <= endPage; i++)
-                        {
-                            <li class="page-item @(i == currentPage ? "active" : "")">
-                                <a href="#" class="page-link" onclick="changePage(@i)">@i</a>
-                            </li>
-                        }
-                    }
-
-                    <!-- Next Button -->
-                    <li class="page-item @(ViewBag.Pages.page == ViewBag.Pages.totalPages ? "disabled" : "")">
-                        <a href="#" class="page-link" onclick="changePage(@(ViewBag.Pages.page + 1))">
-                            <span aria-hidden="true">&raquo;</span>
-                        </a>
-                    </li>
-                </ul>
-            </nav>
-        </div>
     }
-}
+</div>
 <!-- Modal -->
 <div class="modal fade" id="deleteModal" tabindex="-1" aria-labelledby="deleteModalLabel" aria-hidden="true">
     <div class="modal-dialog">
@@ -292,3 +310,35 @@
         document.getElementById("searchForm").submit();
     }
 </script>
+<style>
+    .table-container {
+        max-height: 750px; /* التحكم في ارتفاع الجدول */
+        overflow-y: auto; /* تفعيل التمرير العمودي */
+        border: 2px solid black; /* حدود واضحة للجدول */
+        position: relative;
+    }
+
+    .table {
+        width: 100%;
+        border-collapse: separate;
+        border-spacing: 0; /* إزالة الفراغات بين الحدود */
+    }
+
+        .table thead {
+            position: sticky;
+            top: 0;
+            color: white;
+            z-index: 2;
+        }
+
+        .table th {
+            padding: 10px;
+            border: 2px solid black; /* حدود ثابتة للهيدر */
+            border-bottom: 2px solid black !important; /* تأكيد ثبات الحد السفلي */
+        }
+
+        .table tbody td {
+            border: 2px solid black; /* تأكيد ظهور الحدود داخل الجدول */
+        }
+
+</style>
