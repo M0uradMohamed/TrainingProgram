@@ -25,11 +25,11 @@ namespace TrainingProgram.Areas.Manage.Controllers
         }
         public IActionResult index(string? EmployeeNumber, string? CourseName, int page = 1)
         {
-            var qtrainees = traineeRepository.Get(includeProps: [e => e.Employee, e => e.Course, e => e.Employee.Sector!]);
+            var qtrainees = traineeRepository.Get(includeProps: [e => e.Employee!, e => e.Course!, e => e.Employee!.Sector!]);
 
             if (CourseName != null)
             {
-                qtrainees = qtrainees.Where(e => e.Course.Name!.Contains(CourseName.Trim()));
+                qtrainees = qtrainees.Where(e => e.Course!.Name!.Contains(CourseName.Trim()));
             }
 
             if (EmployeeNumber != null)
@@ -40,19 +40,19 @@ namespace TrainingProgram.Areas.Manage.Controllers
            .Select(e => e.Trim())
            .ToList();
 
-                qtrainees = qtrainees.Where(e => employeeList.Any(emp => e.Employee.FoundationId!.Contains(emp)));
+                qtrainees = qtrainees.Where(e => employeeList.Any(emp => e.Employee!.FoundationId!.Contains(emp)));
             }
 
             IQueryable<TraineeEmployeeCourseVM> trainees = qtrainees.Select(e => new TraineeEmployeeCourseVM
             {
                 CourseId = e.CourseId,
-                FoundationId = e.Employee.FoundationId,
+                FoundationId = e.Employee!.FoundationId,
                 EmployeeName = e.Employee.Name,
                 Job = e.Employee.Job,
                 Department = e.Employee.Department,
                 SectorName = e.Employee.Sector!.Name,
                 WorkPlace = e.Employee.WorkPlace,
-                CourseName = e.Course.Name,
+                CourseName = e.Course!.Name,
                 BeginningDate = e.Course.BeginningDate,
                 EndingDate = e.Course.EndingDate,
                 TotalMarks = e.TotalMarks
@@ -89,16 +89,17 @@ namespace TrainingProgram.Areas.Manage.Controllers
             ViewBag.Course = course;
 
 
-            var trainees = traineeRepository.Get(expression: e => e.CourseId == id, includeProps: [e => e.Employee])
+            var trainees = traineeRepository.Get(expression: e => e.CourseId == id, includeProps: [e => e.Employee!])
        .Select(e => new TraineeVM
        {
            EmployeeId = e.EmployeeId,
-           EmployeeFoundationId = e.Employee.FoundationId,
+           EmployeeFoundationId = e.Employee!.FoundationId,
            EmployeeName = e.Employee.Name,
            Job = e.Employee.Job,
            WorkPlace = e.Employee.WorkPlace,
            Estimate = e.Estimate,
            Notes = e.Notes,
+           SecondNotes = e.SecondNotes,
            File = e.File,
            AbsenceDays = e.AbsenceDays,
            AttendanceAndDeparture = e.AttendanceAndDeparture,
@@ -160,8 +161,8 @@ namespace TrainingProgram.Areas.Manage.Controllers
                 var course = courseRepository.Get(expression: e => e.Id == id, tracked: false)
                     .Select(e => new { e.BeginningDate, e.EndingDate }).FirstOrDefault();
 
-                var similarTrinee = traineeRepository.Get(includeProps: [e => e.Course], e => e.EmployeeId == traineeVM.EmployeeId)
-                    .Any(e => course!.BeginningDate <= e.Course.EndingDate &&
+                var similarTrinee = traineeRepository.Get(includeProps: [e => e.Course!], e => e.EmployeeId == traineeVM.EmployeeId)
+                    .Any(e => course!.BeginningDate <= e.Course!.EndingDate &&
                                   course.EndingDate >= e.Course.BeginningDate);
 
                 if (similarTrinee)
@@ -198,6 +199,7 @@ namespace TrainingProgram.Areas.Manage.Controllers
                     EmployeeId = traineeVM.EmployeeId,
                     Estimate = traineeVM.Estimate,
                     Notes = traineeVM.Notes,
+                    SecondNotes=traineeVM.SecondNotes,
                     AbsenceDays = traineeVM.AbsenceDays ?? 0,
                     AttendanceAndDeparture = traineeVM.AttendanceAndDeparture ?? 0,
                     AdherenceMark = traineeVM.AdherenceMark ?? 0,
@@ -239,8 +241,8 @@ namespace TrainingProgram.Areas.Manage.Controllers
                     traineeRepository.Edit(trainee);
                     traineeRepository.Commit();
                 }
-                var name = traineeRepository.Get(expression: e => e.EmployeeId == trainee.EmployeeId, includeProps: [e => e.Employee], tracked: false)
-                    .Select(e => e.Employee.Name).FirstOrDefault();
+                var name = traineeRepository.Get(expression: e => e.EmployeeId == trainee.EmployeeId, includeProps: [e => e.Employee!], tracked: false)
+                    .Select(e => e.Employee!.Name).FirstOrDefault();
 
                 TempData["success"] = $"  تم اضافة المتدرب بنجاح , {name} ";
 
@@ -277,7 +279,7 @@ namespace TrainingProgram.Areas.Manage.Controllers
             { e.FoundationId, e.Name, e.Job, e.WorkPlace }).FirstOrDefault();
 
             var traineeVM = traineeRepository.Get(expression: e => e.CourseId == id && e.EmployeeId == EmployeeId,
-                 includeProps: [e => e.Course, e => e.Employee]).Select(e => new TraineeVM
+                 includeProps: [e => e.Course!, e => e.Employee!]).Select(e => new TraineeVM
                  {
                      CourseId = e.CourseId,
                      EmployeeId = e.EmployeeId,
@@ -288,6 +290,7 @@ namespace TrainingProgram.Areas.Manage.Controllers
                      AdherenceMark = e.AdherenceMark,
                      InteractionMark = e.InteractionMark,
                      Notes = e.Notes,
+                     SecondNotes=e.SecondNotes,
                      File = e.File,
                      TotalMarks = e.TotalMarks,
                      WrittenExam = e.WrittenExam,
@@ -326,6 +329,7 @@ namespace TrainingProgram.Areas.Manage.Controllers
                     EmployeeId = traineeVM.EmployeeId,
                     Estimate = traineeVM.Estimate,
                     Notes = traineeVM.Notes,
+                    SecondNotes=traineeVM.SecondNotes,
                     File = traineeVM.File,
                     AbsenceDays = traineeVM.AbsenceDays ?? 0,
                     AttendanceAndDeparture = traineeVM.AttendanceAndDeparture ?? 0,
@@ -432,11 +436,11 @@ namespace TrainingProgram.Areas.Manage.Controllers
             };
 
 
-            var trainees = traineeRepository.Get(expression: e => e.CourseId == id, includeProps: [e => e.Employee])
+            var trainees = traineeRepository.Get(expression: e => e.CourseId == id, includeProps: [e => e.Employee!])
        .Select(e => new
        {
 
-           Id = e.Employee.FoundationId,
+           Id = e.Employee!.FoundationId,
            Name = e.Employee.Name
 
        }).ToList();

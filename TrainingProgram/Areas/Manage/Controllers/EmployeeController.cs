@@ -37,52 +37,54 @@ namespace TrainingProgram.Areas.Manage.Controllers
         public IActionResult Index(string? FoundationId, string? Name, string? Job, string? Department
            , int? SectorId, int? DegreeId, string? WorkPlace , int page=1)
         {
-            var employees = employeeRepository.Get(includeProps: [e => e.Degree!, e => e.Sector!])
-                .Select(e=> new EmployeeVM 
-                {
-                    Id=e.Id,
-                    Name=e.Name,
-                    Gender=e.Gender,
-                    Belong=e.Belong,
-                    FoundationId=e.FoundationId,
-                    Department=e.Department,
-                    Job=e.Job,
-                    PhoneNumber=e.PhoneNumber,
-                    WorkPlace=e.WorkPlace,
-                    Major=e.Major,
-                    CompanyNameForForeign=e.CompanyNameForForeign,
-                    Degree=e.Degree!.Name,
-                    Sector=e.Sector!.Name
-                });
+            var qemployees = employeeRepository.Get(includeProps: [e => e.Degree!, e => e.Sector!]);
+                
 
             if (FoundationId != null)
             {
-                employees = employees.Where(e => e.FoundationId!.Contains(FoundationId.TrimStart().TrimEnd() ) );
+                qemployees = qemployees.Where(e => e.FoundationId!.Contains(FoundationId.TrimStart().TrimEnd() ) );
             }
             if (Name != null)
             {
-                employees = employees.Where(e => e.Name!.Contains(Name.TrimStart().TrimEnd()));
+                qemployees = qemployees.Where(e => e.Name!.Contains(Name.TrimStart().TrimEnd()));
             }
             if (Job != null)
             {
-                employees = employees.Where(e => e.Job!.Contains(Job.TrimStart().TrimEnd()));
+                qemployees = qemployees.Where(e => e.Job!.Contains(Job.TrimStart().TrimEnd()));
             }
             if (Department != null)
             {
-                employees = employees.Where(e => e.Department!.Contains(Department.TrimStart().TrimEnd()));
+                qemployees = qemployees.Where(e => e.Department!.Contains(Department.TrimStart().TrimEnd()));
             }
             if (SectorId != null)
             {
-                employees = employees.Where(e => e.SectorId == SectorId);
+                qemployees = qemployees.Where(e => e.SectorId == SectorId);
             }
             if (DegreeId != null)
             {
-                employees = employees.Where(e => e.DegreeId == DegreeId);
+                qemployees = qemployees.Where(e => e.DegreeId == DegreeId);
             }
             if (WorkPlace != null)
             {
-                employees = employees.Where(e => e.WorkPlace!.Contains(WorkPlace.TrimStart().TrimEnd()));
+                qemployees = qemployees.Where(e => e.WorkPlace!.Contains(WorkPlace.TrimStart().TrimEnd()));
             }
+            
+            var employees = qemployees.Select(e => new EmployeeVM
+            {
+                Id = e.Id,
+                Name = e.Name,
+                Gender = e.Gender,
+                Belong = e.Belong,
+                FoundationId = e.FoundationId,
+                Department = e.Department,
+                Job = e.Job,
+                PhoneNumber = e.PhoneNumber,
+                WorkPlace = e.WorkPlace,
+                Major = e.Major,
+                CompanyNameForForeign = e.CompanyNameForForeign,
+                Degree = e.Degree!.Name,
+                Sector = e.Sector!.Name
+            });
 
             var Search = new
             {
@@ -94,7 +96,8 @@ namespace TrainingProgram.Areas.Manage.Controllers
                 DegreeId,
                 WorkPlace
             };
-            double totalPages = Math.Ceiling((double)employees.Count() / 50);
+           double totalPages = Math.Ceiling((double)employees.Count() / 50);
+        
             employees = employees.Skip((page - 1) * 50).Take(50);
 
             ViewBag.Pages = new { page, totalPages };

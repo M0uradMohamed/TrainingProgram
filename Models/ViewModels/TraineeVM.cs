@@ -28,8 +28,11 @@ namespace Models.ViewModels
         [Display(Name = "التقدير")]
         public Estimate? Estimate { get; set; }
         [ValidateNever]
-        [Display(Name = "الملاحظات")]
+        [Display(Name = "ملاحظات التنفيذ")]
         public string? Notes { get; set; }
+        [ValidateNever]
+        [Display(Name = "ملاحظات التقييم")]
+        public string? SecondNotes { get; set; }
         [ValidateNever]
         [Display(Name = "ملف")]
         public string? File { get; set; }

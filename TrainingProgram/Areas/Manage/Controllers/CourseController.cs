@@ -550,6 +550,7 @@ namespace TrainingProgram.Areas.Manage.Controllers
                     TraineesNotes = courseVM.RatingSpecialistNotes,
                     TraineesRating = courseVM.TraineesRating,
                     ImplementedCenter = courseVM.ImplementedCenter,
+                    PdfFile= courseVM.PdfFile,
 
                 };
                 courseRepository.Edit(course);

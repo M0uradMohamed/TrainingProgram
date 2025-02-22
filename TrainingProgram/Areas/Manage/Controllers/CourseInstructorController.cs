@@ -40,7 +40,7 @@ namespace TrainingProgram.Areas.Manage.Controllers
                 return RedirectToAction("Notfound", "Home");
 
             }
-            var course = courseRepository.Get(expression: e => e.Id == id , includeProps: [e => e.Instructors]).Select(e => new
+            var course = courseRepository.Get(expression: e => e.Id == id , includeProps: [e => e.Instructors!]).Select(e => new
             {
                 e.Id,
                 e.Name,
@@ -138,7 +138,7 @@ namespace TrainingProgram.Areas.Manage.Controllers
 
                 var similerCourse = courseInstructorRepository.Get(expression: e => e.InstructorId == courseInstructorVM.InstructorId && e.Position == Position.First ,
                     includeProps: [e=>e.Course]).ToList()
-               .Any(e => course.BeginningDate <= e.Course.EndingDate &&
+               .Any(e => course!.BeginningDate <= e.Course.EndingDate &&
                              course.EndingDate >= e.Course.BeginningDate);
 
                 if (similerCourse)

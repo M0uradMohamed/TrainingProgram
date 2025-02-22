@@ -46,8 +46,13 @@
             <input type="hidden" asp-for="EmployeeId" />
             <div class="form-group">
                 <label asp-for="Notes" class="control-label"></label>
-                <input asp-for="Notes" class="form-control" />
+                <textarea asp-for="Notes" class="form-control" id="textAreaExample1" rows="4" wrap="hard"></textarea>
                 <span asp-validation-for="Notes" class="text-danger"></span>
+            </div> 
+            <div class="form-group">
+                <label asp-for="SecondNotes" class="control-label"></label>
+                <textarea asp-for="SecondNotes" class="form-control" id="textAreaExample1" rows="4" wrap="hard"></textarea>
+                <span asp-validation-for="SecondNotes" class="text-danger"></span>
             </div>
             <div class="form-group">
                 <label asp-for="File" class="control-label"></label>

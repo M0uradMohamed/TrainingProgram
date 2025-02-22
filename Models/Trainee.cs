@@ -25,7 +25,7 @@ namespace Models
         public string? SecondNotes {  get; set; }
 
 
-        public Employee Employee { get; set; }
-        public Course Course { get; set; }
+        public Employee? Employee { get; set; }
+        public Course? Course { get; set; }
     }
 }

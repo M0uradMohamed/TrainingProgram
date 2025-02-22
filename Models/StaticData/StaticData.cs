@@ -38,7 +38,7 @@ namespace Models.StaticData
             {Estimate.VeryGood,"جيد جدا" },
             {Estimate.Good,"جيد" },
             {Estimate.Acceptable,"مقبول" },
-            {Estimate.Failed,"راسب" }
+            {Estimate.Failed,"لم يجتاز" }
         };
         public static readonly Dictionary<Material, string> material = new Dictionary<Material, string>()
         {
