@@ -10,7 +10,7 @@
 
 #pragma warning disable 1591
 
-namespace Utility.Reports.DataSets {
+namespace TrainingProgram.wwwroot.Reports {
     
     
     /// <summary>

@@ -12,11 +12,11 @@ using Models.ViewModels;
 using System.Numerics;
 using Models.StaticData;
 using System.Xml.Linq;
-using AspNetCore.Reporting;
 using DataAccess.Repository;
 using Models.EnumClasses;
 using System.Linq.Expressions;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
+using Microsoft.Reporting.NETCore;
 
 namespace TrainingProgram.Areas.Manage.Controllers
 {
@@ -53,14 +53,14 @@ namespace TrainingProgram.Areas.Manage.Controllers
         }
         // GET: Manage/Course
         public IActionResult Index(string? Name, DateOnly? BeginningDate, DateOnly? EndingDate, string? ImplementationPlace
-            , string? ImplementedCenter, int? ImplementationTypeId, int? TotalImplementationId, Check? Check ,int? CourseNatureId
-            , string? Instructor , bool Sort=false , int page=1)
+            , string? ImplementedCenter, int? ImplementationTypeId, int? TotalImplementationId, Check? Check, int? CourseNatureId
+            , string? Instructor, bool Sort = false, int page = 1)
         {
             IQueryable<Course> qcourses = courseRepository.Get(includeProps: [
                 e=>e.CourseNature!, e=>e.TotalImplementation! ,e=>e.ImplementationType! ,e=>e.TrainingSpecialist!
                 ]);
             qcourses = qcourses.Include(e => e.CoursesInstructors).ThenInclude(e => e.Instructor);
-            
+
             if (Name != null)
             {
                 qcourses = qcourses.Where(e => e.Name!.Contains(Name.TrimStart().TrimEnd()));
@@ -99,8 +99,8 @@ namespace TrainingProgram.Areas.Manage.Controllers
             }
             if (Instructor != null)
             {
-                qcourses = qcourses.Where(e => e.CoursesInstructors.Any(c => c.Instructor!.Name!.Contains(Instructor.TrimStart().TrimEnd() ) ));
-             }
+                qcourses = qcourses.Where(e => e.CoursesInstructors.Any(c => c.Instructor!.Name!.Contains(Instructor.TrimStart().TrimEnd())));
+            }
 
 
             IQueryable<CourseIndexVM> courses = qcourses.Select(e => new CourseIndexVM
@@ -138,7 +138,7 @@ namespace TrainingProgram.Areas.Manage.Controllers
                 TraineesRating = e.TraineesRating,
                 CourseNatureName = e.CourseNature!.Name,
                 TrainingSpecialistName = e.TrainingSpecialist!.Name,
-                FundingEntity=e.FundingEntity,
+                FundingEntity = e.FundingEntity,
                 FirstInstructorName = e.CoursesInstructors.Where(c => c.Position == Position.First).Select(e => e.Instructor!.Name).FirstOrDefault(),
                 SecondInstructorName = e.CoursesInstructors.Where(c => c.Position == Position.Second).Select(e => e.Instructor!.Name).FirstOrDefault(),
                 ThirdInstructorName = e.CoursesInstructors.Where(c => c.Position == Position.Third).Select(e => e.Instructor!.Name).FirstOrDefault(),
@@ -146,7 +146,7 @@ namespace TrainingProgram.Areas.Manage.Controllers
 
             });
 
-            if(!Sort)
+            if (!Sort)
                 courses = courses.OrderBy(e => e.BeginningDate).ThenBy(e => e.EndingDate);
             else
                 courses = courses.OrderByDescending(e => e.BeginningDate).ThenByDescending(e => e.EndingDate);
@@ -178,7 +178,7 @@ namespace TrainingProgram.Areas.Manage.Controllers
             ViewBag.CourseNature = courseNatureRepository.Get().ToList();
             ViewBag.Check = StaticData.check;
 
-           
+
             return View(courses.ToList());
         }
 
@@ -448,7 +448,7 @@ namespace TrainingProgram.Areas.Manage.Controllers
                 TraineesRating = course.TraineesRating,
                 RatingSpecialistNotes = course.RatingSpecialistNotes,
                 ImplementedCenter = course.ImplementedCenter,
-                FundingEntity= course.FundingEntity
+                FundingEntity = course.FundingEntity
             };
 
             ViewBag.CourseNature = courseNatureRepository.Get().ToList();
@@ -552,8 +552,8 @@ namespace TrainingProgram.Areas.Manage.Controllers
                     TraineesNotes = courseVM.RatingSpecialistNotes,
                     TraineesRating = courseVM.TraineesRating,
                     ImplementedCenter = courseVM.ImplementedCenter,
-                    PdfFile= courseVM.PdfFile,
-                    FundingEntity= courseVM.FundingEntity,
+                    PdfFile = courseVM.PdfFile,
+                    FundingEntity = courseVM.FundingEntity,
 
                 };
                 courseRepository.Edit(course);
@@ -740,9 +740,76 @@ namespace TrainingProgram.Areas.Manage.Controllers
                 qcourses = qcourses.Where(e => e.CoursesInstructors.Any(c => c.Instructor!.Name!.Contains(Instructor.TrimStart().TrimEnd())));
             }
 
+            var courses = qcourses.Select(e => new
+            {
+                //Id = e.Id,
+                Name = e.Name,
+                TargetSector = e.TargetSector,
+                Participants = e.Participants,
+                ImplementationPlace = e.ImplementationPlace,
+                DaysCount = e.DaysCount,
+                ImplementedDays = e.ImplementedDays,
+                BeginningDate = e.BeginningDate.ToString(),
+                EndingDate = e.EndingDate.ToString(),
+                TraineesNumber = e.TraineesNumber,
+                Cost = e.Cost,
+                ImplementedCenter = e.ImplementedCenter,
+                HoursNumber = e.HoursNumber,
+                ImplementationTypeName = e.ImplementationType!.Name,
+                TotalImplementationName = e.TotalImplementation!.Name,
+                RoomNumber = e.RoomNumber,
+                Material = e.Material,
+                CourseType = e.CourseType,
+                Rating = e.Rating,
+                ImplementationMonth = e.ImplementationMonth,
+                ActualCost = e.ActualCost,
+                Code = e.Code,
+                Check = e.Check,
+                PdfFile = e.PdfFile,
+                EnterName = e.EnterName,
+                Link = e.Link,
+                RatingSpecialist = e.RatingSpecialist,
+                Notes = e.Notes,
+                RatingSpecialistNotes = e.RatingSpecialistNotes,
+                TraineesNotes = e.TraineesNotes,
+                TraineesRating = e.TraineesRating,
+                CourseNatureName = e.CourseNature!.Name,
+                TrainingSpecialistName = e.TrainingSpecialist!.Name,
+                FundingEntity = e.FundingEntity,
+                FirstInstructorName = e.CoursesInstructors.Where(c => c.Position == Position.First).Select(e => e.Instructor!.Name).FirstOrDefault(),
+                SecondInstructorName = e.CoursesInstructors.Where(c => c.Position == Position.Second).Select(e => e.Instructor!.Name).FirstOrDefault(),
+                ThirdInstructorName = e.CoursesInstructors.Where(c => c.Position == Position.Third).Select(e => e.Instructor!.Name).FirstOrDefault(),
+                ForthInstructorName = e.CoursesInstructors.Where(c => c.Position == Position.Fourth).Select(e => e.Instructor!.Name).FirstOrDefault()
+
+            });
+
+            if (!Sort)
+                courses = courses.OrderBy(e => e.BeginningDate).ThenBy(e => e.EndingDate);
+            else
+                courses = courses.OrderByDescending(e => e.BeginningDate).ThenByDescending(e => e.EndingDate);
+
+            var CourseNature = courseNatureRepository.Get(expression:e=>e.Id== CourseNatureId).Select(e=> e.Name).FirstOrDefault();
+
+            string path = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot\\Reports\\CoursesF78.rdlc");
 
 
-            return View();
+               var report = new LocalReport();
+               report.ReportPath = path;
+            //  // Add the data source
+                 report.DataSources.Add(new ReportDataSource("Courses", courses));
+
+            ////   Set parameters
+                      var parameters = new[]
+                       {
+                   new ReportParameter("Type", CourseNature)
+               };
+               report.SetParameters(parameters);
+
+            //   // Render the report
+              byte[] pdf = report.Render("PDF");
+
+              return File(pdf, "application/pdf", "report.pdf");
+
         }
         private bool CourseExists(int id)
         {

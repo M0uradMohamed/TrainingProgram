@@ -11,7 +11,6 @@ using DataAccess.Repository.IRepository;
 using Models.ViewModels;
 using System.Xml.Linq;
 using Microsoft.AspNetCore.Hosting;
-using AspNetCore.Reporting;
 
 namespace TrainingProgram.Areas.Manage.Controllers
 {
@@ -164,7 +163,7 @@ namespace TrainingProgram.Areas.Manage.Controllers
             sectorRepository.Commit();
             return RedirectToAction(nameof(Index));
         }
-        public IActionResult print()
+       /* public IActionResult print()
         {
 
             // string path = Path.Combine(webHostEnvironment.WebRootPath + @"\Reports\SectorReport.rdlc");
@@ -184,8 +183,8 @@ namespace TrainingProgram.Areas.Manage.Controllers
 
 
             return File(report.MainStream, "application/pdf");
-        }
-        public IActionResult Testprint()
+        }*/
+      /*  public IActionResult Testprint()
         {
 
              string path = Path.Combine(webHostEnvironment.WebRootPath + @"\Reports\TestRP.rdlc");
@@ -202,7 +201,7 @@ namespace TrainingProgram.Areas.Manage.Controllers
 
 
             return File(report.MainStream, "application/vnd.ms-excel");
-        }
+        }*/
         private bool SectorExists(int id)
         {
             return sectorRepository.Get().Any(e => e.Id == id);
