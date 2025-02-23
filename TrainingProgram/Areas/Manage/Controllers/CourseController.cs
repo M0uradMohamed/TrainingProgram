@@ -138,6 +138,7 @@ namespace TrainingProgram.Areas.Manage.Controllers
                 TraineesRating = e.TraineesRating,
                 CourseNatureName = e.CourseNature!.Name,
                 TrainingSpecialistName = e.TrainingSpecialist!.Name,
+                FundingEntity=e.FundingEntity,
                 FirstInstructorName = e.CoursesInstructors.Where(c => c.Position == Position.First).Select(e => e.Instructor!.Name).FirstOrDefault(),
                 SecondInstructorName = e.CoursesInstructors.Where(c => c.Position == Position.Second).Select(e => e.Instructor!.Name).FirstOrDefault(),
                 ThirdInstructorName = e.CoursesInstructors.Where(c => c.Position == Position.Third).Select(e => e.Instructor!.Name).FirstOrDefault(),
@@ -227,10 +228,11 @@ namespace TrainingProgram.Areas.Manage.Controllers
                 TraineesRating = e.TraineesRating,
                 CourseNatureName = e.CourseNature!.Name,
                 TrainingSpecialistName = e.TrainingSpecialist!.Name,
-                FirstInstructorName = e.CoursesInstructors.Where(c => c.Position == Position.First).Select(e => e.Instructor.Name).FirstOrDefault(),
-                SecondInstructorName = e.CoursesInstructors.Where(c => c.Position == Position.Second).Select(e => e.Instructor.Name).FirstOrDefault(),
-                ThirdInstructorName = e.CoursesInstructors.Where(c => c.Position == Position.Third).Select(e => e.Instructor.Name).FirstOrDefault(),
-                ForthInstructorName = e.CoursesInstructors.Where(c => c.Position == Position.Fourth).Select(e => e.Instructor.Name).FirstOrDefault()
+                FundingEntity = e.FundingEntity,
+                FirstInstructorName = e.CoursesInstructors.Where(c => c.Position == Position.First).Select(e => e.Instructor!.Name).FirstOrDefault(),
+                SecondInstructorName = e.CoursesInstructors.Where(c => c.Position == Position.Second).Select(e => e.Instructor!.Name).FirstOrDefault(),
+                ThirdInstructorName = e.CoursesInstructors.Where(c => c.Position == Position.Third).Select(e => e.Instructor!.Name).FirstOrDefault(),
+                ForthInstructorName = e.CoursesInstructors.Where(c => c.Position == Position.Fourth).Select(e => e.Instructor!.Name).FirstOrDefault()
 
             });
 
@@ -342,8 +344,7 @@ namespace TrainingProgram.Areas.Manage.Controllers
                     TraineesNotes = courseVM.RatingSpecialistNotes,
                     TraineesRating = courseVM.TraineesRating,
                     ImplementedCenter = courseVM.ImplementedCenter,
-
-
+                    FundingEntity = courseVM.FundingEntity,
                 };
 
 
@@ -446,7 +447,8 @@ namespace TrainingProgram.Areas.Manage.Controllers
                 TraineesNotes = course.TraineesNotes,
                 TraineesRating = course.TraineesRating,
                 RatingSpecialistNotes = course.RatingSpecialistNotes,
-                ImplementedCenter = course.ImplementedCenter
+                ImplementedCenter = course.ImplementedCenter,
+                FundingEntity= course.FundingEntity
             };
 
             ViewBag.CourseNature = courseNatureRepository.Get().ToList();
@@ -551,6 +553,7 @@ namespace TrainingProgram.Areas.Manage.Controllers
                     TraineesRating = courseVM.TraineesRating,
                     ImplementedCenter = courseVM.ImplementedCenter,
                     PdfFile= courseVM.PdfFile,
+                    FundingEntity= courseVM.FundingEntity,
 
                 };
                 courseRepository.Edit(course);
@@ -656,37 +659,91 @@ namespace TrainingProgram.Areas.Manage.Controllers
             return View();
 
         }
-        public IActionResult print()
+        //public IActionResult print()
+        //{
+
+        //    // string path = Path.Combine(webHostEnvironment.WebRootPath + @"\Reports\SectorReport.rdlc");
+        //    string path = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot\\Reports\\CourseReport.rdlc");
+
+
+        //    Dictionary<string, string> parmaeters = new Dictionary<string, string>();
+        //    // parmaeters.Add("Ahmed", "شركة المياة");
+
+        //    var Courses = courseRepository.Get(/*includeProps: [e=>e.PrimaryInstructor]*/).Select(e => new
+        //    {
+        //        e.Name,
+        //        // InstructorName =  e.PrimaryInstructor.Name ?? "لا يوجد",
+        //        Material = e.Material.HasValue ? StaticData.material[e.Material.Value] ?? "لا يوجد" : "لا يوجد"
+        //    }).ToList();
+        //    //  var sector = sectorRepository.Get().ToList()[0];
+        //    List<Sector> sector = new List<Sector>
+        //    {
+        //        sectorRepository.Get().FirstOrDefault()!
+        //    };
+
+        //    LocalReport localreport = new LocalReport(path);
+        //    localreport.AddDataSource("CourseDataSet", Courses);
+        //    localreport.AddDataSource("SectorDataSet", sector);
+
+        //    var report = localreport.Execute(RenderType.Pdf, 1, null, "");
+
+        //    return File(report.MainStream, "application/pdf");
+        //}
+        [HttpPost]
+        public IActionResult print(string? Name, DateOnly? BeginningDate, DateOnly? EndingDate, string? ImplementationPlace
+            , string? ImplementedCenter, int? ImplementationTypeId, int? TotalImplementationId, Check? Check, int? CourseNatureId
+            , string? Instructor, bool Sort = false, int page = 1)
         {
+            IQueryable<Course> qcourses = courseRepository.Get(includeProps: [
+               e=>e.CourseNature!, e=>e.TotalImplementation! ,e=>e.ImplementationType! ,e=>e.TrainingSpecialist!
+               ]);
+            qcourses = qcourses.Include(e => e.CoursesInstructors).ThenInclude(e => e.Instructor);
 
-            // string path = Path.Combine(webHostEnvironment.WebRootPath + @"\Reports\SectorReport.rdlc");
-            string path = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot\\Reports\\CourseReport.rdlc");
-
-
-            Dictionary<string, string> parmaeters = new Dictionary<string, string>();
-            // parmaeters.Add("Ahmed", "شركة المياة");
-
-            var Courses = courseRepository.Get(/*includeProps: [e=>e.PrimaryInstructor]*/).Select(e => new
+            if (Name != null)
             {
-                e.Name,
-                // InstructorName =  e.PrimaryInstructor.Name ?? "لا يوجد",
-                Material = e.Material.HasValue ? StaticData.material[e.Material.Value] ?? "لا يوجد" : "لا يوجد"
-            }).ToList();
-            //  var sector = sectorRepository.Get().ToList()[0];
-            List<Sector> sector = new List<Sector>
+                qcourses = qcourses.Where(e => e.Name!.Contains(Name.TrimStart().TrimEnd()));
+            }
+            if (BeginningDate != null)
             {
-                sectorRepository.Get().FirstOrDefault()!
-            };
+                qcourses = qcourses.Where(e => e.BeginningDate >= BeginningDate);
+            }
+            if (EndingDate != null)
+            {
+                qcourses = qcourses.Where(e => e.EndingDate <= EndingDate);
+            }
+            if (ImplementationPlace != null)
+            {
+                qcourses = qcourses.Where(e => e.ImplementationPlace!.Contains(ImplementationPlace.TrimStart().TrimEnd()));
+            }
+            if (ImplementedCenter != null)
+            {
+                qcourses = qcourses.Where(e => e.ImplementedCenter!.Contains(ImplementedCenter.TrimStart().TrimEnd()));
+            }
+            if (ImplementationTypeId != null)
+            {
+                qcourses = qcourses.Where(e => e.ImplementationType!.Id == ImplementationTypeId);
+            }
+            if (TotalImplementationId != null)
+            {
+                qcourses = qcourses.Where(e => e.TotalImplementation!.Id == TotalImplementationId);
+            }
+            if (Check != null)
+            {
+                qcourses = qcourses.Where(e => e.Check == Check);
+            }
+            if (CourseNatureId != null)
+            {
+                qcourses = qcourses.Where(e => e.CourseNature!.Id == CourseNatureId);
+            }
+            if (Instructor != null)
+            {
+                qcourses = qcourses.Where(e => e.CoursesInstructors.Any(c => c.Instructor!.Name!.Contains(Instructor.TrimStart().TrimEnd())));
+            }
 
-            LocalReport localreport = new LocalReport(path);
-            localreport.AddDataSource("CourseDataSet", Courses);
-            localreport.AddDataSource("SectorDataSet", sector);
 
-            var report = localreport.Execute(RenderType.Pdf, 1, null, "");
 
-            return File(report.MainStream, "application/pdf");
+            return View();
         }
-
         private bool CourseExists(int id)
         {
             return courseRepository.Get(tracked: false).Any(e => e.Id == id);

@@ -105,5 +105,9 @@ namespace Models.ViewModels
         [ValidateNever]
         [Display(Name = "أخصائي تدريب")]
         public int? TrainingSpecialistId { get; set; }
+        [ValidateNever]
+        [Display(Name = "الجهة الممولة")]
+        public string? FundingEntity { get; set; }
+
     }
 }

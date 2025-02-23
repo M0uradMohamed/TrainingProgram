@@ -310,11 +310,11 @@ namespace TrainingProgram.Areas.Manage.Controllers
             }).FirstOrDefault();
             ViewBag.Instructor = instructor;
 
-            IQueryable<InstructorCoursesVM> courses = courseInstructorRepository.Get(expression: e => e.InstructorId == id, includeProps: [e => e.Course])
+            IQueryable<InstructorCoursesVM> courses = courseInstructorRepository.Get(expression: e => e.InstructorId == id, includeProps: [e => e.Course!])
                 .Select(e => new InstructorCoursesVM
                 {
                  CourseId =   e.CourseId,
-                 Name =  e.Course.Name,
+                 Name =  e.Course!.Name,
                  BeginningDate =    e.Course.BeginningDate,
                  EndingDate =   e.Course.EndingDate,
                  Rating =   e.Rating 

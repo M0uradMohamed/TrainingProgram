@@ -42,6 +42,8 @@ namespace Models
         public double? TraineesRating{ get; set; }
         public int? CourseNatureId { get; set; }
         public int? TrainingSpecialistId { get; set; }
+        public string? FundingEntity { get; set; }
+
 
         public ICollection<Instructor>? Instructors { get; set; } = new List<Instructor>();
         public ICollection<Employee> Employees { get; set; } = new List<Employee>();

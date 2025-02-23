@@ -341,7 +341,7 @@ namespace TrainingProgram.Areas.Manage.Controllers
                 .Select(e => new TraineeCourseVM
                 {
                     CourseId = e.CourseId,
-                    CourseName = e.Course.Name!,
+                    CourseName = e.Course!.Name!,
                     BeginningDate = e.Course.BeginningDate,
                     EndingDate = e.Course.EndingDate,
                     Estimate = e.Estimate,

@@ -1,4 +1,5 @@
-﻿using Models.EnumClasses;
+﻿using Microsoft.AspNetCore.Mvc.ModelBinding.Validation;
+using Models.EnumClasses;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
@@ -83,6 +84,8 @@ namespace Models.ViewModels
         public string? ThirdInstructorName { get; set; }
         [Display(Name = "المدرب الرابع")]
         public string? ForthInstructorName { get; set; }
+        [Display(Name = "الجهة الممولة")]
+        public string? FundingEntity { get; set; }
 
 
     }
