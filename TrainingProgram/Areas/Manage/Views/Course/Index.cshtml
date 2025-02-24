@@ -15,8 +15,7 @@
 </p>
 <div class="row col-12 mb-2">
     <div class="col-2">
-@*         <a asp-action="print" class="btn btn-success" target="_blank"> Print Report</a>
- *@        <button id="printBtn" class="btn btn-success" >Submit to Print</button>
+      <button id="printBtn" class="btn btn-success" >Submit to Print</button>
     </div>
 </div>
 <div class="row col-12">
@@ -567,12 +566,26 @@
 </script>
 
 <script>
-    document.getElementById("printBtn").addEventListener("click", function () {
+    document.addEventListener("DOMContentLoaded", function () {
         let form = document.getElementById("searchForm");
-        form.action = "/manage/course/Print"; // تغيير الوجهة إلى Print
-        form.submit(); // تنفيذ الإرسال يدويًا
+
+        document.getElementById("printBtn").addEventListener("click", function (event) {
+            event.preventDefault(); // منع الإرسال التلقائي
+
+            let formData = new FormData(form);
+            let queryString = new URLSearchParams(formData).toString();
+            let printUrl = "/manage/course/Print?" + queryString;
+
+            window.open(printUrl, "_blank"); // فتح الطباعة في نافذة جديدة
+        });
+
+        form.addEventListener("submit", function () {
+            form.action = "/manage/course/index"; // التأكد أن البحث يعود إلى index
+        });
     });
+
 </script>
+
 
 <style>
     .table-container {

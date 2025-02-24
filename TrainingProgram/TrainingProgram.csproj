@@ -13,10 +13,6 @@
 		<Content Remove="wwwroot\Reports\CourseDataSet.xsc" />
 		<Content Remove="wwwroot\Reports\CourseDataSet.xsd" />
 		<Content Remove="wwwroot\Reports\CourseDataSet.xss" />
-		<Content Remove="wwwroot\Reports\CourseF78.Designer.cs" />
-		<Content Remove="wwwroot\Reports\CourseF78.xsc" />
-		<Content Remove="wwwroot\Reports\CourseF78.xsd" />
-		<Content Remove="wwwroot\Reports\CourseF78.xss" />
 		<Content Remove="wwwroot\Reports\CourseReport.rdlc" />
 		<Content Remove="wwwroot\Reports\CoursesF78.rdlc" />
 		<Content Remove="wwwroot\Reports\SectorDataSet.cs" />
@@ -33,11 +29,6 @@
 		<Compile Include="wwwroot\Reports\CourseDataSet.cs" />
 		<Compile Include="wwwroot\Reports\CourseDataSet.Designer.cs">
 			<DependentUpon>CourseDataSet.xsd</DependentUpon>
-			<DesignTime>True</DesignTime>
-			<AutoGen>True</AutoGen>
-		</Compile>
-		<Compile Include="wwwroot\Reports\CourseF78.Designer.cs">
-			<DependentUpon>CourseF78.xsd</DependentUpon>
 			<DesignTime>True</DesignTime>
 			<AutoGen>True</AutoGen>
 		</Compile>
@@ -74,13 +65,6 @@
 			<Generator>MSDataSetGenerator</Generator>
 		</None>
 		<None Include="wwwroot\Reports\CourseDataSet.xss" />
-		<None Include="wwwroot\Reports\CourseF78.xsc" />
-		<None Include="wwwroot\Reports\CourseF78.xsd">
-			<SubType>Designer</SubType>
-			<LastGenOutput>CourseF78.Designer.cs</LastGenOutput>
-			<Generator>MSDataSetGenerator</Generator>
-		</None>
-		<None Include="wwwroot\Reports\CourseF78.xss" />
 		<None Include="wwwroot\Reports\CourseReport.rdlc" />
 		<None Include="wwwroot\Reports\CoursesF78.rdlc" />
 		<None Include="wwwroot\Reports\SectorDataSet.xsc" />

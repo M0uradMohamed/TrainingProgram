@@ -17,6 +17,7 @@ using Models.EnumClasses;
 using System.Linq.Expressions;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.Reporting.NETCore;
+using Microsoft.VisualBasic;
 
 namespace TrainingProgram.Areas.Manage.Controllers
 {
@@ -689,7 +690,6 @@ namespace TrainingProgram.Areas.Manage.Controllers
 
         //    return File(report.MainStream, "application/pdf");
         //}
-        [HttpPost]
         public IActionResult print(string? Name, DateOnly? BeginningDate, DateOnly? EndingDate, string? ImplementationPlace
             , string? ImplementedCenter, int? ImplementationTypeId, int? TotalImplementationId, Check? Check, int? CourseNatureId
             , string? Instructor, bool Sort = false, int page = 1)
@@ -788,27 +788,31 @@ namespace TrainingProgram.Areas.Manage.Controllers
             else
                 courses = courses.OrderByDescending(e => e.BeginningDate).ThenByDescending(e => e.EndingDate);
 
-            var CourseNature = courseNatureRepository.Get(expression:e=>e.Id== CourseNatureId).Select(e=> e.Name).FirstOrDefault();
+            var CourseNature = courseNatureRepository.Get(expression: e => e.Id == CourseNatureId).Select(e => e.Name).FirstOrDefault();
+            var TotalImplementation = totalImplementationRepository.Get(expression: e => e.Id == TotalImplementationId).Select(e => e.Name).FirstOrDefault();
 
             string path = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot\\Reports\\CoursesF78.rdlc");
 
 
-               var report = new LocalReport();
-               report.ReportPath = path;
+            var report = new LocalReport();
+            report.ReportPath = path;
             //  // Add the data source
-                 report.DataSources.Add(new ReportDataSource("Courses", courses));
+            report.DataSources.Add(new ReportDataSource("Courses", courses));
 
+            var time = DateTime.Now.Month ;
             ////   Set parameters
-                      var parameters = new[]
-                       {
-                   new ReportParameter("Type", CourseNature)
+            var parameters = new[]
+             {
+                   new ReportParameter("CourseNatureName", CourseNature),
+                new ReportParameter("TotalImplementationName", $"({TotalImplementation})"),
+                   new ReportParameter("Month",StaticData.implementationMonth.GetValueOrDefault( (ImplementationMonth)(time-1) ) )
                };
-               report.SetParameters(parameters);
+            report.SetParameters(parameters);
 
             //   // Render the report
-              byte[] pdf = report.Render("PDF");
+            byte[] pdf = report.Render("PDF");
 
-              return File(pdf, "application/pdf", "report.pdf");
+            return File(pdf, "application/pdf");
 
         }
         private bool CourseExists(int id)
