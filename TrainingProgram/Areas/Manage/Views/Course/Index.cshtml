@@ -6,7 +6,12 @@
     ViewData["Title"] = "Index";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
-
+@if (TempData["Date"] != null)
+{
+    <div  class="toastorange">
+        <h1>@TempData["Date"]</h1>
+    </div>
+}
 <h1>Index</h1>
 
 <p>
@@ -15,7 +20,13 @@
 </p>
 <div class="row col-12 mb-2">
     <div class="col-2">
-      <button id="printBtn" class="btn btn-success" >Submit to Print</button>
+        <button class="btn btn-success printBtn" data-type="1">Print one</button>
+    </div>
+    <div class="col-2">
+        <button class="btn btn-success printBtn" data-type="2">Print two</button>
+    </div>
+    <div class="col-2">
+        <button class="btn btn-success printBtn" data-type="3">Print three</button>
     </div>
 </div>
 <div class="row col-12">
@@ -545,7 +556,7 @@
     </div>
 </div>
 
-<script>
+ <script>
     var deleteModal = document.getElementById('deleteModal');
     deleteModal.addEventListener('show.bs.modal', function (event) {
         var button = event.relatedTarget;
@@ -554,8 +565,8 @@
         input.value = id;
     });
 
-</script>
-<script>
+ </script>
+ <script>
     function changePage(pageNumber) {
         var totalPages = @ViewBag.Pages.totalPages;
         if (pageNumber < 1 || pageNumber > totalPages) return;
@@ -563,31 +574,34 @@
         document.getElementById("pageInput").value = pageNumber;
         document.getElementById("searchForm").submit();
     }
+ </script>
+
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+            let form = document.getElementById("searchForm");
+
+            document.querySelectorAll(".printBtn").forEach(button => {
+                button.addEventListener("click", function (event) {
+                    event.preventDefault(); // منع الإرسال التلقائي
+
+                    let formData = new FormData(form);
+                    let queryString = new URLSearchParams(formData).toString();
+
+                    let typeValue = this.getAttribute("data-type"); // جلب قيمة Type من الزر المضغوط
+                    let printUrl = `/manage/course/Print?${queryString}&Type=${typeValue}`;
+
+                    window.open(printUrl, "_blank"); // فتح الطباعة في نافذة جديدة
+                });
+            });
+
+            form.addEventListener("submit", function () {
+                form.action = "/manage/course/index"; // التأكد أن البحث يعود إلى index
+            });
+        });
 </script>
 
-<script>
-    document.addEventListener("DOMContentLoaded", function () {
-        let form = document.getElementById("searchForm");
 
-        document.getElementById("printBtn").addEventListener("click", function (event) {
-            event.preventDefault(); // منع الإرسال التلقائي
-
-            let formData = new FormData(form);
-            let queryString = new URLSearchParams(formData).toString();
-            let printUrl = "/manage/course/Print?" + queryString;
-
-            window.open(printUrl, "_blank"); // فتح الطباعة في نافذة جديدة
-        });
-
-        form.addEventListener("submit", function () {
-            form.action = "/manage/course/index"; // التأكد أن البحث يعود إلى index
-        });
-    });
-
-</script>
-
-
-<style>
+    <style >
     .table-container {
         max-height: 750px; /* التحكم في ارتفاع الجدول */
         overflow-y: auto; /* تفعيل التمرير العمودي */

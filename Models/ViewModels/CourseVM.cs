@@ -75,7 +75,7 @@ namespace Models.ViewModels
         [ValidateNever]
         [Display(Name = "كود البرنامج")]
         public string? Code { get; set; }
-        [ValidateNever]
+        [Required]
         [Display(Name = "حالة البرنامج")]
         public Check? Check { get; set; }
         [ValidateNever]
