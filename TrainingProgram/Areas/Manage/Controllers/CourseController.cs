@@ -18,6 +18,7 @@ using System.Linq.Expressions;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.Reporting.NETCore;
 using Microsoft.VisualBasic;
+using System.IO;
 
 namespace TrainingProgram.Areas.Manage.Controllers
 {
@@ -662,7 +663,7 @@ namespace TrainingProgram.Areas.Manage.Controllers
         }
         public IActionResult print(string? Name, DateOnly? BeginningDate, DateOnly? EndingDate, string? ImplementationPlace
             , string? ImplementedCenter, int? ImplementationTypeId, int? TotalImplementationId, Check? Check, int? CourseNatureId
-            , string? Instructor, int Type,int page=1, bool Sort = false)
+            , string? Instructor, int Type, int page = 1, bool Sort = false)
         {
             IQueryable<Course> qcourses = courseRepository.Get(includeProps: [
                e=>e.CourseNature!, e=>e.TotalImplementation! ,e=>e.ImplementationType! ,e=>e.TrainingSpecialist!
@@ -675,112 +676,83 @@ namespace TrainingProgram.Areas.Manage.Controllers
                 {
                     TempData["Date"] = "يجب ادخال تاريخ بداية و تاريخ نهاية";
 
-                    return RedirectToAction("index");
+                    return RedirectToAction("Index", new
+                    {
+                        Name,
+                        BeginningDate,
+                        EndingDate,
+                        ImplementationPlace,
+                        ImplementedCenter,
+                        ImplementationTypeId,
+                        TotalImplementationId,
+                        Check,
+                        CourseNatureId,
+                        Instructor,
+                        Type,
+                        page,
+                        Sort
+                    });
                 }
                 string path;
+                string fileName;
+                IQueryable<object>? courses = null;
                 if (Type == 1)
                 {
-                    qcourses = qcourses.Where(e => e.Check == Models.EnumClasses.Check.Pending && e.BeginningDate >= BeginningDate
-                    && e.EndingDate <= EndingDate);
-                       if(CourseNatureId != null)
-                    {
-                        qcourses = qcourses.Where(e => e.CourseNature!.Id == CourseNatureId);
-                    }
-                    qcourses =qcourses.OrderBy(e => e.BeginningDate).ThenBy(e => e.EndingDate);
+                    qcourses = qcourses.Where(e => e.Check == Models.EnumClasses.Check.Pending
+                        && e.BeginningDate >= BeginningDate
+                        && e.EndingDate <= EndingDate);
 
-                    var courses = qcourses.Select(e => new
-                    {
-                        e.Name,
-                        e.TargetSector,
-                        e.Participants,
-                        e.ImplementationPlace,
-                        e.DaysCount,
-                        BeginningDate = e.BeginningDate.ToString(),
-                        EndingDate = e.EndingDate.ToString(),
-                        e.TraineesNumber,
-                        e.Cost,
-                        TotalImplementationName = e.TotalImplementation!.Name,
-                        CourseNatureName = e.CourseNature!.Name,
-                        e.FundingEntity,
-                        FirstInstructorName = e.CoursesInstructors.Where(c => c.Position == Position.First).Select(e => e.Instructor!.Name).FirstOrDefault(),
-                        SecondInstructorName = e.CoursesInstructors.Where(c => c.Position == Position.Second).Select(e => e.Instructor!.Name).FirstOrDefault(),
-                        ThirdInstructorName = e.CoursesInstructors.Where(c => c.Position == Position.Third).Select(e => e.Instructor!.Name).FirstOrDefault(),
-                        ForthInstructorName = e.CoursesInstructors.Where(c => c.Position == Position.Fourth).Select(e => e.Instructor!.Name).FirstOrDefault()
-
-                    });
-                    path = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot\\Reports\\CoursesF78.rdlc");
-
-
-                    var CourseNature = courseNatureRepository.Get(expression: e => e.Id == CourseNatureId).Select(e => e.Name).FirstOrDefault();
-
-                    var report = new LocalReport();
-                    report.ReportPath = path;
-
-                    report.DataSources.Add(new ReportDataSource("Courses", courses));
-
-                    var parameters = new[]
-                    {
-                   new ReportParameter("CourseNatureName", CourseNature),
-                };
-                    report.SetParameters(parameters);
-
-                    byte[] pdf = report.Render("PDF");
-
-                    return File(pdf, "application/pdf");
-                }
-                else
-                {
-                  
-                    qcourses = qcourses.Where(e => e.Check == Models.EnumClasses.Check.Completed && e.BeginningDate >= BeginningDate
-                    && e.EndingDate <= EndingDate);
                     if (CourseNatureId != null)
                     {
                         qcourses = qcourses.Where(e => e.CourseNature!.Id == CourseNatureId);
                     }
                     qcourses = qcourses.OrderBy(e => e.BeginningDate).ThenBy(e => e.EndingDate);
 
+                    courses = GetCoursesQueryable(qcourses, false);
 
-                    var courses = (List<Course>)qcourses.Select(e => new
-                    {
-                        e.Name,
-                        e.TargetSector,
-                        e.Participants,
-                        e.ImplementationPlace,
-                        e.DaysCount,
-                        BeginningDate = e.BeginningDate.ToString(),
-                        EndingDate = e.EndingDate.ToString(),
-                        e.TraineesNumber,
-                        e.Cost,
-                        TotalImplementationName = e.TotalImplementation!.Name,
-                        CourseNatureName = e.CourseNature!.Name,
-                        TrainingSpecialistName = e.TrainingSpecialist!.Name,
-                        e.FundingEntity,
-                        FirstInstructorName = e.CoursesInstructors.Where(c => c.Position == Position.First).Select(e => e.Instructor!.Name).FirstOrDefault(),
-                        SecondInstructorName = e.CoursesInstructors.Where(c => c.Position == Position.Second).Select(e => e.Instructor!.Name).FirstOrDefault(),
-                        ThirdInstructorName = e.CoursesInstructors.Where(c => c.Position == Position.Third).Select(e => e.Instructor!.Name).FirstOrDefault(),
-                        ForthInstructorName = e.CoursesInstructors.Where(c => c.Position == Position.Fourth).Select(e => e.Instructor!.Name).FirstOrDefault()
+                    path = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot\\Reports\\CoursesF78-pending.rdlc");
 
-                    });
-                    path = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot\\Reports\\CoursesF78.rdlc");
-
-
-                    var CourseNature = courseNatureRepository.Get(expression: e => e.Id == CourseNatureId).Select(e => e.Name).FirstOrDefault();
-
-                    var report = new LocalReport();
-                    report.ReportPath = path;
-
-                    report.DataSources.Add(new ReportDataSource("Courses", courses));
-
-                    var parameters = new[]
-                    {
-                   new ReportParameter("CourseNatureName", CourseNature),
-                };
-                    report.SetParameters(parameters);
-
-                    byte[] pdf = report.Render("PDF");
-
-                    return File(pdf, "application/pdf");
+                    fileName = "مخطط.pdf";
                 }
+                else
+                {
+                    qcourses = qcourses.Where(e => e.Check == Models.EnumClasses.Check.Completed
+                        && e.BeginningDate >= BeginningDate
+                        && e.EndingDate <= EndingDate);
+
+                    if (CourseNatureId != null)
+                    {
+                        qcourses = qcourses.Where(e => e.CourseNature!.Id == CourseNatureId);
+                    }
+                    qcourses = qcourses.OrderBy(e => e.BeginningDate).ThenBy(e => e.EndingDate);
+
+                    courses = GetCoursesQueryable(qcourses, true);
+                    path = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot\\Reports\\CoursesF78-complete.rdlc");
+                    fileName = "منفذ.pdf";
+                }
+
+                var report = new LocalReport();
+                report.ReportPath = path;
+                report.DataSources.Add(new ReportDataSource("Courses", courses));
+
+                var CourseNature = courseNatureRepository.Get(expression: e => e.Id == CourseNatureId)
+                                    .Select(e => e.Name).FirstOrDefault();
+               string Beginning = BeginningDate.HasValue ? BeginningDate.Value.ToString("yyyy/MM/dd") : "";
+                string Ending = EndingDate.HasValue ? EndingDate.Value.ToString("yyyy/MM/dd") : "";
+               
+
+                var parameters = new[] 
+                { 
+                    new ReportParameter("CourseNatureName", CourseNature),
+                  //  new ReportParameter("B", "CourseNature")
+                    new ReportParameter("B",Beginning  ),
+                   // new ReportParameter("EndingDate", "no" ),
+                };
+                report.SetParameters(parameters);
+
+                byte[] pdf = report.Render("PDF");
+                return File(pdf, "application/pdf", fileName);
+
 
             }
             else
@@ -829,93 +801,100 @@ namespace TrainingProgram.Areas.Manage.Controllers
                     qcourses = qcourses.OrderBy(e => e.BeginningDate).ThenBy(e => e.EndingDate);
                 else
                     qcourses = qcourses.OrderByDescending(e => e.BeginningDate).ThenByDescending(e => e.EndingDate);
+                var courses = qcourses
+                    .AsEnumerable() 
+                    .Select(e => new
+                    {
+                        e.Name,
+                        e.TargetSector,
+                        e.Participants,
+                        e.ImplementationPlace,
+                        e.DaysCount,
+                        e.ImplementedDays,
+                        BeginningDate = e.BeginningDate?.ToString() ?? "", 
+                        EndingDate = e.EndingDate?.ToString() ?? "", 
+                        e.TraineesNumber,
+                        e.Cost,
+                        e.ImplementedCenter,
+                        e.HoursNumber,
+                        ImplementationTypeName = e.ImplementationType?.Name ?? "", 
+                        TotalImplementationName = e.TotalImplementation?.Name ?? "",
+                        e.RoomNumber,
+                        Material = e.Material.HasValue && StaticData.material.ContainsKey(e.Material.Value)
+                                   ? StaticData.material[e.Material.Value] : "",
+                        CourseType = e.CourseType.HasValue && StaticData.courseType.ContainsKey(e.CourseType.Value)
+                                     ? StaticData.courseType[e.CourseType.Value] : "",
+                        e.Rating,
+                        ImplementationMonth = e.ImplementationMonth.HasValue && StaticData.implementationMonth.ContainsKey(e.ImplementationMonth.Value)
+                                              ? StaticData.implementationMonth[e.ImplementationMonth.Value] : "",
+                        e.ActualCost,
+                        e.Code,
+                        Check = e.Check.HasValue && StaticData.check.ContainsKey(e.Check.Value)
+                                ? StaticData.check[e.Check.Value] : "",
+                        e.EnterName,
+                        e.Link,
+                        e.RatingSpecialist,
+                        e.Notes,
+                        e.RatingSpecialistNotes,
+                        e.TraineesNotes,
+                        e.TraineesRating,
+                        CourseNatureName = e.CourseNature?.Name ?? "",
+                        TrainingSpecialistName = e.TrainingSpecialist?.Name ?? "",
+                        e.FundingEntity,
+                        FirstInstructorName = e.CoursesInstructors?.FirstOrDefault(c => c.Position == Position.First)?.Instructor?.Name ?? "",
+                        SecondInstructorName = e.CoursesInstructors?.FirstOrDefault(c => c.Position == Position.Second)?.Instructor?.Name ?? "",
+                        ThirdInstructorName = e.CoursesInstructors?.FirstOrDefault(c => c.Position == Position.Third)?.Instructor?.Name ?? "",
+                        ForthInstructorName = e.CoursesInstructors?.FirstOrDefault(c => c.Position == Position.Fourth)?.Instructor?.Name ?? ""
+                    })
+                    .ToList();
 
-                var courses = qcourses.Select(e => new
-                {
-                    //Id = e.Id,
-                    Name = e.Name,
-                    TargetSector = e.TargetSector,
-                    Participants = e.Participants,
-                    ImplementationPlace = e.ImplementationPlace,
-                    DaysCount = e.DaysCount,
-                    ImplementedDays = e.ImplementedDays,
-                    BeginningDate = e.BeginningDate.ToString(),
-                    EndingDate = e.EndingDate.ToString(),
-                    TraineesNumber = e.TraineesNumber,
-                    Cost = e.Cost,
-                    ImplementedCenter = e.ImplementedCenter,
-                    HoursNumber = e.HoursNumber,
-                    ImplementationTypeName = e.ImplementationType!.Name,
-                    TotalImplementationName = e.TotalImplementation!.Name,
-                    RoomNumber = e.RoomNumber,
-                    Material = e.Material,
-                    CourseType = e.CourseType,
-                    Rating = e.Rating,
-                    ImplementationMonth = e.ImplementationMonth,
-                    ActualCost = e.ActualCost,
-                    Code = e.Code,
-                    Check = e.Check,
-                    PdfFile = e.PdfFile,
-                    EnterName = e.EnterName,
-                    Link = e.Link,
-                    RatingSpecialist = e.RatingSpecialist,
-                    Notes = e.Notes,
-                    RatingSpecialistNotes = e.RatingSpecialistNotes,
-                    TraineesNotes = e.TraineesNotes,
-                    TraineesRating = e.TraineesRating,
-                    CourseNatureName = e.CourseNature!.Name,
-                    TrainingSpecialistName = e.TrainingSpecialist!.Name,
-                    FundingEntity = e.FundingEntity,
-                    FirstInstructorName = e.CoursesInstructors.Where(c => c.Position == Position.First).Select(e => e.Instructor!.Name).FirstOrDefault(),
-                    SecondInstructorName = e.CoursesInstructors.Where(c => c.Position == Position.Second).Select(e => e.Instructor!.Name).FirstOrDefault(),
-                    ThirdInstructorName = e.CoursesInstructors.Where(c => c.Position == Position.Third).Select(e => e.Instructor!.Name).FirstOrDefault(),
-                    ForthInstructorName = e.CoursesInstructors.Where(c => c.Position == Position.Fourth).Select(e => e.Instructor!.Name).FirstOrDefault()
+                var path = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot\\Reports\\Course-all.rdlc");
+                // تحميل التقرير
+                var report = new LocalReport();
+                report.ReportPath = path;
+                report.DataSources.Add(new ReportDataSource("Courses", courses));
 
-                });
+                var CourseNature = courseNatureRepository.Get(expression: e => e.Id == CourseNatureId)
+                                    .Select(e => e.Name).FirstOrDefault();
 
+                var parameters = new[] { new ReportParameter("CourseNatureName", CourseNature) };
+                report.SetParameters(parameters);
+
+                //  / Render the report as an Excel file
+                byte[] excel = report.Render("EXCELOPENXML");
+
+                return File(excel, "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet", "Report.xlsx");
             }
-
-
-
-
-
-
-
-            //  var TotalImplementation = totalImplementationRepository.Get(expression: e => e.Id == TotalImplementationId).Select(e => e.Name).FirstOrDefault();
-
-
-
-
-            // var report = new LocalReport();
-            //    report.ReportPath = path;
-            //  // Add the data source
-            //  report.DataSources.Add(new ReportDataSource("Courses", courses));
-
-            var time = DateTime.Now.Month;
-            ////   Set parameters
-            //var parameters = new[]
-            // {
-            //       new ReportParameter("CourseNatureName", CourseNature),
-            //  //  new ReportParameter("TotalImplementationName", $"({TotalImplementation})"),
-            //       new ReportParameter("Month",StaticData.implementationMonth.GetValueOrDefault( (ImplementationMonth)(time-1) ) )
-            //   };
-            //report.SetParameters(parameters);
-
-            ////   // Render the report
-            //byte[] pdf = report.Render("PDF");
-
-            //return File(pdf, "application/pdf");
-
-            //  // Render the report as an Excel file
-            //  byte[] excel = report.Render("EXCELOPENXML");
-
-            //  return File(excel, "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet", "Report.xlsx");
-            return View("index");
-
         }
         private bool CourseExists(int id)
         {
             return courseRepository.Get(tracked: false).Any(e => e.Id == id);
         }
+        private IQueryable<object> GetCoursesQueryable(IQueryable<Course> qcourses, bool isCompleted)
+        {
+            var courses = qcourses.Select(e => new
+            {
+                e.Name,
+                e.TargetSector,
+                e.Participants,
+                e.ImplementationPlace,
+                e.DaysCount,
+                BeginningDate = e.BeginningDate.HasValue ? e.BeginningDate.Value.ToString("yyyy/MM/dd") : null,
+                EndingDate = e.EndingDate.HasValue ? e.EndingDate.Value.ToString("yyyy/MM/dd") : null,
+                e.TraineesNumber,
+                e.Cost,
+                TotalImplementationName = e.TotalImplementation!.Name,
+                CourseNatureName = e.CourseNature!.Name,
+                e.FundingEntity,
+                FirstInstructorName = e.CoursesInstructors.Where(c => c.Position == Position.First).Select(e => e.Instructor!.Name).FirstOrDefault(),
+                SecondInstructorName = e.CoursesInstructors.Where(c => c.Position == Position.Second).Select(e => e.Instructor!.Name).FirstOrDefault(),
+                ThirdInstructorName = e.CoursesInstructors.Where(c => c.Position == Position.Third).Select(e => e.Instructor!.Name).FirstOrDefault(),
+                ForthInstructorName = e.CoursesInstructors.Where(c => c.Position == Position.Fourth).Select(e => e.Instructor!.Name).FirstOrDefault(),
+                TrainingSpecialistName = isCompleted ? e.TrainingSpecialist!.Name : null // يضاف فقط إذا كان التقرير مكتملًا
+            });
+
+            return courses;
+        }
+
     }
 }

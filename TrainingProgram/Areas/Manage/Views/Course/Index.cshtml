@@ -577,27 +577,28 @@
  </script>
 
     <script>
-        document.addEventListener("DOMContentLoaded", function () {
-            let form = document.getElementById("searchForm");
+    document.addEventListener("DOMContentLoaded", function () {
+        let form = document.getElementById("searchForm");
 
-            document.querySelectorAll(".printBtn").forEach(button => {
-                button.addEventListener("click", function (event) {
-                    event.preventDefault(); // منع الإرسال التلقائي
+        document.querySelectorAll(".printBtn").forEach(button => {
+            button.addEventListener("click", function (event) {
+                event.preventDefault(); // منع الإرسال التلقائي
 
-                    let formData = new FormData(form);
-                    let queryString = new URLSearchParams(formData).toString();
+                let formData = new FormData(form);
+                let queryString = new URLSearchParams(formData).toString();
 
-                    let typeValue = this.getAttribute("data-type"); // جلب قيمة Type من الزر المضغوط
-                    let printUrl = `/manage/course/Print?${queryString}&Type=${typeValue}`;
+                let typeValue = this.getAttribute("data-type"); // جلب قيمة Type من الزر المضغوط
+                let printUrl = `/manage/course/Print?${queryString}&Type=${typeValue}`;
 
-                    window.open(printUrl, "_blank"); // فتح الطباعة في نافذة جديدة
-                });
-            });
-
-            form.addEventListener("submit", function () {
-                form.action = "/manage/course/index"; // التأكد أن البحث يعود إلى index
+                window.location.href = printUrl; // فتح الطباعة في نفس النافذة
             });
         });
+
+        form.addEventListener("submit", function () {
+            form.action = "/manage/course/index"; // التأكد أن البحث يعود إلى index
+        });
+    });
+
 </script>
 
 

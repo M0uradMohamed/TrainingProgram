@@ -8,36 +8,10 @@
 	</PropertyGroup>
 
 	<ItemGroup>
-		<Content Remove="wwwroot\Reports\CourseDataSet.cs" />
-		<Content Remove="wwwroot\Reports\CourseDataSet.Designer.cs" />
-		<Content Remove="wwwroot\Reports\CourseDataSet.xsc" />
-		<Content Remove="wwwroot\Reports\CourseDataSet.xsd" />
-		<Content Remove="wwwroot\Reports\CourseDataSet.xss" />
-		<Content Remove="wwwroot\Reports\CourseReport.rdlc" />
+		<Content Remove="wwwroot\Reports\Course-all.rdlc" />
+		<Content Remove="wwwroot\Reports\CoursesF78-complete.rdlc" />
+		<Content Remove="wwwroot\Reports\CoursesF78-pending.rdlc" />
 		<Content Remove="wwwroot\Reports\CoursesF78.rdlc" />
-		<Content Remove="wwwroot\Reports\SectorDataSet.cs" />
-		<Content Remove="wwwroot\Reports\SectorDataSet.Designer.cs" />
-		<Content Remove="wwwroot\Reports\SectorDataSet.xsc" />
-		<Content Remove="wwwroot\Reports\SectorDataSet.xsd" />
-		<Content Remove="wwwroot\Reports\SectorDataSet.xss" />
-		<Content Remove="wwwroot\Reports\SectorReport.rdlc" />
-		<Content Remove="wwwroot\Reports\TestRP.rdlc" />
-		<Content Remove="wwwroot\Reports\TraineesReport.rdlc" />
-	</ItemGroup>
-
-	<ItemGroup>
-		<Compile Include="wwwroot\Reports\CourseDataSet.cs" />
-		<Compile Include="wwwroot\Reports\CourseDataSet.Designer.cs">
-			<DependentUpon>CourseDataSet.xsd</DependentUpon>
-			<DesignTime>True</DesignTime>
-			<AutoGen>True</AutoGen>
-		</Compile>
-		<Compile Include="wwwroot\Reports\SectorDataSet.cs" />
-		<Compile Include="wwwroot\Reports\SectorDataSet.Designer.cs">
-			<DependentUpon>SectorDataSet.xsd</DependentUpon>
-			<DesignTime>True</DesignTime>
-			<AutoGen>True</AutoGen>
-		</Compile>
 	</ItemGroup>
 	<ItemGroup>
 		<PackageReference Include="Microsoft.AspNetCore.Identity.EntityFrameworkCore" Version="8.0.11" />
@@ -58,25 +32,10 @@
 		<Folder Include="wwwroot\CouresFiles\" />
 	</ItemGroup>
 	<ItemGroup>
-		<None Include="wwwroot\Reports\CourseDataSet.xsc" />
-		<None Include="wwwroot\Reports\CourseDataSet.xsd">
-			<SubType>Designer</SubType>
-			<LastGenOutput>CourseDataSet.Designer.cs</LastGenOutput>
-			<Generator>MSDataSetGenerator</Generator>
-		</None>
-		<None Include="wwwroot\Reports\CourseDataSet.xss" />
-		<None Include="wwwroot\Reports\CourseReport.rdlc" />
+		<None Include="wwwroot\Reports\Course-all.rdlc" />
+		<None Include="wwwroot\Reports\CoursesF78-pending.rdlc" />
+		<None Include="wwwroot\Reports\CoursesF78-complete.rdlc" />
 		<None Include="wwwroot\Reports\CoursesF78.rdlc" />
-		<None Include="wwwroot\Reports\SectorDataSet.xsc" />
-		<None Include="wwwroot\Reports\SectorDataSet.xsd">
-			<SubType>Designer</SubType>
-			<LastGenOutput>SectorDataSet.Designer.cs</LastGenOutput>
-			<Generator>MSDataSetGenerator</Generator>
-		</None>
-		<None Include="wwwroot\Reports\SectorDataSet.xss" />
-		<None Include="wwwroot\Reports\SectorReport.rdlc" />
-		<None Include="wwwroot\Reports\TestRP.rdlc" />
-		<None Include="wwwroot\Reports\TraineesReport.rdlc" />
 	</ItemGroup>
 	<ProjectExtensions>
 		<VisualStudio>
