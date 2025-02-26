@@ -2433,6 +2433,14 @@ ___________</Value>
                         <FontWeight>Bold</FontWeight>
                       </Style>
                     </TextRun>
+                    <TextRun>
+                      <Value> (المخطط)</Value>
+                      <Style>
+                        <FontFamily>times New Roman</FontFamily>
+                        <FontSize>14pt</FontSize>
+                        <FontWeight>Bold</FontWeight>
+                      </Style>
+                    </TextRun>
                   </TextRuns>
                   <Style>
                     <TextAlign>Right</TextAlign>
@@ -2440,10 +2448,10 @@ ___________</Value>
                 </Paragraph>
               </Paragraphs>
               <rd:DefaultName>Textbox6</rd:DefaultName>
-              <Top>0.9481in</Top>
-              <Left>4.11127in</Left>
+              <Top>0.90643in</Top>
+              <Left>4.34738in</Left>
               <Height>0.25857in</Height>
-              <Width>2.253in</Width>
+              <Width>2.76145in</Width>
               <ZIndex>4</ZIndex>
               <Style>
                 <Border>
@@ -2462,7 +2470,7 @@ ___________</Value>
                 <Paragraph>
                   <TextRuns>
                     <TextRun>
-                      <Value>نوع الدورات : المخطط </Value>
+                      <Value>نوع الدورات :  </Value>
                       <Style>
                         <FontFamily>times New Roman</FontFamily>
                         <FontSize>14pt</FontSize>
@@ -2477,36 +2485,40 @@ ___________</Value>
                         <FontWeight>Bold</FontWeight>
                       </Style>
                     </TextRun>
-                  </TextRuns>
-                  <Style>
-                    <TextAlign>Right</TextAlign>
-                  </Style>
-                </Paragraph>
-              </Paragraphs>
-              <rd:DefaultName>Textbox6</rd:DefaultName>
-              <Top>1.22056in</Top>
-              <Left>4.11127in</Left>
-              <Height>0.32132in</Height>
-              <Width>3.74444in</Width>
-              <ZIndex>5</ZIndex>
-              <Style>
-                <Border>
-                  <Style>None</Style>
-                </Border>
-                <PaddingLeft>2pt</PaddingLeft>
-                <PaddingRight>2pt</PaddingRight>
-                <PaddingTop>2pt</PaddingTop>
-                <PaddingBottom>2pt</PaddingBottom>
-              </Style>
-            </Textbox>
-            <Textbox Name="Textbox11">
-              <CanGrow>true</CanGrow>
-              <KeepTogether>true</KeepTogether>
-              <Paragraphs>
-                <Paragraph>
-                  <TextRuns>
                     <TextRun>
-                      <Value>اعتبارا من  </Value>
+                      <Value> اعتبارأ من </Value>
+                      <Style>
+                        <FontFamily>times New Roman</FontFamily>
+                        <FontSize>14pt</FontSize>
+                        <FontWeight>Bold</FontWeight>
+                      </Style>
+                    </TextRun>
+                    <TextRun>
+                      <Value>=Parameters!Beginning.Value</Value>
+                      <Style>
+                        <FontFamily>times New Roman</FontFamily>
+                        <FontSize>14pt</FontSize>
+                        <FontWeight>Bold</FontWeight>
+                      </Style>
+                    </TextRun>
+                    <TextRun>
+                      <Value> حتى </Value>
+                      <Style>
+                        <FontFamily>times New Roman</FontFamily>
+                        <FontSize>14pt</FontSize>
+                        <FontWeight>Bold</FontWeight>
+                      </Style>
+                    </TextRun>
+                    <TextRun>
+                      <Value>=Parameters!Ending.Value</Value>
+                      <Style>
+                        <FontFamily>times New Roman</FontFamily>
+                        <FontSize>14pt</FontSize>
+                        <FontWeight>Bold</FontWeight>
+                      </Style>
+                    </TextRun>
+                    <TextRun>
+                      <Value xml:space="preserve"> </Value>
                       <Style>
                         <FontFamily>times New Roman</FontFamily>
                         <FontSize>14pt</FontSize>
@@ -2520,11 +2532,11 @@ ___________</Value>
                 </Paragraph>
               </Paragraphs>
               <rd:DefaultName>Textbox6</rd:DefaultName>
-              <Top>1.22056in</Top>
-              <Left>1.85827in</Left>
+              <Top>1.23244in</Top>
+              <Left>1.21111in</Left>
               <Height>0.32132in</Height>
-              <Width>2.253in</Width>
-              <ZIndex>6</ZIndex>
+              <Width>7.55145in</Width>
+              <ZIndex>5</ZIndex>
               <Style>
                 <Border>
                   <Style>None</Style>
@@ -2604,7 +2616,13 @@ ___________</Value>
       <AllowBlank>true</AllowBlank>
       <Prompt>ReportParameter1</Prompt>
     </ReportParameter>
-    <ReportParameter Name="TotalImplementationName">
+    <ReportParameter Name="Beginning">
+      <DataType>String</DataType>
+      <Nullable>true</Nullable>
+      <AllowBlank>true</AllowBlank>
+      <Prompt>ReportParameter1</Prompt>
+    </ReportParameter>
+    <ReportParameter Name="Ending">
       <DataType>String</DataType>
       <Nullable>true</Nullable>
       <AllowBlank>true</AllowBlank>
@@ -2627,9 +2645,14 @@ ___________</Value>
           <ParameterName>Month</ParameterName>
         </CellDefinition>
         <CellDefinition>
-          <ColumnIndex>2</ColumnIndex>
+          <ColumnIndex>3</ColumnIndex>
           <RowIndex>0</RowIndex>
-          <ParameterName>TotalImplementationName</ParameterName>
+          <ParameterName>Beginning</ParameterName>
+        </CellDefinition>
+        <CellDefinition>
+          <ColumnIndex>0</ColumnIndex>
+          <RowIndex>1</RowIndex>
+          <ParameterName>Ending</ParameterName>
         </CellDefinition>
       </CellDefinitions>
     </GridLayoutDefinition>

@@ -9,50 +9,23 @@
 		<PackageReference Include="Microsoft.AspNetCore.Identity.EntityFrameworkCore" Version="8.0.11" />
 	</ItemGroup>
 	<ItemGroup>
-	  <Compile Update="Reports\CourseDataSet.Designer.cs">
-	    <DesignTime>True</DesignTime>
-	    <AutoGen>True</AutoGen>
-	    <DependentUpon>CourseDataSet.xsd</DependentUpon>
-	  </Compile>
-	  <Compile Update="Reports\CourseTrainee.Designer.cs">
-	    <DesignTime>True</DesignTime>
-	    <AutoGen>True</AutoGen>
-	    <DependentUpon>CourseTrainee.xsd</DependentUpon>
-	  </Compile>
 	  <Compile Update="Reports\DataSets\CourseF78.Designer.cs">
 	    <DesignTime>True</DesignTime>
 	    <AutoGen>True</AutoGen>
 	    <DependentUpon>CourseF78.xsd</DependentUpon>
 	  </Compile>
-	  <Compile Update="Reports\SectorDataSet.Designer.cs">
-	    <DesignTime>True</DesignTime>
-	    <AutoGen>True</AutoGen>
-	    <DependentUpon>SectorDataSet.xsd</DependentUpon>
-	  </Compile>
-	  <Compile Update="Reports\TraineeDataSet.Designer.cs">
+	  <Compile Update="Reports\DataSets\TraineeDataSet.Designer.cs">
 	    <DesignTime>True</DesignTime>
 	    <AutoGen>True</AutoGen>
 	    <DependentUpon>TraineeDataSet.xsd</DependentUpon>
 	  </Compile>
 	</ItemGroup>
 	<ItemGroup>
-	  <None Update="Reports\CourseDataSet.xsd">
-	    <Generator>MSDataSetGenerator</Generator>
-	    <LastGenOutput>CourseDataSet.Designer.cs</LastGenOutput>
-	  </None>
-	  <None Update="Reports\CourseTrainee.xsd">
-	    <Generator>MSDataSetGenerator</Generator>
-	    <LastGenOutput>CourseTrainee.Designer.cs</LastGenOutput>
-	  </None>
 	  <None Update="Reports\DataSets\CourseF78.xsd">
 	    <Generator>MSDataSetGenerator</Generator>
 	    <LastGenOutput>CourseF78.Designer.cs</LastGenOutput>
 	  </None>
-	  <None Update="Reports\SectorDataSet.xsd">
-	    <Generator>MSDataSetGenerator</Generator>
-	    <LastGenOutput>SectorDataSet.Designer.cs</LastGenOutput>
-	  </None>
-	  <None Update="Reports\TraineeDataSet.xsd">
+	  <None Update="Reports\DataSets\TraineeDataSet.xsd">
 	    <Generator>MSDataSetGenerator</Generator>
 	    <LastGenOutput>TraineeDataSet.Designer.cs</LastGenOutput>
 	  </None>

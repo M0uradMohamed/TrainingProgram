@@ -739,14 +739,14 @@ namespace TrainingProgram.Areas.Manage.Controllers
                                     .Select(e => e.Name).FirstOrDefault();
                string Beginning = BeginningDate.HasValue ? BeginningDate.Value.ToString("yyyy/MM/dd") : "";
                 string Ending = EndingDate.HasValue ? EndingDate.Value.ToString("yyyy/MM/dd") : "";
-               
+                var month =StaticData.implementationMonth[(ImplementationMonth)(BeginningDate.Value.Month-1)];
 
                 var parameters = new[] 
                 { 
                     new ReportParameter("CourseNatureName", CourseNature),
-                  //  new ReportParameter("B", "CourseNature")
-                    new ReportParameter("B",Beginning  ),
-                   // new ReportParameter("EndingDate", "no" ),
+                    new ReportParameter("Beginning",Beginning),
+                   new ReportParameter("Ending", Ending ),
+                   new ReportParameter("Month", month ),
                 };
                 report.SetParameters(parameters);
 
@@ -759,7 +759,7 @@ namespace TrainingProgram.Areas.Manage.Controllers
             {
                 if (Name != null)
                 {
-                    qcourses = qcourses.Where(e => e.Name!.Contains(Name.TrimStart().TrimEnd()));
+                    qcourses = qcourses.Where(e => e.Name != null && e.Name.Contains(Name.Trim() ));
                 }
                 if (BeginningDate != null)
                 {
@@ -771,19 +771,19 @@ namespace TrainingProgram.Areas.Manage.Controllers
                 }
                 if (ImplementationPlace != null)
                 {
-                    qcourses = qcourses.Where(e => e.ImplementationPlace!.Contains(ImplementationPlace.TrimStart().TrimEnd()));
+                    qcourses = qcourses.Where(e =>  e.ImplementationPlace != null && e.ImplementationPlace.Contains(ImplementationPlace.Trim() ));
                 }
                 if (ImplementedCenter != null)
                 {
-                    qcourses = qcourses.Where(e => e.ImplementedCenter!.Contains(ImplementedCenter.TrimStart().TrimEnd()));
+                    qcourses = qcourses.Where(e => e.ImplementedCenter != null && e.ImplementedCenter.Contains(ImplementedCenter.Trim()));
                 }
                 if (ImplementationTypeId != null)
                 {
-                    qcourses = qcourses.Where(e => e.ImplementationType!.Id == ImplementationTypeId);
+                    qcourses = qcourses.Where(e => e.ImplementationType !=null && e.ImplementationType.Id == ImplementationTypeId);
                 }
                 if (TotalImplementationId != null)
                 {
-                    qcourses = qcourses.Where(e => e.TotalImplementation!.Id == TotalImplementationId);
+                    qcourses = qcourses.Where(e => e.TotalImplementation !=null && e.TotalImplementation.Id == TotalImplementationId);
                 }
                 if (Check != null)
                 {
@@ -791,18 +791,19 @@ namespace TrainingProgram.Areas.Manage.Controllers
                 }
                 if (CourseNatureId != null)
                 {
-                    qcourses = qcourses.Where(e => e.CourseNature!.Id == CourseNatureId);
+                    qcourses = qcourses.Where(e => e.CourseNature != null && e.CourseNature.Id == CourseNatureId);
                 }
                 if (Instructor != null)
                 {
-                    qcourses = qcourses.Where(e => e.CoursesInstructors.Any(c => c.Instructor!.Name!.Contains(Instructor.TrimStart().TrimEnd())));
+                    qcourses = qcourses.Where(e => e.CoursesInstructors.Any(c => c.Instructor != null &&c.Instructor.Name != null 
+                    &&c.Instructor.Name.Contains(Instructor.Trim())));
                 }
                 if (!Sort)
                     qcourses = qcourses.OrderBy(e => e.BeginningDate).ThenBy(e => e.EndingDate);
                 else
                     qcourses = qcourses.OrderByDescending(e => e.BeginningDate).ThenByDescending(e => e.EndingDate);
                 var courses = qcourses
-                    .AsEnumerable() 
+                  .AsEnumerable()
                     .Select(e => new
                     {
                         e.Name,
@@ -811,17 +812,16 @@ namespace TrainingProgram.Areas.Manage.Controllers
                         e.ImplementationPlace,
                         e.DaysCount,
                         e.ImplementedDays,
-                        BeginningDate = e.BeginningDate?.ToString() ?? "", 
-                        EndingDate = e.EndingDate?.ToString() ?? "", 
+                        BeginningDate = e.BeginningDate.ToString() ?? "", 
+                        EndingDate = e.EndingDate.ToString() ?? "", 
                         e.TraineesNumber,
                         e.Cost,
                         e.ImplementedCenter,
                         e.HoursNumber,
-                        ImplementationTypeName = e.ImplementationType?.Name ?? "", 
-                        TotalImplementationName = e.TotalImplementation?.Name ?? "",
+                        ImplementationTypeName = e.ImplementationType !=null ? e.ImplementationType.Name :"", 
+                        TotalImplementationName = e.TotalImplementation !=null ?e.TotalImplementation.Name : "",
                         e.RoomNumber,
-                        Material = e.Material.HasValue && StaticData.material.ContainsKey(e.Material.Value)
-                                   ? StaticData.material[e.Material.Value] : "",
+                        Material = e.Material != null ? StaticData.material[e.Material.Value] : "",
                         CourseType = e.CourseType.HasValue && StaticData.courseType.ContainsKey(e.CourseType.Value)
                                      ? StaticData.courseType[e.CourseType.Value] : "",
                         e.Rating,
@@ -838,15 +838,15 @@ namespace TrainingProgram.Areas.Manage.Controllers
                         e.RatingSpecialistNotes,
                         e.TraineesNotes,
                         e.TraineesRating,
-                        CourseNatureName = e.CourseNature?.Name ?? "",
-                        TrainingSpecialistName = e.TrainingSpecialist?.Name ?? "",
+                        CourseNatureName = e.CourseNature!=null ? e.CourseNature.Name : "",
+                        TrainingSpecialistName = e.TrainingSpecialist!=null ? e.TrainingSpecialist.Name : "",
                         e.FundingEntity,
-                        FirstInstructorName = e.CoursesInstructors?.FirstOrDefault(c => c.Position == Position.First)?.Instructor?.Name ?? "",
-                        SecondInstructorName = e.CoursesInstructors?.FirstOrDefault(c => c.Position == Position.Second)?.Instructor?.Name ?? "",
-                        ThirdInstructorName = e.CoursesInstructors?.FirstOrDefault(c => c.Position == Position.Third)?.Instructor?.Name ?? "",
-                        ForthInstructorName = e.CoursesInstructors?.FirstOrDefault(c => c.Position == Position.Fourth)?.Instructor?.Name ?? ""
+                        FirstInstructorName = e.CoursesInstructors.Where(c => c.Position == Position.First).Select(e => e.Instructor != null ? e.Instructor.Name : "").FirstOrDefault(),
+                        SecondInstructorName = e.CoursesInstructors.Where(c => c.Position == Position.Second).Select(e => e.Instructor != null ? e.Instructor.Name : "").FirstOrDefault(),
+                        ThirdInstructorName = e.CoursesInstructors.Where(c => c.Position == Position.Third).Select(e => e.Instructor != null ? e.Instructor.Name : "").FirstOrDefault(),
+                        ForthInstructorName = e.CoursesInstructors.Where(c => c.Position == Position.Fourth).Select(e => e.Instructor != null ? e.Instructor.Name : "").FirstOrDefault(),
                     })
-                    .ToList();
+                    ;
 
                 var path = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot\\Reports\\Course-all.rdlc");
                 // تحميل التقرير
@@ -883,14 +883,14 @@ namespace TrainingProgram.Areas.Manage.Controllers
                 EndingDate = e.EndingDate.HasValue ? e.EndingDate.Value.ToString("yyyy/MM/dd") : null,
                 e.TraineesNumber,
                 e.Cost,
-                TotalImplementationName = e.TotalImplementation!.Name,
-                CourseNatureName = e.CourseNature!.Name,
+                TotalImplementationName = e.TotalImplementation != null ? e.TotalImplementation.Name :""  ,
+                CourseNatureName = e.CourseNature!=null ? e.CourseNature.Name:"",
                 e.FundingEntity,
-                FirstInstructorName = e.CoursesInstructors.Where(c => c.Position == Position.First).Select(e => e.Instructor!.Name).FirstOrDefault(),
-                SecondInstructorName = e.CoursesInstructors.Where(c => c.Position == Position.Second).Select(e => e.Instructor!.Name).FirstOrDefault(),
-                ThirdInstructorName = e.CoursesInstructors.Where(c => c.Position == Position.Third).Select(e => e.Instructor!.Name).FirstOrDefault(),
-                ForthInstructorName = e.CoursesInstructors.Where(c => c.Position == Position.Fourth).Select(e => e.Instructor!.Name).FirstOrDefault(),
-                TrainingSpecialistName = isCompleted ? e.TrainingSpecialist!.Name : null // يضاف فقط إذا كان التقرير مكتملًا
+                FirstInstructorName = e.CoursesInstructors.Where(c => c.Position == Position.First).Select(e => e.Instructor !=null ?e.Instructor.Name :""  ).FirstOrDefault(),
+                SecondInstructorName = e.CoursesInstructors.Where(c => c.Position == Position.Second).Select(e => e.Instructor != null ? e.Instructor.Name : "").FirstOrDefault(),
+                ThirdInstructorName = e.CoursesInstructors.Where(c => c.Position == Position.Third).Select(e => e.Instructor != null ? e.Instructor.Name : "").FirstOrDefault(),
+                ForthInstructorName = e.CoursesInstructors.Where(c => c.Position == Position.Fourth).Select(e => e.Instructor != null ? e.Instructor.Name : "").FirstOrDefault(),
+                TrainingSpecialistName = isCompleted && e.TrainingSpecialist != null ?e.TrainingSpecialist.Name : null // يضاف فقط إذا كان التقرير مكتملًا
             });
 
             return courses;
