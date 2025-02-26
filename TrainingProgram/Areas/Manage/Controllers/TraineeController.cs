@@ -3,6 +3,7 @@ using DataAccess.Repository.IRepository;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.ModelBinding;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Reporting.NETCore;
 using Models;
 using Models.EnumClasses;
 using Models.StaticData;
@@ -424,58 +425,86 @@ namespace TrainingProgram.Areas.Manage.Controllers
             }
             return RedirectToAction("Notfound", "Home");
         }
-       // public IActionResult print(int id)
-       // {
-       //     var Iscourse = courseRepository.Get(expression: e => e.Id == id).Any();
+        public IActionResult print(int id, int Type)
+        {
+            var Iscourse = courseRepository.Get(expression: e => e.Id == id).Any();
 
-       //     if (!Iscourse)
-       //     {
-       //         return RedirectToAction("Notfound", "Home");
+            if (!Iscourse)
+            {
+                return RedirectToAction("Notfound", "Home");
 
-       //     }
-       //     var course = courseRepository.Get(expression: e => e.Id == id /*, includeProps: [e => e.PrimaryInstructor]*/).Select(e => new
-       //     {
-       //         e.Id,
-       //         e.Name,
-       //         BeginningDate = e.BeginningDate.ToString(),
-       //         EndingDate = e.EndingDate.ToString(),
+            }
+            /* var course = courseRepository.Get(expression: e => e.Id == id ).Select(e => new
+             {
+                 e.Id,
+                 e.Name,
+                 BeginningDate = e.BeginningDate.ToString(),
+                 EndingDate = e.EndingDate.ToString(),
 
-       //     }).FirstOrDefault();
-       //     var courses = new List<object>()
-       //     {
-       //         course!
-       //     };
+             }).FirstOrDefault();*/
+            var qcourses = courseRepository.Get(expression: e => e.Id == id, includeProps: [
+               e=>e.CourseNature!, e=>e.TotalImplementation! ,e=>e.ImplementationType! ,e=>e.TrainingSpecialist!
+               ]).Select(e => new
+               {
+                   e.Name,
+                   e.TargetSector,
+                   BeginningDate = e.BeginningDate.ToString() ?? "",
+                   EndingDate = e.EndingDate.ToString() ?? "",
+                   e.ImplementedDays,
+                   e.ImplementationPlace,
+                   TrainingSpecialistName = e.TrainingSpecialist != null ? e.TrainingSpecialist.Name : "",
+                   FirstInstructorName = e.CoursesInstructors.Where(c => c.Position == Position.First).Select(e => e.Instructor != null ? e.Instructor.Name : "").FirstOrDefault(),
+                   SecondInstructorName = e.CoursesInstructors.Where(c => c.Position == Position.Second).Select(e => e.Instructor != null ? e.Instructor.Name : "").FirstOrDefault(),
+                   ThirdInstructorName = e.CoursesInstructors.Where(c => c.Position == Position.Third).Select(e => e.Instructor != null ? e.Instructor.Name : "").FirstOrDefault(),
+                   ForthInstructorName = e.CoursesInstructors.Where(c => c.Position == Position.Fourth).Select(e => e.Instructor != null ? e.Instructor.Name : "").FirstOrDefault(),
 
+               });
 
-       //     var trainees = traineeRepository.Get(expression: e => e.CourseId == id, includeProps: [e => e.Employee!])
-       //.Select(e => new
-       //{
-
-       //    Id = e.Employee!.FoundationId,
-       //    Name = e.Employee.Name
-
-       //}).ToList();
-
-       //     // string path = Path.Combine(webHostEnvironment.WebRootPath + @"\Reports\SectorReport.rdlc");
-       //     string path = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot\\Reports\\TraineesReport.rdlc");
-
-
-       //     // Dictionary<string, string> parmaeters = new Dictionary<string, string>();
-       //     // parmaeters.Add("Ahmed", "شركة المياة");
+        
 
 
+            var trainees = traineeRepository.Get(expression: e => e.CourseId == id, includeProps: [e => e.Employee])
+       .AsEnumerable().Select(e => new
+       {
 
-       //     LocalReport localreport = new LocalReport(path);
-       //     localreport.AddDataSource("CourseTrainee", courses);
-       //     localreport.AddDataSource("TraineeDataSet", trainees);
+           e.Employee.Name,
+           e.Employee!.FoundationId,
+           e.Employee.Job,
+           DepartmentName=e.Employee.Department,
+           e.Employee.WorkPlace,
+           e.Employee.PhoneNumber,
+           Estimate = e.Estimate !=null ? StaticData.estimate[e.Estimate.Value] : "",
+           e.AbsenceDays,
+           e.AttendanceAndDeparture,
+           e.AdherenceMark,
+           e.InteractionMark,
+           e.ActivitiesMark,
+           e.TotalEvaluation,
+           e.WrittenExam,
+           e.TotalMarks
+       }).ToList();
 
-       //     var report = localreport.Execute(RenderType.Pdf, 1, null, "");
+            string path = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot\\Reports\\traineesReport.rdlc");
+
+            var report = new LocalReport();
+            report.ReportPath = path;
+            report.DataSources.Add(new ReportDataSource("Courses", qcourses));
+            report.DataSources.Add(new ReportDataSource("Trainees", trainees));
+
+            //var parameters = new[]
+            //{
+            //       // new ReportParameter("CourseNatureName", CourseNature),
+            //       // new ReportParameter("Beginning",Beginning),
+            //       //new ReportParameter("Ending", Ending ),
+            //       //new ReportParameter("Month", month ),
+            //    };
+           // report.SetParameters(parameters);
+
+            byte[] pdf = report.Render("PDF");
+            return File(pdf, "application/pdf");
 
 
-
-
-       //     return File(report.MainStream, "application/pdf");
-       // }
+        }
         public IActionResult DownloadFile(string fileName, int id)
         {
             if (fileName != null)

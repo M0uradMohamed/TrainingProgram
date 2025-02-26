@@ -812,14 +812,14 @@ namespace TrainingProgram.Areas.Manage.Controllers
                         e.ImplementationPlace,
                         e.DaysCount,
                         e.ImplementedDays,
-                        BeginningDate = e.BeginningDate.ToString() ?? "", 
-                        EndingDate = e.EndingDate.ToString() ?? "", 
+                        BeginningDate = e.BeginningDate.ToString() ?? "",
+                        EndingDate = e.EndingDate.ToString() ?? "",
                         e.TraineesNumber,
                         e.Cost,
                         e.ImplementedCenter,
                         e.HoursNumber,
-                        ImplementationTypeName = e.ImplementationType !=null ? e.ImplementationType.Name :"", 
-                        TotalImplementationName = e.TotalImplementation !=null ?e.TotalImplementation.Name : "",
+                        ImplementationTypeName = e.ImplementationType != null ? e.ImplementationType.Name : "",
+                        TotalImplementationName = e.TotalImplementation != null ? e.TotalImplementation.Name : "",
                         e.RoomNumber,
                         Material = e.Material != null ? StaticData.material[e.Material.Value] : "",
                         CourseType = e.CourseType.HasValue && StaticData.courseType.ContainsKey(e.CourseType.Value)
@@ -838,15 +838,15 @@ namespace TrainingProgram.Areas.Manage.Controllers
                         e.RatingSpecialistNotes,
                         e.TraineesNotes,
                         e.TraineesRating,
-                        CourseNatureName = e.CourseNature!=null ? e.CourseNature.Name : "",
-                        TrainingSpecialistName = e.TrainingSpecialist!=null ? e.TrainingSpecialist.Name : "",
+                        CourseNatureName = e.CourseNature != null ? e.CourseNature.Name : "",
+                        TrainingSpecialistName = e.TrainingSpecialist != null ? e.TrainingSpecialist.Name : "",
                         e.FundingEntity,
                         FirstInstructorName = e.CoursesInstructors.Where(c => c.Position == Position.First).Select(e => e.Instructor != null ? e.Instructor.Name : "").FirstOrDefault(),
                         SecondInstructorName = e.CoursesInstructors.Where(c => c.Position == Position.Second).Select(e => e.Instructor != null ? e.Instructor.Name : "").FirstOrDefault(),
                         ThirdInstructorName = e.CoursesInstructors.Where(c => c.Position == Position.Third).Select(e => e.Instructor != null ? e.Instructor.Name : "").FirstOrDefault(),
                         ForthInstructorName = e.CoursesInstructors.Where(c => c.Position == Position.Fourth).Select(e => e.Instructor != null ? e.Instructor.Name : "").FirstOrDefault(),
-                    })
-                    ;
+                    });
+
 
                 var path = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot\\Reports\\Course-all.rdlc");
                 // تحميل التقرير
