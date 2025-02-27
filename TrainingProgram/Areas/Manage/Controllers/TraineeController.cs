@@ -442,23 +442,23 @@ namespace TrainingProgram.Areas.Manage.Controllers
                  EndingDate = e.EndingDate.ToString(),
 
              }).FirstOrDefault();*/
-            var qcourses = courseRepository.Get(expression: e => e.Id == id, includeProps: [
+            var course = courseRepository.Get(expression: e => e.Id == id, includeProps: [
                e=>e.CourseNature!, e=>e.TotalImplementation! ,e=>e.ImplementationType! ,e=>e.TrainingSpecialist!
                ]).Select(e => new
                {
                    e.Name,
                    e.TargetSector,
-                   BeginningDate = e.BeginningDate.ToString() ?? "",
-                   EndingDate = e.EndingDate.ToString() ?? "",
+                   BeginningDate = e.BeginningDate.HasValue ? e.BeginningDate.Value.ToString("yyyy/MM/dd") : "",
+                   EndingDate = e.EndingDate.HasValue ? e.EndingDate.Value.ToString("yyyy/MM/dd") : "",
                    e.ImplementedDays,
                    e.ImplementationPlace,
                    TrainingSpecialistName = e.TrainingSpecialist != null ? e.TrainingSpecialist.Name : "",
-                   FirstInstructorName = e.CoursesInstructors.Where(c => c.Position == Position.First).Select(e => e.Instructor != null ? e.Instructor.Name : "").FirstOrDefault(),
-                   SecondInstructorName = e.CoursesInstructors.Where(c => c.Position == Position.Second).Select(e => e.Instructor != null ? e.Instructor.Name : "").FirstOrDefault(),
-                   ThirdInstructorName = e.CoursesInstructors.Where(c => c.Position == Position.Third).Select(e => e.Instructor != null ? e.Instructor.Name : "").FirstOrDefault(),
-                   ForthInstructorName = e.CoursesInstructors.Where(c => c.Position == Position.Fourth).Select(e => e.Instructor != null ? e.Instructor.Name : "").FirstOrDefault(),
+                   //FirstInstructorName = e.CoursesInstructors.Where(c => c.Position == Position.First).Select(e => e.Instructor != null ? e.Instructor.Name : "").FirstOrDefault(),
+                   //SecondInstructorName = e.CoursesInstructors.Where(c => c.Position == Position.Second).Select(e => e.Instructor != null ? e.Instructor.Name : "").FirstOrDefault(),
+                   //ThirdInstructorName = e.CoursesInstructors.Where(c => c.Position == Position.Third).Select(e => e.Instructor != null ? e.Instructor.Name : "").FirstOrDefault(),
+                   //ForthInstructorName = e.CoursesInstructors.Where(c => c.Position == Position.Fourth).Select(e => e.Instructor != null ? e.Instructor.Name : "").FirstOrDefault(),
 
-               });
+               }).FirstOrDefault();
 
         
 
@@ -488,17 +488,18 @@ namespace TrainingProgram.Areas.Manage.Controllers
 
             var report = new LocalReport();
             report.ReportPath = path;
-            report.DataSources.Add(new ReportDataSource("Courses", qcourses));
             report.DataSources.Add(new ReportDataSource("Trainees", trainees));
 
-            //var parameters = new[]
-            //{
-            //       // new ReportParameter("CourseNatureName", CourseNature),
-            //       // new ReportParameter("Beginning",Beginning),
-            //       //new ReportParameter("Ending", Ending ),
-            //       //new ReportParameter("Month", month ),
-            //    };
-           // report.SetParameters(parameters);
+            var parameters = new[]
+            {
+                    new ReportParameter("Name", course?.Name ?? ""),
+                    new ReportParameter("TargetSector",course?.TargetSector),
+                   new ReportParameter("BeginningDate", course?.BeginningDate ),
+                   new ReportParameter("EndingDate", course?.EndingDate ),
+                   new ReportParameter("ImplementationPlace", course?.ImplementationPlace ),
+                   new ReportParameter("ImplementedDays", course?.ImplementedDays ),
+                };
+            report.SetParameters(parameters);
 
             byte[] pdf = report.Render("PDF");
             return File(pdf, "application/pdf");
