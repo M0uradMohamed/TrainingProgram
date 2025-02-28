@@ -123,8 +123,8 @@ namespace TrainingProgram.Areas.Manage.Controllers
            TotalMarks = e.TotalMarks
        });
 
-            double totalPages = Math.Ceiling((double)trainees.Count() / 5);
-            trainees = trainees.Skip((page - 1) * 5).Take(5);
+            double totalPages = Math.Ceiling((double)trainees.Count() / 15);
+            trainees = trainees.Skip((page - 1) * 15).Take(15);
 
             ViewBag.Pages = new { page, totalPages };
             return View(trainees.ToList());
@@ -425,7 +425,7 @@ namespace TrainingProgram.Areas.Manage.Controllers
             }
             return RedirectToAction("Notfound", "Home");
         }
-        public IActionResult print(int id, int Type)
+        public IActionResult print(int id, int Type, int Export)
         {
             var Iscourse = courseRepository.Get(expression: e => e.Id == id).Any();
 
@@ -434,14 +434,7 @@ namespace TrainingProgram.Areas.Manage.Controllers
                 return RedirectToAction("Notfound", "Home");
 
             }
-            /* var course = courseRepository.Get(expression: e => e.Id == id ).Select(e => new
-             {
-                 e.Id,
-                 e.Name,
-                 BeginningDate = e.BeginningDate.ToString(),
-                 EndingDate = e.EndingDate.ToString(),
 
-             }).FirstOrDefault();*/
             var course = courseRepository.Get(expression: e => e.Id == id, includeProps: [
                e=>e.CourseNature!, e=>e.TotalImplementation! ,e=>e.ImplementationType! ,e=>e.TrainingSpecialist!
                ]).Select(e => new
@@ -452,57 +445,97 @@ namespace TrainingProgram.Areas.Manage.Controllers
                    EndingDate = e.EndingDate.HasValue ? e.EndingDate.Value.ToString("yyyy/MM/dd") : "",
                    e.ImplementedDays,
                    e.ImplementationPlace,
+                   e.DaysCount,
                    TrainingSpecialistName = e.TrainingSpecialist != null ? e.TrainingSpecialist.Name : "",
-                   //FirstInstructorName = e.CoursesInstructors.Where(c => c.Position == Position.First).Select(e => e.Instructor != null ? e.Instructor.Name : "").FirstOrDefault(),
-                   //SecondInstructorName = e.CoursesInstructors.Where(c => c.Position == Position.Second).Select(e => e.Instructor != null ? e.Instructor.Name : "").FirstOrDefault(),
-                   //ThirdInstructorName = e.CoursesInstructors.Where(c => c.Position == Position.Third).Select(e => e.Instructor != null ? e.Instructor.Name : "").FirstOrDefault(),
-                   //ForthInstructorName = e.CoursesInstructors.Where(c => c.Position == Position.Fourth).Select(e => e.Instructor != null ? e.Instructor.Name : "").FirstOrDefault(),
+                   FirstInstructorName = e.CoursesInstructors.Where(c => c.Position == Position.First).Select(e => e.Instructor != null ? e.Instructor.Name : "").FirstOrDefault(),
+                   SecondInstructorName = e.CoursesInstructors.Where(c => c.Position == Position.Second).Select(e => e.Instructor != null ? e.Instructor.Name : "").FirstOrDefault(),
+                   ThirdInstructorName = e.CoursesInstructors.Where(c => c.Position == Position.Third).Select(e => e.Instructor != null ? e.Instructor.Name : "").FirstOrDefault(),
+                   ForthInstructorName = e.CoursesInstructors.Where(c => c.Position == Position.Fourth).Select(e => e.Instructor != null ? e.Instructor.Name : "").FirstOrDefault(),
 
                }).FirstOrDefault();
 
-        
+            List<object>? trainees = null;
+            IQueryable<Trainee> qtrainees = traineeRepository.Get(expression: e => e.CourseId == id, includeProps: [e => e.Employee]);
+            string path="";
+            var parameters = new List<ReportParameter>();
+            if (Type == 1)
+            {
 
+               trainees = qtrainees
+               .AsEnumerable().Select(e => new
+                {
 
-            var trainees = traineeRepository.Get(expression: e => e.CourseId == id, includeProps: [e => e.Employee])
-       .AsEnumerable().Select(e => new
-       {
+                    e.Employee.Name,
+                    e.Employee.FoundationId,
+                    e.Employee.Job,
+                    DepartmentName = e.Employee.Department,
+                    e.Employee.WorkPlace,
+                    e.Employee.PhoneNumber,
+                    Estimate = e.Estimate != null ? StaticData.estimate[e.Estimate.Value] : "",
+                    e.AbsenceDays,
+                    e.AttendanceAndDeparture,
+                    e.AdherenceMark,
+                    e.InteractionMark,
+                    e.ActivitiesMark,
+                    e.TotalEvaluation,
+                    e.WrittenExam,
+                    e.TotalMarks
+                }).ToList<object>();
 
-           e.Employee.Name,
-           e.Employee!.FoundationId,
-           e.Employee.Job,
-           DepartmentName=e.Employee.Department,
-           e.Employee.WorkPlace,
-           e.Employee.PhoneNumber,
-           Estimate = e.Estimate !=null ? StaticData.estimate[e.Estimate.Value] : "",
-           e.AbsenceDays,
-           e.AttendanceAndDeparture,
-           e.AdherenceMark,
-           e.InteractionMark,
-           e.ActivitiesMark,
-           e.TotalEvaluation,
-           e.WrittenExam,
-           e.TotalMarks
-       }).ToList();
+                parameters.Add(new ReportParameter("Name", course?.Name));
+                parameters.Add(new ReportParameter("TargetSector", course?.TargetSector));
+                parameters.Add(new ReportParameter("BeginningDate", course?.BeginningDate));
+                parameters.Add(new ReportParameter("EndingDate", course?.EndingDate));
+                parameters.Add(new ReportParameter("ImplementationPlace", course?.ImplementationPlace));
+                parameters.Add(new ReportParameter("ImplementedDays", course?.ImplementedDays));
 
-            string path = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot\\Reports\\traineesReport.rdlc");
+            path = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot\\Reports\\traineesReport.rdlc");
+            }
+            else if(Type ==2)
+            {
+                trainees = qtrainees
+              .AsEnumerable().Select(e => new
+              {
 
+                  e.Employee.Name,
+                  e.Employee.FoundationId,
+                  e.Employee.WorkPlace,
+                  e.AbsenceDays,
+                  e.AttendanceAndDeparture,
+                  e.AdherenceMark,
+                  e.InteractionMark,
+                  e.ActivitiesMark,
+                  e.TotalEvaluation,
+                  e.WrittenExam,
+                  e.TotalMarks
+              }).ToList<object>();
+
+                parameters.Add(new ReportParameter("Name", course?.Name));
+                parameters.Add(new ReportParameter("BeginningDate", course?.BeginningDate));
+                parameters.Add(new ReportParameter("EndingDate", course?.EndingDate));
+                parameters.Add(new ReportParameter("ImplementationPlace", course?.ImplementationPlace));
+                parameters.Add(new ReportParameter("DaysCount", $"{course?.DaysCount}"));
+                parameters.Add(new ReportParameter("TraineesCount", $"{trainees.Count()}"));
+
+                path = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot\\Reports\\traineeReporF54.rdlc");
+            }
+            
             var report = new LocalReport();
             report.ReportPath = path;
             report.DataSources.Add(new ReportDataSource("Trainees", trainees));
 
-            var parameters = new[]
-            {
-                    new ReportParameter("Name", course?.Name ?? ""),
-                    new ReportParameter("TargetSector",course?.TargetSector),
-                   new ReportParameter("BeginningDate", course?.BeginningDate ),
-                   new ReportParameter("EndingDate", course?.EndingDate ),
-                   new ReportParameter("ImplementationPlace", course?.ImplementationPlace ),
-                   new ReportParameter("ImplementedDays", course?.ImplementedDays ),
-                };
             report.SetParameters(parameters);
 
-            byte[] pdf = report.Render("PDF");
-            return File(pdf, "application/pdf");
+            if(Export==1)
+            {
+             byte[] pdf = report.Render("PDF");
+             return File(pdf, "application/pdf");
+            }
+            else
+            {
+            byte[] word = report.Render("WORD");
+            return File(word, "application/msword", "Report.doc");
+            }
 
 
         }

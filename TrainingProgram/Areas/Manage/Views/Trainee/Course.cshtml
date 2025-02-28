@@ -7,8 +7,30 @@
 
 <h1>Course</h1>
 <a asp-action="print" asp-route-id="@ViewBag.Course.Id" asp-route-Type="1" class="btn btn-success" target="_blank"> Print Report</a>
+<div class="row">
+    <div class="dropdown col-auto">
+        <button class="btn btn-secondary dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+            أسماء المرشحين للبرنامج التدريبي
+        </button>
+        <ul class="dropdown-menu">
+            <li><a class="dropdown-item" asp-action="print" asp-route-id="@ViewBag.Course.Id" asp-route-Type="1" asp-route-Export="1" target="_blank">PDF</a></li>
+            <li><a class="dropdown-item" asp-action="print" asp-route-id="@ViewBag.Course.Id" asp-route-Type="1" asp-route-Export="2" target="_blank">Word</a></li>
+        </ul>
+    </div>
+    <div class="dropdown col-auto">
+        <button class="btn btn-secondary dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+            كشف درجات متدربين
+        </button>
+        <ul class="dropdown-menu">
+            <li><a class="dropdown-item" asp-action="print" asp-route-id="@ViewBag.Course.Id" asp-route-Type="2" asp-route-Export="1" target="_blank">PDF</a></li>
+            <li><a class="dropdown-item" asp-action="print" asp-route-id="@ViewBag.Course.Id" asp-route-Type="2" asp-route-Export="2" target="_blank">Word</a></li>
+        </ul>
+    </div>
+</div>
 
-
+<form asp-action="Course" id="searchForm">
+    <input type="hidden" name="Page" id="pageInput" value="@ViewBag.Pages.page" />
+</form>
 <div>
 
     <dl class="row">
@@ -106,7 +128,7 @@
         </thead>
         <tbody>
             @{
-                int index = (ViewBag.Pages.page * 5) - 4;
+                int index = (ViewBag.Pages.page * 15) - 14;
             }
             @foreach (var item in Model)
             {
