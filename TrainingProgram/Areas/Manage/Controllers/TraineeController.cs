@@ -519,7 +519,35 @@ namespace TrainingProgram.Areas.Manage.Controllers
 
                 path = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot\\Reports\\traineeReporF54.rdlc");
             }
-            
+            else if (Type == 3)
+            {
+                trainees = qtrainees
+              .AsEnumerable().Select(e => new
+              {
+
+                  e.Employee.Name,
+                  e.Employee.FoundationId,
+                  e.Employee.WorkPlace,
+                  e.AbsenceDays,
+                  e.AttendanceAndDeparture,
+                  e.AdherenceMark,
+                  e.InteractionMark,
+                  e.ActivitiesMark,
+                  e.TotalEvaluation,
+                  e.WrittenExam,
+                  e.TotalMarks
+              }).ToList<object>();
+
+                parameters.Add(new ReportParameter("Name", course?.Name));
+                parameters.Add(new ReportParameter("BeginningDate", course?.BeginningDate));
+                parameters.Add(new ReportParameter("EndingDate", course?.EndingDate));
+                parameters.Add(new ReportParameter("ImplementationPlace", course?.ImplementationPlace));
+                parameters.Add(new ReportParameter("DaysCount", $"{course?.DaysCount}"));
+                parameters.Add(new ReportParameter("TraineesCount", $"{trainees.Count()}"));
+
+                path = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot\\Reports\\traineeReporF61.rdlc");
+            }
+
             var report = new LocalReport();
             report.ReportPath = path;
             report.DataSources.Add(new ReportDataSource("Trainees", trainees));

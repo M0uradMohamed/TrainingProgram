@@ -551,7 +551,7 @@ namespace TrainingProgram.Areas.Manage.Controllers
                     Link = courseVM.Link,
                     RatingSpecialist = courseVM.RatingSpecialist,
                     RatingSpecialistNotes = courseVM.RatingSpecialistNotes,
-                    TraineesNotes = courseVM.RatingSpecialistNotes,
+                    TraineesNotes = courseVM.TraineesNotes,
                     TraineesRating = courseVM.TraineesRating,
                     ImplementedCenter = courseVM.ImplementedCenter,
                     PdfFile = courseVM.PdfFile,
