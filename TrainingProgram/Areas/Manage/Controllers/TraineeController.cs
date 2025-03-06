@@ -545,7 +545,7 @@ namespace TrainingProgram.Areas.Manage.Controllers
                 parameters.Add(new ReportParameter("DaysCount", $"{course?.DaysCount}"));
                 parameters.Add(new ReportParameter("TraineesCount", $"{trainees.Count()}"));
 
-                path = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot\\Reports\\traineeReporF60.rdlc");
+                path = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot\\Reports\\traineeReportF60.rdlc");
             }
 
             var report = new LocalReport();

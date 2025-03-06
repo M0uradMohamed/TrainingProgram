@@ -2,86 +2,42 @@
 <Report xmlns="http://schemas.microsoft.com/sqlserver/reporting/2016/01/reportdefinition" xmlns:rd="http://schemas.microsoft.com/SQLServer/reporting/reportdesigner">
   <AutoRefresh>0</AutoRefresh>
   <DataSources>
-    <DataSource Name="TraineeDataSet">
+    <DataSource Name="EmployeeCoursesDateSet">
       <ConnectionProperties>
         <DataProvider>System.Data.DataSet</DataProvider>
         <ConnectString>/* Local Connection */</ConnectString>
       </ConnectionProperties>
-      <rd:DataSourceID>7960347c-201f-48dd-9d78-a401c03acf72</rd:DataSourceID>
+      <rd:DataSourceID>ca28e534-089b-45f7-a82e-8416c4a89326</rd:DataSourceID>
     </DataSource>
   </DataSources>
   <DataSets>
-    <DataSet Name="Trainees">
+    <DataSet Name="EmployeeCourses">
       <Query>
-        <DataSourceName>TraineeDataSet</DataSourceName>
+        <DataSourceName>EmployeeCoursesDateSet</DataSourceName>
         <CommandText>/* Local Query */</CommandText>
       </Query>
       <Fields>
-        <Field Name="Name">
-          <DataField>Name</DataField>
+        <Field Name="CourseName">
+          <DataField>CourseName</DataField>
           <rd:TypeName>System.String</rd:TypeName>
         </Field>
-        <Field Name="FoundationId">
-          <DataField>FoundationId</DataField>
+        <Field Name="BeginningDate">
+          <DataField>BeginningDate</DataField>
           <rd:TypeName>System.String</rd:TypeName>
         </Field>
-        <Field Name="Job">
-          <DataField>Job</DataField>
+        <Field Name="EndingDate">
+          <DataField>EndingDate</DataField>
           <rd:TypeName>System.String</rd:TypeName>
-        </Field>
-        <Field Name="DepartmentName">
-          <DataField>DepartmentName</DataField>
-          <rd:TypeName>System.String</rd:TypeName>
-        </Field>
-        <Field Name="WorkPlace">
-          <DataField>WorkPlace</DataField>
-          <rd:TypeName>System.String</rd:TypeName>
-        </Field>
-        <Field Name="PhoneNumber">
-          <DataField>PhoneNumber</DataField>
-          <rd:TypeName>System.String</rd:TypeName>
-        </Field>
-        <Field Name="Estimate">
-          <DataField>Estimate</DataField>
-          <rd:TypeName>System.String</rd:TypeName>
-        </Field>
-        <Field Name="AbsenceDays">
-          <DataField>AbsenceDays</DataField>
-          <rd:TypeName>System.Int32</rd:TypeName>
-        </Field>
-        <Field Name="AttendanceAndDeparture">
-          <DataField>AttendanceAndDeparture</DataField>
-          <rd:TypeName>System.Int32</rd:TypeName>
-        </Field>
-        <Field Name="AdherenceMark">
-          <DataField>AdherenceMark</DataField>
-          <rd:TypeName>System.Int32</rd:TypeName>
-        </Field>
-        <Field Name="InteractionMark">
-          <DataField>InteractionMark</DataField>
-          <rd:TypeName>System.Int32</rd:TypeName>
-        </Field>
-        <Field Name="ActivitiesMark">
-          <DataField>ActivitiesMark</DataField>
-          <rd:TypeName>System.Int32</rd:TypeName>
-        </Field>
-        <Field Name="TotalEvaluation">
-          <DataField>TotalEvaluation</DataField>
-          <rd:TypeName>System.Int32</rd:TypeName>
-        </Field>
-        <Field Name="WrittenExam">
-          <DataField>WrittenExam</DataField>
-          <rd:TypeName>System.Double</rd:TypeName>
         </Field>
         <Field Name="TotalMarks">
           <DataField>TotalMarks</DataField>
-          <rd:TypeName>System.Double</rd:TypeName>
+          <rd:TypeName>System.String</rd:TypeName>
         </Field>
       </Fields>
       <rd:DataSetInfo>
-        <rd:DataSetName>TraineeDataSet</rd:DataSetName>
-        <rd:SchemaPath>C:\Users\A.mourad\source\repos\TrainingProgram\Utility\Reports\DataSets\TraineeDataSet.xsd</rd:SchemaPath>
-        <rd:TableName>Trainees</rd:TableName>
+        <rd:DataSetName>EmployeeCoursesDateSet</rd:DataSetName>
+        <rd:SchemaPath>C:\Users\A.mourad\source\repos\TrainingProgram\Utility\Reports\DataSets\EmployeeCoursesDateSet.xsd</rd:SchemaPath>
+        <rd:TableName>EmployeeCourses</rd:TableName>
         <rd:TableAdapterFillMethod />
         <rd:TableAdapterGetDataMethod />
         <rd:TableAdapterName />
@@ -446,14 +402,14 @@
                     </TablixCell>
                     <TablixCell>
                       <CellContents>
-                        <Textbox Name="Textbox24">
+                        <Textbox Name="CourseName">
                           <CanGrow>true</CanGrow>
                           <KeepTogether>true</KeepTogether>
                           <Paragraphs>
                             <Paragraph>
                               <TextRuns>
                                 <TextRun>
-                                  <Value />
+                                  <Value>=Fields!CourseName.Value</Value>
                                   <Style />
                                 </TextRun>
                               </TextRuns>
@@ -462,7 +418,7 @@
                               </Style>
                             </Paragraph>
                           </Paragraphs>
-                          <rd:DefaultName>Textbox24</rd:DefaultName>
+                          <rd:DefaultName>CourseName</rd:DefaultName>
                           <Style>
                             <Border>
                               <Style>Solid</Style>
@@ -499,14 +455,14 @@
                     </TablixCell>
                     <TablixCell>
                       <CellContents>
-                        <Textbox Name="Textbox26">
+                        <Textbox Name="BeginningDate">
                           <CanGrow>true</CanGrow>
                           <KeepTogether>true</KeepTogether>
                           <Paragraphs>
                             <Paragraph>
                               <TextRuns>
                                 <TextRun>
-                                  <Value />
+                                  <Value>=Fields!BeginningDate.Value</Value>
                                   <Style />
                                 </TextRun>
                               </TextRuns>
@@ -515,7 +471,7 @@
                               </Style>
                             </Paragraph>
                           </Paragraphs>
-                          <rd:DefaultName>Textbox26</rd:DefaultName>
+                          <rd:DefaultName>BeginningDate</rd:DefaultName>
                           <Style>
                             <Border>
                               <Style>Solid</Style>
@@ -552,14 +508,14 @@
                     </TablixCell>
                     <TablixCell>
                       <CellContents>
-                        <Textbox Name="Textbox28">
+                        <Textbox Name="EndingDate">
                           <CanGrow>true</CanGrow>
                           <KeepTogether>true</KeepTogether>
                           <Paragraphs>
                             <Paragraph>
                               <TextRuns>
                                 <TextRun>
-                                  <Value />
+                                  <Value>=Fields!EndingDate.Value</Value>
                                   <Style />
                                 </TextRun>
                               </TextRuns>
@@ -568,7 +524,7 @@
                               </Style>
                             </Paragraph>
                           </Paragraphs>
-                          <rd:DefaultName>Textbox28</rd:DefaultName>
+                          <rd:DefaultName>EndingDate</rd:DefaultName>
                           <Style>
                             <Border>
                               <Style>Solid</Style>
@@ -679,6 +635,7 @@
                 </TablixMember>
               </TablixMembers>
             </TablixRowHierarchy>
+            <DataSetName>EmployeeCourses</DataSetName>
             <Top>0.12058in</Top>
             <Left>0.41761in</Left>
             <Height>0.54167in</Height>
@@ -819,7 +776,7 @@
                 <Paragraph>
                   <TextRuns>
                     <TextRun>
-                      <Value />
+                      <Value>=Parameters!FoundationId.Value</Value>
                       <Style />
                     </TextRun>
                   </TextRuns>
@@ -930,7 +887,7 @@
                 <Paragraph>
                   <TextRuns>
                     <TextRun>
-                      <Value />
+                      <Value>=Parameters!Name.Value</Value>
                       <Style />
                     </TextRun>
                   </TextRuns>
@@ -1041,7 +998,7 @@
                 <Paragraph>
                   <TextRuns>
                     <TextRun>
-                      <Value />
+                      <Value>=Parameters!Job.Value</Value>
                       <Style />
                     </TextRun>
                   </TextRuns>
@@ -1152,7 +1109,7 @@
                 <Paragraph>
                   <TextRuns>
                     <TextRun>
-                      <Value />
+                      <Value>=Parameters!Department.Value</Value>
                       <Style />
                     </TextRun>
                   </TextRuns>
@@ -1263,7 +1220,7 @@
                 <Paragraph>
                   <TextRuns>
                     <TextRun>
-                      <Value />
+                      <Value>=Parameters!WorkPlace.Value</Value>
                       <Style />
                     </TextRun>
                   </TextRuns>
@@ -1374,7 +1331,7 @@
                 <Paragraph>
                   <TextRuns>
                     <TextRun>
-                      <Value />
+                      <Value>=Parameters!SectorName.Value</Value>
                       <Style />
                     </TextRun>
                   </TextRuns>
@@ -1518,42 +1475,31 @@
       <AllowBlank>true</AllowBlank>
       <Prompt>ReportParameter1</Prompt>
     </ReportParameter>
-    <ReportParameter Name="TargetSector">
+    <ReportParameter Name="FoundationId">
       <DataType>String</DataType>
       <Nullable>true</Nullable>
       <AllowBlank>true</AllowBlank>
       <Prompt>ReportParameter1</Prompt>
     </ReportParameter>
-    <ReportParameter Name="BeginningDate">
+    <ReportParameter Name="Job">
       <DataType>String</DataType>
       <Nullable>true</Nullable>
       <AllowBlank>true</AllowBlank>
       <Prompt>ReportParameter1</Prompt>
     </ReportParameter>
-    <ReportParameter Name="EndingDate">
+    <ReportParameter Name="Department">
       <DataType>String</DataType>
       <Nullable>true</Nullable>
       <AllowBlank>true</AllowBlank>
       <Prompt>ReportParameter1</Prompt>
     </ReportParameter>
-    <ReportParameter Name="ImplementedDays">
+    <ReportParameter Name="SectorName">
       <DataType>String</DataType>
       <Nullable>true</Nullable>
       <AllowBlank>true</AllowBlank>
       <Prompt>ReportParameter1</Prompt>
     </ReportParameter>
-    <ReportParameter Name="ImplementationPlace">
-      <DataType>String</DataType>
-      <Nullable>true</Nullable>
-      <AllowBlank>true</AllowBlank>
-      <Prompt>ReportParameter1</Prompt>
-    </ReportParameter>
-    <ReportParameter Name="TraineesCount">
-      <DataType>Integer</DataType>
-      <Nullable>true</Nullable>
-      <Prompt>ReportParameter1</Prompt>
-    </ReportParameter>
-    <ReportParameter Name="DaysCount">
+    <ReportParameter Name="WorkPlace">
       <DataType>String</DataType>
       <Nullable>true</Nullable>
       <AllowBlank>true</AllowBlank>
@@ -1563,7 +1509,7 @@
   <ReportParametersLayout>
     <GridLayoutDefinition>
       <NumberOfColumns>4</NumberOfColumns>
-      <NumberOfRows>2</NumberOfRows>
+      <NumberOfRows>3</NumberOfRows>
       <CellDefinitions>
         <CellDefinition>
           <ColumnIndex>0</ColumnIndex>
@@ -1571,39 +1517,29 @@
           <ParameterName>Name</ParameterName>
         </CellDefinition>
         <CellDefinition>
+          <ColumnIndex>0</ColumnIndex>
+          <RowIndex>1</RowIndex>
+          <ParameterName>FoundationId</ParameterName>
+        </CellDefinition>
+        <CellDefinition>
           <ColumnIndex>1</ColumnIndex>
-          <RowIndex>0</RowIndex>
-          <ParameterName>TargetSector</ParameterName>
+          <RowIndex>1</RowIndex>
+          <ParameterName>Job</ParameterName>
         </CellDefinition>
         <CellDefinition>
           <ColumnIndex>2</ColumnIndex>
-          <RowIndex>0</RowIndex>
-          <ParameterName>BeginningDate</ParameterName>
+          <RowIndex>1</RowIndex>
+          <ParameterName>Department</ParameterName>
         </CellDefinition>
         <CellDefinition>
           <ColumnIndex>3</ColumnIndex>
-          <RowIndex>0</RowIndex>
-          <ParameterName>EndingDate</ParameterName>
+          <RowIndex>1</RowIndex>
+          <ParameterName>SectorName</ParameterName>
         </CellDefinition>
         <CellDefinition>
           <ColumnIndex>0</ColumnIndex>
-          <RowIndex>1</RowIndex>
-          <ParameterName>ImplementedDays</ParameterName>
-        </CellDefinition>
-        <CellDefinition>
-          <ColumnIndex>1</ColumnIndex>
-          <RowIndex>1</RowIndex>
-          <ParameterName>ImplementationPlace</ParameterName>
-        </CellDefinition>
-        <CellDefinition>
-          <ColumnIndex>2</ColumnIndex>
-          <RowIndex>1</RowIndex>
-          <ParameterName>TraineesCount</ParameterName>
-        </CellDefinition>
-        <CellDefinition>
-          <ColumnIndex>3</ColumnIndex>
-          <RowIndex>1</RowIndex>
-          <ParameterName>DaysCount</ParameterName>
+          <RowIndex>2</RowIndex>
+          <ParameterName>WorkPlace</ParameterName>
         </CellDefinition>
       </CellDefinitions>
     </GridLayoutDefinition>

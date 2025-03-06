@@ -15,9 +15,9 @@
 		<Content Remove="wwwroot\Reports\CoursesF78.rdlc" />
 		<Content Remove="wwwroot\Reports\reslutemplyoercourse.rdlc" />
 		<Content Remove="wwwroot\Reports\Statisticianf73.rdlc" />
-		<Content Remove="wwwroot\Reports\traineeReporF54.rdlc" />
 		<Content Remove="wwwroot\Reports\traineeReporF60.rdlc" />
 		<Content Remove="wwwroot\Reports\traineeReporF61.rdlc" />
+		<Content Remove="wwwroot\Reports\traineeReportF54.rdlc" />
 		<Content Remove="wwwroot\Reports\traineesReport.rdlc" />
 	</ItemGroup>
 	<ItemGroup>
@@ -39,16 +39,16 @@
 		<Folder Include="wwwroot\CouresFiles\" />
 	</ItemGroup>
 	<ItemGroup>
+		<None Include="wwwroot\Reports\costreslut.rdlc" />
 		<None Include="wwwroot\Reports\Course-all.rdlc" />
-		<None Include="wwwroot\Reports\StatisticianF73.rdlc" />
 		<None Include="wwwroot\Reports\reslutemplyoercourse.rdlc" />
+		<None Include="wwwroot\Reports\StatisticianF73.rdlc" />
 		<None Include="wwwroot\Reports\CoursesF78-pending.rdlc" />
 		<None Include="wwwroot\Reports\CoursesF78-complete.rdlc" />
 		<None Include="wwwroot\Reports\CoursesF78.rdlc" />
-		<None Include="wwwroot\Reports\costreslut.rdlc" />
 		<None Include="wwwroot\Reports\traineeReporF60.rdlc" />
 		<None Include="wwwroot\Reports\traineeReporF61.rdlc" />
-		<None Include="wwwroot\Reports\traineeReporF54.rdlc" />
+		<None Include="wwwroot\Reports\traineeReportF54.rdlc" />
 		<None Include="wwwroot\Reports\traineesReport.rdlc" />
 	</ItemGroup>
 	<ProjectExtensions>

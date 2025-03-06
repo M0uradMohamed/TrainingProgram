@@ -135,7 +135,7 @@
 
     </div>
     <div class="row">
-        <div class="col-2"><h4><b>@Html.DisplayNameFor(model => model.Notes)</b></h4></div>
+        <div class="col-2"><h4><b>@Html.DisplayNameFor(model => model.RatingSpecialistNotes)</b></h4></div>
         <div class="col-1"><h4>:</h4></div>
         <div class="col-auto">
             <div class="card">
@@ -158,7 +158,7 @@
         </div>
     </div>
     <div class="row">
-        <div class="col-2"><h4><b>@Html.DisplayNameFor(model => model.Notes)</b></h4></div>
+        <div class="col-2"><h4><b>@Html.DisplayNameFor(model => model.TraineesNotes)</b></h4></div>
         <div class="col-1"><h4>:</h4></div>
         <div class="col-auto">
             <div class="card">
@@ -178,21 +178,6 @@
                     }
                 </div>
             </div>
-            @*  </div>
-            @{
-            if (Model.TraineesNotes != null)
-            {
-
-            @foreach (var note in Model.TraineesNotes!.Split("\n"))
-            {
-            <h4>
-            @note
-            </h4>
-            }
-
-            }
-            } *@
-
         </div>
     </div>
 </div>

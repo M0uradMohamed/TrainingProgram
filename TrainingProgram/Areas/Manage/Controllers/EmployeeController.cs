@@ -12,6 +12,7 @@ using DataAccess.Repository.IRepository;
 using Models.StaticData;
 using Models.ViewModels;
 using Models.EnumClasses;
+using Microsoft.Reporting.NETCore;
 
 namespace TrainingProgram.Areas.Manage.Controllers
 {
@@ -367,9 +368,92 @@ namespace TrainingProgram.Areas.Manage.Controllers
             return View(courses.ToList());
 
         }
+        public IActionResult print(int id, int Type, int Export)
+        {
+            var isEmployee = employeeRepository.Get(expression:e=>e.Id== id , includeProps: [e=>e.Sector,e=>e.Degree]).Any();
+            if (!isEmployee)
+            {
+                 return RedirectToAction("Notfound", "Home");
+            }
+            var employee = employeeRepository.Get(expression: e=>e.Id== id).Select(e=> new 
+            {
+                e.FoundationId,
+                e.Name,
+                e.Job,
+                e.Department,
+              SectorName = e.Sector.Name,
+              e.WorkPlace,
+
+            }).FirstOrDefault();
+
+            List<object>? trainees = null;
+            IQueryable<Trainee> qtrainees = traineeRepository.Get(expression: e => e.Employee.Id == id, includeProps: [e=>e.Course]);
+            string path = "";
+            var parameters = new List<ReportParameter>();
+            if(Type == 1)
+            {
+                trainees = qtrainees
+               .AsEnumerable().Select(e => new
+               {
+
+                   CourseName= e.Course?.Name,
+                   BeginningDate = e.Course.BeginningDate.HasValue ? e.Course.BeginningDate.Value.ToString("yyyy/MM/dd") : "",
+                   EndingDate = e.Course.EndingDate.HasValue ? e.Course.EndingDate.Value.ToString("yyyy/MM/dd") : ""
+               }).ToList<object>();
+
+                parameters.Add(new ReportParameter("FoundationId", employee?.FoundationId));
+                parameters.Add(new ReportParameter("Name", employee?.Name));
+                parameters.Add(new ReportParameter("Job", employee?.Job));
+                parameters.Add(new ReportParameter("Department", employee?.Department));
+                parameters.Add(new ReportParameter("SectorName", employee?.SectorName));
+                parameters.Add(new ReportParameter("WorkPlace", employee?.WorkPlace));
+
+                path = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot\\Reports\\costreslut.rdlc");
+
+            }
+            else if(Type==2)
+            {
+                trainees = qtrainees
+            .AsEnumerable().Select(e => new
+            {
+
+                CourseName = e.Course?.Name,
+                BeginningDate = e.Course.BeginningDate.HasValue ? e.Course.BeginningDate.Value.ToString("yyyy/MM/dd") : "",
+                EndingDate = e.Course.EndingDate.HasValue ? e.Course.EndingDate.Value.ToString("yyyy/MM/dd") : "",
+                e.TotalMarks
+            }).ToList<object>();
+
+                parameters.Add(new ReportParameter("FoundationId", employee?.FoundationId));
+                parameters.Add(new ReportParameter("Name", employee?.Name));
+                parameters.Add(new ReportParameter("Job", employee?.Job));
+                parameters.Add(new ReportParameter("Department", employee?.Department));
+                parameters.Add(new ReportParameter("SectorName", employee?.SectorName));
+                parameters.Add(new ReportParameter("WorkPlace", employee?.WorkPlace));
+
+                path = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot\\Reports\\reslutemplyoercourse.rdlc");
+
+            }
+
+            var report = new LocalReport();
+            report.ReportPath = path;
+            report.DataSources.Add(new ReportDataSource("EmployeeCourses", trainees));
+
+            report.SetParameters(parameters);
+
+            if (Export == 1)
+            {
+                byte[] pdf = report.Render("PDF");
+                return File(pdf, "application/pdf");
+            }
+            else
+            {
+                byte[] excel = report.Render("EXCELOPENXML");
+                return File(excel, "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet", "Report.xlsx");
+            }
+        }
 
 
-        private bool EmployeeExists(int id)
+            private bool EmployeeExists(int id)
         {
             return employeeRepository.Get(tracked: false).Any(e => e.Id == id);
         }

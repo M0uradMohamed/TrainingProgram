@@ -14,6 +14,11 @@
 	    <AutoGen>True</AutoGen>
 	    <DependentUpon>CourseF78.xsd</DependentUpon>
 	  </Compile>
+	  <Compile Update="Reports\DataSets\EmployeeCoursesDateSet.Designer.cs">
+	    <DesignTime>True</DesignTime>
+	    <AutoGen>True</AutoGen>
+	    <DependentUpon>EmployeeCoursesDateSet.xsd</DependentUpon>
+	  </Compile>
 	  <Compile Update="Reports\DataSets\TraineeDataSet.Designer.cs">
 	    <DesignTime>True</DesignTime>
 	    <AutoGen>True</AutoGen>
@@ -24,6 +29,10 @@
 	  <None Update="Reports\DataSets\CourseF78.xsd">
 	    <Generator>MSDataSetGenerator</Generator>
 	    <LastGenOutput>CourseF78.Designer.cs</LastGenOutput>
+	  </None>
+	  <None Update="Reports\DataSets\EmployeeCoursesDateSet.xsd">
+	    <Generator>MSDataSetGenerator</Generator>
+	    <LastGenOutput>EmployeeCoursesDateSet.Designer.cs</LastGenOutput>
 	  </None>
 	  <None Update="Reports\DataSets\TraineeDataSet.xsd">
 	    <Generator>MSDataSetGenerator</Generator>
