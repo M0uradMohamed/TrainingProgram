@@ -755,6 +755,66 @@ namespace TrainingProgram.Areas.Manage.Controllers
 
 
             }
+            else if (Type == 3)
+            {
+                if (BeginningDate == null || EndingDate == null)
+                {
+                    TempData["Date"] = "يجب ادخال تاريخ بداية و تاريخ نهاية";
+
+                    return RedirectToAction("Index", new
+                    {
+                        Name,
+                        BeginningDate,
+                        EndingDate,
+                        ImplementationPlace,
+                        ImplementedCenter,
+                        ImplementationTypeId,
+                        TotalImplementationId,
+                        Check,
+                        CourseNatureId,
+                        Instructor,
+                        Type,
+                        page,
+                        Sort
+                    });
+                }
+
+                var courses = courseRepository.Get( expression: e=>e.BeginningDate >= BeginningDate
+                        && e.EndingDate <= EndingDate, includeProps: [e => e.TotalImplementation, e => e.CourseNature, e => e.ImplementationType])
+                    .Select(e=> new
+                    {
+                        e.Name,
+                        TotalImplementationId=  e.TotalImplementation != null ? e.TotalImplementation.Id :0,
+                        CourseNatureId = e.CourseNature != null ? e.CourseNature.Id :0,
+                        ImplementationTypeId = e.ImplementationType != null? e.ImplementationType.Id :0 ,
+                        e.DaysCount,
+                        e.TraineesNumber,
+                        e.Cost
+                    }).ToList();
+
+                string Beginning = BeginningDate.HasValue ? BeginningDate.Value.ToString("yyyy/MM/dd") : "";
+                string Ending = EndingDate.HasValue ? EndingDate.Value.ToString("yyyy/MM/dd") : "";
+                var month = StaticData.implementationMonth[(ImplementationMonth)(BeginningDate.Value.Month - 1)];
+
+                var path = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot\\Reports\\StatisticianF73.rdlc");
+                var report = new LocalReport();
+
+                report.ReportPath = path;
+                report.DataSources.Add(new ReportDataSource("Courses", courses));
+                var parameters = new[]
+                {
+                    new ReportParameter("Beginning",Beginning),
+                   new ReportParameter("Ending", Ending ),
+                   new ReportParameter("Month", month ),
+                };
+
+                report.SetParameters(parameters);
+
+
+                byte[] excel = report.Render("EXCELOPENXML");
+
+                return File(excel, "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet", "Report.xlsx");
+            }
             else
             {
                 if (Name != null)

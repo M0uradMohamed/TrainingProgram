@@ -9,6 +9,11 @@
 		<PackageReference Include="Microsoft.AspNetCore.Identity.EntityFrameworkCore" Version="8.0.11" />
 	</ItemGroup>
 	<ItemGroup>
+	  <Compile Update="Reports\DataSets\CourseF73.Designer.cs">
+	    <DesignTime>True</DesignTime>
+	    <AutoGen>True</AutoGen>
+	    <DependentUpon>CourseF73.xsd</DependentUpon>
+	  </Compile>
 	  <Compile Update="Reports\DataSets\CourseF78.Designer.cs">
 	    <DesignTime>True</DesignTime>
 	    <AutoGen>True</AutoGen>
@@ -26,6 +31,10 @@
 	  </Compile>
 	</ItemGroup>
 	<ItemGroup>
+	  <None Update="Reports\DataSets\CourseF73.xsd">
+	    <Generator>MSDataSetGenerator</Generator>
+	    <LastGenOutput>CourseF73.Designer.cs</LastGenOutput>
+	  </None>
 	  <None Update="Reports\DataSets\CourseF78.xsd">
 	    <Generator>MSDataSetGenerator</Generator>
 	    <LastGenOutput>CourseF78.Designer.cs</LastGenOutput>

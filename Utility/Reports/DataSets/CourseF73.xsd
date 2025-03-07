@@ -1,0 +1,31 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<xs:schema id="CourseF73" targetNamespace="http://tempuri.org/CourseF73.xsd" xmlns:mstns="http://tempuri.org/CourseF73.xsd" xmlns="http://tempuri.org/CourseF73.xsd" xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata" xmlns:msprop="urn:schemas-microsoft-com:xml-msprop" attributeFormDefault="qualified" elementFormDefault="qualified">
+  <xs:annotation>
+    <xs:appinfo source="urn:schemas-microsoft-com:xml-msdatasource">
+      <DataSource DefaultConnectionIndex="0" FunctionsComponentName="QueriesTableAdapter" Modifier="AutoLayout, AnsiClass, Class, Public" SchemaSerializationMode="IncludeSchema" xmlns="urn:schemas-microsoft-com:xml-msdatasource">
+        <Connections />
+        <Tables />
+        <Sources />
+      </DataSource>
+    </xs:appinfo>
+  </xs:annotation>
+  <xs:element name="CourseF73" msdata:IsDataSet="true" msdata:UseCurrentLocale="true" msprop:EnableTableAdapterManager="true" msprop:Generator_UserDSName="CourseF73" msprop:Generator_DataSetName="CourseF73">
+    <xs:complexType>
+      <xs:choice minOccurs="0" maxOccurs="unbounded">
+        <xs:element name="Courses" msprop:Generator_RowEvHandlerName="CoursesRowChangeEventHandler" msprop:Generator_RowDeletedName="CoursesRowDeleted" msprop:Generator_RowDeletingName="CoursesRowDeleting" msprop:Generator_RowEvArgName="CoursesRowChangeEvent" msprop:Generator_TablePropName="Courses" msprop:Generator_RowChangedName="CoursesRowChanged" msprop:Generator_RowChangingName="CoursesRowChanging" msprop:Generator_TableClassName="CoursesDataTable" msprop:Generator_RowClassName="CoursesRow" msprop:Generator_TableVarName="tableCourses" msprop:Generator_UserTableName="Courses">
+          <xs:complexType>
+            <xs:sequence>
+              <xs:element name="Name" msprop:Generator_ColumnPropNameInRow="Name" msprop:Generator_ColumnPropNameInTable="NameColumn" msprop:Generator_ColumnVarNameInTable="columnName" msprop:Generator_UserColumnName="Name" type="xs:string" minOccurs="0" />
+              <xs:element name="TotalImplementationId" msprop:Generator_ColumnPropNameInRow="TotalImplementationId" msprop:Generator_ColumnPropNameInTable="TotalImplementationIdColumn" msprop:Generator_ColumnVarNameInTable="columnTotalImplementationId" msprop:Generator_UserColumnName="TotalImplementationId" type="xs:int" minOccurs="0" />
+              <xs:element name="CourseNatureId" msprop:Generator_ColumnPropNameInRow="CourseNatureId" msprop:Generator_ColumnPropNameInTable="CourseNatureIdColumn" msprop:Generator_ColumnVarNameInTable="columnCourseNatureId" msprop:Generator_UserColumnName="CourseNatureId" type="xs:int" minOccurs="0" />
+              <xs:element name="ImplementationTypeId" msprop:Generator_ColumnPropNameInRow="ImplementationTypeId" msprop:Generator_ColumnPropNameInTable="ImplementationTypeIdColumn" msprop:Generator_ColumnVarNameInTable="columnImplementationTypeId" msprop:Generator_UserColumnName="ImplementationTypeId" type="xs:int" minOccurs="0" />
+              <xs:element name="DaysCount" msprop:Generator_ColumnPropNameInRow="DaysCount" msprop:Generator_ColumnPropNameInTable="DaysCountColumn" msprop:Generator_ColumnVarNameInTable="columnDaysCount" msprop:Generator_UserColumnName="DaysCount" type="xs:int" minOccurs="0" />
+              <xs:element name="TraineesNumber" msprop:Generator_ColumnPropNameInRow="TraineesNumber" msprop:Generator_ColumnPropNameInTable="TraineesNumberColumn" msprop:Generator_ColumnVarNameInTable="columnTraineesNumber" msprop:Generator_UserColumnName="TraineesNumber" type="xs:int" minOccurs="0" />
+              <xs:element name="Cost" msprop:Generator_ColumnPropNameInRow="Cost" msprop:Generator_ColumnPropNameInTable="CostColumn" msprop:Generator_ColumnVarNameInTable="columnCost" msprop:Generator_UserColumnName="Cost" type="xs:double" minOccurs="0" />
+            </xs:sequence>
+          </xs:complexType>
+        </xs:element>
+      </xs:choice>
+    </xs:complexType>
+  </xs:element>
+</xs:schema>
