@@ -1182,7 +1182,6 @@
               <Source>Embedded</Source>
               <Value>ID2025</Value>
               <Sizing>Fit</Sizing>
-              <Left>0in</Left>
               <Height>0.53985in</Height>
               <Width>8.50023in</Width>
               <Style>
@@ -1330,7 +1329,6 @@
               </Paragraphs>
               <rd:DefaultName>Textbox6</rd:DefaultName>
               <Top>0.55374in</Top>
-              <Left>0in</Left>
               <Height>0.36476in</Height>
               <Width>2.01625in</Width>
               <ZIndex>3</ZIndex>
@@ -1424,7 +1422,6 @@
               </Paragraphs>
               <rd:DefaultName>Textbox43</rd:DefaultName>
               <Top>0.92091in</Top>
-              <Left>0in</Left>
               <Height>0.29384in</Height>
               <Width>2.25in</Width>
               <ZIndex>5</ZIndex>
@@ -1489,12 +1486,14 @@
                     <TextRun>
                       <Value />
                       <Style>
-                        <FontSize>9pt</FontSize>
+                        <FontSize>11pt</FontSize>
                         <FontWeight>Bold</FontWeight>
                       </Style>
                     </TextRun>
                   </TextRuns>
-                  <Style />
+                  <Style>
+                    <TextAlign>Center</TextAlign>
+                  </Style>
                 </Paragraph>
               </Paragraphs>
               <rd:DefaultName>Textbox11</rd:DefaultName>
@@ -1544,7 +1543,7 @@
                     <TextRun>
                       <Value>اسم الدورة التدريبية / ورشة العمل</Value>
                       <Style>
-                        <FontSize>9pt</FontSize>
+                        <FontSize>11pt</FontSize>
                         <FontWeight>Bold</FontWeight>
                       </Style>
                     </TextRun>
@@ -1601,7 +1600,7 @@
                     <TextRun>
                       <Value>مكان التدريب</Value>
                       <Style>
-                        <FontSize>9pt</FontSize>
+                        <FontSize>11pt</FontSize>
                         <FontWeight>Bold</FontWeight>
                       </Style>
                     </TextRun>
@@ -1658,7 +1657,7 @@
                     <TextRun>
                       <Value />
                       <Style>
-                        <FontSize>9pt</FontSize>
+                        <FontSize>11pt</FontSize>
                         <FontWeight>Bold</FontWeight>
                       </Style>
                     </TextRun>
@@ -1670,7 +1669,6 @@
               </Paragraphs>
               <rd:DefaultName>Textbox11</rd:DefaultName>
               <Top>1.49181in</Top>
-              <Left>0in</Left>
               <Height>0.24818in</Height>
               <Width>1.88923in</Width>
               <ZIndex>10</ZIndex>
@@ -1713,9 +1711,9 @@
                 <Paragraph>
                   <TextRuns>
                     <TextRun>
-                      <Value>اسم الدورة التدريبية / ورشة العمل</Value>
+                      <Value>عدد المتدربين</Value>
                       <Style>
-                        <FontSize>9pt</FontSize>
+                        <FontSize>11pt</FontSize>
                         <FontWeight>Bold</FontWeight>
                       </Style>
                     </TextRun>
@@ -1772,12 +1770,14 @@
                     <TextRun>
                       <Value />
                       <Style>
-                        <FontSize>9pt</FontSize>
+                        <FontSize>11pt</FontSize>
                         <FontWeight>Bold</FontWeight>
                       </Style>
                     </TextRun>
                   </TextRuns>
-                  <Style />
+                  <Style>
+                    <TextAlign>Center</TextAlign>
+                  </Style>
                 </Paragraph>
               </Paragraphs>
               <rd:DefaultName>Textbox11</rd:DefaultName>
@@ -1825,9 +1825,9 @@
                 <Paragraph>
                   <TextRuns>
                     <TextRun>
-                      <Value>مكان التدريب</Value>
+                      <Value>اسم المدرب</Value>
                       <Style>
-                        <FontSize>9pt</FontSize>
+                        <FontSize>11pt</FontSize>
                         <FontWeight>Bold</FontWeight>
                       </Style>
                     </TextRun>
@@ -1884,7 +1884,7 @@
                     <TextRun>
                       <Value />
                       <Style>
-                        <FontSize>9pt</FontSize>
+                        <FontSize>11pt</FontSize>
                         <FontWeight>Bold</FontWeight>
                       </Style>
                     </TextRun>
@@ -1896,7 +1896,6 @@
               </Paragraphs>
               <rd:DefaultName>Textbox11</rd:DefaultName>
               <Top>1.73998in</Top>
-              <Left>0in</Left>
               <Height>0.24818in</Height>
               <Width>1.88923in</Width>
               <ZIndex>14</ZIndex>
@@ -1939,9 +1938,9 @@
                 <Paragraph>
                   <TextRuns>
                     <TextRun>
-                      <Value>اسم الدورة التدريبية / ورشة العمل</Value>
+                      <Value>تاريخ الدورة التدريبية / ورشة عمل</Value>
                       <Style>
-                        <FontSize>9pt</FontSize>
+                        <FontSize>11pt</FontSize>
                         <FontWeight>Bold</FontWeight>
                       </Style>
                     </TextRun>
@@ -1996,14 +1995,16 @@
                 <Paragraph>
                   <TextRuns>
                     <TextRun>
-                      <Value />
+                      <Value>:</Value>
                       <Style>
-                        <FontSize>9pt</FontSize>
+                        <FontSize>11pt</FontSize>
                         <FontWeight>Bold</FontWeight>
                       </Style>
                     </TextRun>
                   </TextRuns>
-                  <Style />
+                  <Style>
+                    <TextAlign>Center</TextAlign>
+                  </Style>
                 </Paragraph>
               </Paragraphs>
               <rd:DefaultName>Textbox11</rd:DefaultName>
@@ -2051,9 +2052,9 @@
                 <Paragraph>
                   <TextRuns>
                     <TextRun>
-                      <Value>اسم الدورة التدريبية / ورشة العمل</Value>
+                      <Value>اسم اخصائى التدريب</Value>
                       <Style>
-                        <FontSize>9pt</FontSize>
+                        <FontSize>11pt</FontSize>
                         <FontWeight>Bold</FontWeight>
                       </Style>
                     </TextRun>
@@ -2110,12 +2111,14 @@
                     <TextRun>
                       <Value />
                       <Style>
-                        <FontSize>9pt</FontSize>
+                        <FontSize>11pt</FontSize>
                         <FontWeight>Bold</FontWeight>
                       </Style>
                     </TextRun>
                   </TextRuns>
-                  <Style />
+                  <Style>
+                    <TextAlign>Center</TextAlign>
+                  </Style>
                 </Paragraph>
               </Paragraphs>
               <rd:DefaultName>Textbox11</rd:DefaultName>
@@ -2163,9 +2166,9 @@
                 <Paragraph>
                   <TextRuns>
                     <TextRun>
-                      <Value>مكان التدريب</Value>
+                      <Value>ايام التنفيذ</Value>
                       <Style>
-                        <FontSize>9pt</FontSize>
+                        <FontSize>11pt</FontSize>
                         <FontWeight>Bold</FontWeight>
                       </Style>
                     </TextRun>
@@ -2222,7 +2225,7 @@
                     <TextRun>
                       <Value />
                       <Style>
-                        <FontSize>9pt</FontSize>
+                        <FontSize>11pt</FontSize>
                         <FontWeight>Bold</FontWeight>
                       </Style>
                     </TextRun>
@@ -2276,9 +2279,9 @@
                 <Paragraph>
                   <TextRuns>
                     <TextRun>
-                      <Value>مكان التدريب</Value>
+                      <Value>عدد الساعات</Value>
                       <Style>
-                        <FontSize>9pt</FontSize>
+                        <FontSize>11pt</FontSize>
                         <FontWeight>Bold</FontWeight>
                       </Style>
                     </TextRun>
@@ -2335,7 +2338,7 @@
                     <TextRun>
                       <Value />
                       <Style>
-                        <FontSize>9pt</FontSize>
+                        <FontSize>11pt</FontSize>
                         <FontWeight>Bold</FontWeight>
                       </Style>
                     </TextRun>
@@ -2347,7 +2350,6 @@
               </Paragraphs>
               <rd:DefaultName>Textbox11</rd:DefaultName>
               <Top>2.23632in</Top>
-              <Left>0in</Left>
               <Height>0.24818in</Height>
               <Width>1.88923in</Width>
               <ZIndex>22</ZIndex>
@@ -2750,7 +2752,7 @@
                 <Paragraph>
                   <TextRuns>
                     <TextRun>
-                      <Value />
+                      <Value>نسبة التقييم</Value>
                       <Style>
                         <FontStyle>Normal</FontStyle>
                         <FontSize>9pt</FontSize>
@@ -2795,6 +2797,7 @@
                   <Style>Solid</Style>
                   <Width>0.75pt</Width>
                 </RightBorder>
+                <BackgroundColor>LightGrey</BackgroundColor>
                 <VerticalAlign>Middle</VerticalAlign>
                 <PaddingLeft>2pt</PaddingLeft>
                 <PaddingRight>2pt</PaddingRight>
@@ -2810,7 +2813,7 @@
                 <Paragraph>
                   <TextRuns>
                     <TextRun>
-                      <Value />
+                      <Value>التقدير</Value>
                       <Style>
                         <FontSize>9pt</FontSize>
                         <FontWeight>Bold</FontWeight>
@@ -2853,6 +2856,7 @@
                   <Style>Solid</Style>
                   <Width>0.75pt</Width>
                 </RightBorder>
+                <BackgroundColor>LightGrey</BackgroundColor>
                 <VerticalAlign>Middle</VerticalAlign>
                 <PaddingLeft>2pt</PaddingLeft>
                 <PaddingRight>2pt</PaddingRight>
@@ -2868,7 +2872,7 @@
                 <Paragraph>
                   <TextRuns>
                     <TextRun>
-                      <Value />
+                      <Value>90% فاعلى</Value>
                       <Style>
                         <FontStyle>Normal</FontStyle>
                         <FontSize>9pt</FontSize>
@@ -2928,7 +2932,7 @@
                 <Paragraph>
                   <TextRuns>
                     <TextRun>
-                      <Value />
+                      <Value>ممتاز</Value>
                       <Style>
                         <FontSize>9pt</FontSize>
                         <FontWeight>Bold</FontWeight>

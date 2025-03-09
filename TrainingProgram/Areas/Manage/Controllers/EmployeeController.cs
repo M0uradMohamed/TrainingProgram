@@ -389,8 +389,18 @@ namespace TrainingProgram.Areas.Manage.Controllers
             List<object>? trainees = null;
             IQueryable<Trainee> qtrainees = traineeRepository.Get(expression: e => e.Employee.Id == id, includeProps: [e=>e.Course]);
             string path = "";
-            var parameters = new List<ReportParameter>();
-            if(Type == 1)
+            var parameters = new List<ReportParameter>()
+            {
+
+            new ReportParameter("FoundationId", employee?.FoundationId),
+             new ReportParameter("Name", employee?.Name),
+               new ReportParameter("Job", employee?.Job),
+                new ReportParameter("Department", employee?.Department),
+               new ReportParameter("SectorName", employee?.SectorName),
+               new ReportParameter("WorkPlace", employee?.WorkPlace)
+            };
+
+            if (Type == 1)
             {
                 trainees = qtrainees
                .AsEnumerable().Select(e => new
@@ -400,13 +410,6 @@ namespace TrainingProgram.Areas.Manage.Controllers
                    BeginningDate = e.Course.BeginningDate.HasValue ? e.Course.BeginningDate.Value.ToString("yyyy/MM/dd") : "",
                    EndingDate = e.Course.EndingDate.HasValue ? e.Course.EndingDate.Value.ToString("yyyy/MM/dd") : ""
                }).ToList<object>();
-
-                parameters.Add(new ReportParameter("FoundationId", employee?.FoundationId));
-                parameters.Add(new ReportParameter("Name", employee?.Name));
-                parameters.Add(new ReportParameter("Job", employee?.Job));
-                parameters.Add(new ReportParameter("Department", employee?.Department));
-                parameters.Add(new ReportParameter("SectorName", employee?.SectorName));
-                parameters.Add(new ReportParameter("WorkPlace", employee?.WorkPlace));
 
                 path = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot\\Reports\\costreslut.rdlc");
 
@@ -423,14 +426,22 @@ namespace TrainingProgram.Areas.Manage.Controllers
                 e.TotalMarks
             }).ToList<object>();
 
-                parameters.Add(new ReportParameter("FoundationId", employee?.FoundationId));
-                parameters.Add(new ReportParameter("Name", employee?.Name));
-                parameters.Add(new ReportParameter("Job", employee?.Job));
-                parameters.Add(new ReportParameter("Department", employee?.Department));
-                parameters.Add(new ReportParameter("SectorName", employee?.SectorName));
-                parameters.Add(new ReportParameter("WorkPlace", employee?.WorkPlace));
-
                 path = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot\\Reports\\reslutemplyoercourse.rdlc");
+
+            }
+            else if (Type == 3)
+            {
+                trainees = qtrainees
+            .AsEnumerable().Select(e => new
+            {
+
+                CourseName = e.Course?.Name,
+                BeginningDate = e.Course.BeginningDate.HasValue ? e.Course.BeginningDate.Value.ToString("yyyy/MM/dd") : "",
+                EndingDate = e.Course.EndingDate.HasValue ? e.Course.EndingDate.Value.ToString("yyyy/MM/dd") : "",
+                e.TotalMarks
+            }).ToList<object>();
+
+                path = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot\\Reports\\reslutemplyoercourse2.rdlc");
 
             }
 
@@ -451,6 +462,7 @@ namespace TrainingProgram.Areas.Manage.Controllers
                 return File(excel, "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet", "Report.xlsx");
             }
         }
+
 
 
             private bool EmployeeExists(int id)

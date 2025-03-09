@@ -19,6 +19,7 @@ using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.Reporting.NETCore;
 using Microsoft.VisualBasic;
 using System.IO;
+using System.Globalization;
 
 namespace TrainingProgram.Areas.Manage.Controllers
 {
@@ -34,12 +35,13 @@ namespace TrainingProgram.Areas.Manage.Controllers
         private readonly ICourseInstructorRepository courseInstructorRepository;
         private readonly ITrainingSpecialistRepository trainingSpecialistRepository;
         private readonly ISectorRepository sectorRepository;
-
+        private readonly ITraineeRepository traineeRepository;
 
         public CourseController(ICourseRepository courseRepository, IInstructorRepository instructorRepository
             , ICourseNatureRepository courseNatureRepository, ITotalImplementationRepository totalImplementationRepository
             , IImplementationTypeRepository implementationTypeRepository, ICourseInstructorRepository courseInstructorRepository,
-            ITrainingSpecialistRepository trainingSpecialistRepository, ISectorRepository sectorRepository
+            ITrainingSpecialistRepository trainingSpecialistRepository, ISectorRepository sectorRepository ,
+            ITraineeRepository traineeRepository
      )
         {
 
@@ -51,7 +53,7 @@ namespace TrainingProgram.Areas.Manage.Controllers
             this.courseInstructorRepository = courseInstructorRepository;
             this.trainingSpecialistRepository = trainingSpecialistRepository;
             this.sectorRepository = sectorRepository;
-
+            this.traineeRepository = traineeRepository;
         }
         // GET: Manage/Course
         public IActionResult Index(string? Name, DateOnly? BeginningDate, DateOnly? EndingDate, string? ImplementationPlace
@@ -663,7 +665,7 @@ namespace TrainingProgram.Areas.Manage.Controllers
         }
         public IActionResult print(string? Name, DateOnly? BeginningDate, DateOnly? EndingDate, string? ImplementationPlace
             , string? ImplementedCenter, int? ImplementationTypeId, int? TotalImplementationId, Check? Check, int? CourseNatureId
-            , string? Instructor, int Type, int page = 1, bool Sort = false)
+            , string? Instructor, int Type, int Export, int CouresId, int page = 1, bool Sort = false)
         {
             IQueryable<Course> qcourses = courseRepository.Get(includeProps: [
                e=>e.CourseNature!, e=>e.TotalImplementation! ,e=>e.ImplementationType! ,e=>e.TrainingSpecialist!
@@ -737,12 +739,12 @@ namespace TrainingProgram.Areas.Manage.Controllers
 
                 var CourseNature = courseNatureRepository.Get(expression: e => e.Id == CourseNatureId)
                                     .Select(e => e.Name).FirstOrDefault();
-               string Beginning = BeginningDate.HasValue ? BeginningDate.Value.ToString("yyyy/MM/dd") : "";
+                string Beginning = BeginningDate.HasValue ? BeginningDate.Value.ToString("yyyy/MM/dd") : "";
                 string Ending = EndingDate.HasValue ? EndingDate.Value.ToString("yyyy/MM/dd") : "";
-                var month =StaticData.implementationMonth[(ImplementationMonth)(BeginningDate.Value.Month-1)];
+                var month = StaticData.implementationMonth[(ImplementationMonth)(BeginningDate.Value.Month - 1)];
 
-                var parameters = new[] 
-                { 
+                var parameters = new[]
+                {
                     new ReportParameter("CourseNatureName", CourseNature),
                     new ReportParameter("Beginning",Beginning),
                    new ReportParameter("Ending", Ending ),
@@ -779,14 +781,14 @@ namespace TrainingProgram.Areas.Manage.Controllers
                     });
                 }
 
-                var courses = courseRepository.Get( expression: e=>e.BeginningDate >= BeginningDate
+                var courses = courseRepository.Get(expression: e => e.BeginningDate >= BeginningDate
                         && e.EndingDate <= EndingDate, includeProps: [e => e.TotalImplementation, e => e.CourseNature, e => e.ImplementationType])
-                    .Select(e=> new
+                    .Select(e => new
                     {
                         e.Name,
-                        TotalImplementationId=  e.TotalImplementation != null ? e.TotalImplementation.Id :0,
-                        CourseNatureId = e.CourseNature != null ? e.CourseNature.Id :0,
-                        ImplementationTypeId = e.ImplementationType != null? e.ImplementationType.Id :0 ,
+                        TotalImplementationId = e.TotalImplementation != null ? e.TotalImplementation.Id : 0,
+                        CourseNatureId = e.CourseNature != null ? e.CourseNature.Id : 0,
+                        ImplementationTypeId = e.ImplementationType != null ? e.ImplementationType.Id : 0,
                         e.DaysCount,
                         e.TraineesNumber,
                         e.Cost
@@ -811,15 +813,17 @@ namespace TrainingProgram.Areas.Manage.Controllers
                 report.SetParameters(parameters);
 
 
-                byte[] excel = report.Render("EXCELOPENXML");
+                /* byte[] excel = report.Render("EXCELOPENXML");
 
-                return File(excel, "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet", "Report.xlsx");
+                 return File(excel, "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet", "Report.xlsx");*/
+                byte[] word = report.Render("WORD");
+                return File(word, "application/msword", "Report.doc");
             }
-            else
+            else if (Type == 4)
             {
                 if (Name != null)
                 {
-                    qcourses = qcourses.Where(e => e.Name != null && e.Name.Contains(Name.Trim() ));
+                    qcourses = qcourses.Where(e => e.Name != null && e.Name.Contains(Name.Trim()));
                 }
                 if (BeginningDate != null)
                 {
@@ -831,7 +835,7 @@ namespace TrainingProgram.Areas.Manage.Controllers
                 }
                 if (ImplementationPlace != null)
                 {
-                    qcourses = qcourses.Where(e =>  e.ImplementationPlace != null && e.ImplementationPlace.Contains(ImplementationPlace.Trim() ));
+                    qcourses = qcourses.Where(e => e.ImplementationPlace != null && e.ImplementationPlace.Contains(ImplementationPlace.Trim()));
                 }
                 if (ImplementedCenter != null)
                 {
@@ -839,11 +843,11 @@ namespace TrainingProgram.Areas.Manage.Controllers
                 }
                 if (ImplementationTypeId != null)
                 {
-                    qcourses = qcourses.Where(e => e.ImplementationType !=null && e.ImplementationType.Id == ImplementationTypeId);
+                    qcourses = qcourses.Where(e => e.ImplementationType != null && e.ImplementationType.Id == ImplementationTypeId);
                 }
                 if (TotalImplementationId != null)
                 {
-                    qcourses = qcourses.Where(e => e.TotalImplementation !=null && e.TotalImplementation.Id == TotalImplementationId);
+                    qcourses = qcourses.Where(e => e.TotalImplementation != null && e.TotalImplementation.Id == TotalImplementationId);
                 }
                 if (Check != null)
                 {
@@ -855,8 +859,8 @@ namespace TrainingProgram.Areas.Manage.Controllers
                 }
                 if (Instructor != null)
                 {
-                    qcourses = qcourses.Where(e => e.CoursesInstructors.Any(c => c.Instructor != null &&c.Instructor.Name != null 
-                    &&c.Instructor.Name.Contains(Instructor.Trim())));
+                    qcourses = qcourses.Where(e => e.CoursesInstructors.Any(c => c.Instructor != null && c.Instructor.Name != null
+                    && c.Instructor.Name.Contains(Instructor.Trim())));
                 }
                 if (!Sort)
                     qcourses = qcourses.OrderBy(e => e.BeginningDate).ThenBy(e => e.EndingDate);
@@ -925,6 +929,86 @@ namespace TrainingProgram.Areas.Manage.Controllers
 
                 return File(excel, "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet", "Report.xlsx");
             }
+            else if (Type == 5)
+            {
+                var isCourse = courseRepository.Get(expression: e => e.Id == CouresId).Any();
+                if(!isCourse)
+                    return RedirectToAction("Notfound", "Home");
+
+                var course = courseRepository.Get(expression: e => e.Id == CouresId, includeProps: [e => e.CoursesInstructors]).Select(e => new
+                {
+                    e.Name,
+                    e.ImplementationPlace,
+                    e.ImplementedDays,
+                    e.TargetSector,
+                    Beginning = BeginningDate.HasValue ? BeginningDate.Value.ToString("yyyy/MM/dd") : "",
+                    Ending = EndingDate.HasValue ? EndingDate.Value.ToString("yyyy/MM/dd") : "",
+                    FirstInstructorName = e.CoursesInstructors.Where(c => c.Position == Position.First).Select(e => e.Instructor != null ? e.Instructor.Name : "").FirstOrDefault(),
+                    SecondInstructorName = e.CoursesInstructors.Where(c => c.Position == Position.Second).Select(e => e.Instructor != null ? e.Instructor.Name : "").FirstOrDefault(),
+                    e.TraineesRating,
+                    e.RatingSpecialist,
+                    e.TraineesNotes,
+                    e.RatingSpecialistNotes
+                }).FirstOrDefault();
+
+                var trainees = traineeRepository.Get(expression: e => e.CourseId == CouresId).Count();
+                var firstInstructor = courseInstructorRepository.Get(expression:e=>e.CourseId == CouresId && e.Position==Position.First)
+                    .Select(e=> new { e.Rating , e.CourseNotes }).FirstOrDefault();
+                var secondInstructor = courseInstructorRepository.Get(expression:e=>e.CourseId == CouresId && e.Position==Position.Second)
+                    .Select(e => new { e.Rating, e.CourseNotes }).FirstOrDefault();
+
+                var path = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot\\Reports\\traineeReporF61.rdlc");
+
+                var report = new LocalReport();
+                report.ReportPath = path;
+      
+                var parameters = new[] 
+                {
+                    new ReportParameter("Name", course.Name),
+                    new ReportParameter("BeginningDate", course.Beginning),
+                    new ReportParameter("EndingDate", course.Ending),
+                    new ReportParameter("ImplementationPlace", course.ImplementationPlace),
+                    new ReportParameter("ImplementedDays", course.ImplementedDays),
+                    new ReportParameter("TargetSector", course.TargetSector),
+                    new ReportParameter("FirstInstructorName", course.FirstInstructorName),
+                    new ReportParameter("SecondInstructorName", course.SecondInstructorName),
+                    new ReportParameter("TraineesRating", course.TraineesRating != null ?
+                   course.TraineesRating.Value.ToString(CultureInfo.InvariantCulture) : "0"),
+                    new ReportParameter("TraineesRating",
+    course.TraineesRating.HasValue == true
+        ? course.TraineesRating.Value.ToString(CultureInfo.InvariantCulture)
+        : "0"),
+                    new ReportParameter("TraineesNotes", course.TraineesNotes),
+                    new ReportParameter("RatingSpecialist", course.RatingSpecialist),
+                    new ReportParameter("RatingSpecialistNotes", course.RatingSpecialistNotes),
+                    new ReportParameter("TraineesCount", trainees.ToString()),
+          new ReportParameter("firstInstructorRating",
+    firstInstructor?.Rating.HasValue == true
+        ? firstInstructor.Rating.Value.ToString(CultureInfo.InvariantCulture)
+        : "0"),
+                    new ReportParameter("firstInstructorCourseNotes",firstInstructor!=null ? firstInstructor.CourseNotes?.ToString():""),
+                    new ReportParameter("secondInstructorRating",
+    secondInstructor?.Rating.HasValue == true
+        ? secondInstructor.Rating.Value.ToString(CultureInfo.InvariantCulture)
+        : "0"),
+                    new ReportParameter("secondInstructorCourseNotes",secondInstructor!=null ? secondInstructor.CourseNotes?.ToString():""),
+
+                };
+                report.SetParameters(parameters);
+
+                if (Export == 1)
+                {
+                    byte[] pdf = report.Render("PDF");
+                    return File(pdf, "application/pdf");
+                }
+                else
+                {
+                    byte[] word = report.Render("WORD");
+                    return File(word, "application/msword", "Report.doc");
+                }
+
+            }
+            return RedirectToAction("Notfound", "Home");
         }
         private bool CourseExists(int id)
         {
@@ -943,14 +1027,14 @@ namespace TrainingProgram.Areas.Manage.Controllers
                 EndingDate = e.EndingDate.HasValue ? e.EndingDate.Value.ToString("yyyy/MM/dd") : null,
                 e.TraineesNumber,
                 e.Cost,
-                TotalImplementationName = e.TotalImplementation != null ? e.TotalImplementation.Name :""  ,
-                CourseNatureName = e.CourseNature!=null ? e.CourseNature.Name:"",
+                TotalImplementationName = e.TotalImplementation != null ? e.TotalImplementation.Name : "",
+                CourseNatureName = e.CourseNature != null ? e.CourseNature.Name : "",
                 e.FundingEntity,
-                FirstInstructorName = e.CoursesInstructors.Where(c => c.Position == Position.First).Select(e => e.Instructor !=null ?e.Instructor.Name :""  ).FirstOrDefault(),
+                FirstInstructorName = e.CoursesInstructors.Where(c => c.Position == Position.First).Select(e => e.Instructor != null ? e.Instructor.Name : "").FirstOrDefault(),
                 SecondInstructorName = e.CoursesInstructors.Where(c => c.Position == Position.Second).Select(e => e.Instructor != null ? e.Instructor.Name : "").FirstOrDefault(),
                 ThirdInstructorName = e.CoursesInstructors.Where(c => c.Position == Position.Third).Select(e => e.Instructor != null ? e.Instructor.Name : "").FirstOrDefault(),
                 ForthInstructorName = e.CoursesInstructors.Where(c => c.Position == Position.Fourth).Select(e => e.Instructor != null ? e.Instructor.Name : "").FirstOrDefault(),
-                TrainingSpecialistName = isCompleted && e.TrainingSpecialist != null ?e.TrainingSpecialist.Name : null // يضاف فقط إذا كان التقرير مكتملًا
+                TrainingSpecialistName = isCompleted && e.TrainingSpecialist != null ? e.TrainingSpecialist.Name : null // يضاف فقط إذا كان التقرير مكتملًا
             });
 
             return courses;

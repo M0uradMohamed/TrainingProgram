@@ -115,6 +115,7 @@
                               <Width>1pt</Width>
                             </RightBorder>
                             <BackgroundColor>LightGrey</BackgroundColor>
+                            <VerticalAlign>Middle</VerticalAlign>
                             <PaddingLeft>2pt</PaddingLeft>
                             <PaddingRight>2pt</PaddingRight>
                             <PaddingTop>2pt</PaddingTop>
@@ -170,6 +171,7 @@
                               <Width>1pt</Width>
                             </RightBorder>
                             <BackgroundColor>LightGrey</BackgroundColor>
+                            <VerticalAlign>Middle</VerticalAlign>
                             <PaddingLeft>2pt</PaddingLeft>
                             <PaddingRight>2pt</PaddingRight>
                             <PaddingTop>2pt</PaddingTop>
@@ -225,6 +227,7 @@
                               <Width>1pt</Width>
                             </RightBorder>
                             <BackgroundColor>LightGrey</BackgroundColor>
+                            <VerticalAlign>Middle</VerticalAlign>
                             <PaddingLeft>2pt</PaddingLeft>
                             <PaddingRight>2pt</PaddingRight>
                             <PaddingTop>2pt</PaddingTop>
@@ -280,6 +283,7 @@
                               <Width>1pt</Width>
                             </RightBorder>
                             <BackgroundColor>LightGrey</BackgroundColor>
+                            <VerticalAlign>Middle</VerticalAlign>
                             <PaddingLeft>2pt</PaddingLeft>
                             <PaddingRight>2pt</PaddingRight>
                             <PaddingTop>2pt</PaddingTop>
@@ -303,10 +307,14 @@
                               <TextRuns>
                                 <TextRun>
                                   <Value>=Fields!CourseName.Value</Value>
-                                  <Style />
+                                  <Style>
+                                    <FontWeight>Bold</FontWeight>
+                                  </Style>
                                 </TextRun>
                               </TextRuns>
-                              <Style />
+                              <Style>
+                                <TextAlign>Center</TextAlign>
+                              </Style>
                             </Paragraph>
                           </Paragraphs>
                           <rd:DefaultName>CourseName</rd:DefaultName>
@@ -334,6 +342,7 @@
                               <Style>Solid</Style>
                               <Width>1pt</Width>
                             </RightBorder>
+                            <VerticalAlign>Middle</VerticalAlign>
                             <PaddingLeft>2pt</PaddingLeft>
                             <PaddingRight>2pt</PaddingRight>
                             <PaddingTop>2pt</PaddingTop>
@@ -352,10 +361,14 @@
                               <TextRuns>
                                 <TextRun>
                                   <Value>=Fields!BeginningDate.Value</Value>
-                                  <Style />
+                                  <Style>
+                                    <FontWeight>Bold</FontWeight>
+                                  </Style>
                                 </TextRun>
                               </TextRuns>
-                              <Style />
+                              <Style>
+                                <TextAlign>Center</TextAlign>
+                              </Style>
                             </Paragraph>
                           </Paragraphs>
                           <rd:DefaultName>BeginningDate</rd:DefaultName>
@@ -383,6 +396,7 @@
                               <Style>Solid</Style>
                               <Width>1pt</Width>
                             </RightBorder>
+                            <VerticalAlign>Middle</VerticalAlign>
                             <PaddingLeft>2pt</PaddingLeft>
                             <PaddingRight>2pt</PaddingRight>
                             <PaddingTop>2pt</PaddingTop>
@@ -401,10 +415,14 @@
                               <TextRuns>
                                 <TextRun>
                                   <Value>=Fields!EndingDate.Value</Value>
-                                  <Style />
+                                  <Style>
+                                    <FontWeight>Bold</FontWeight>
+                                  </Style>
                                 </TextRun>
                               </TextRuns>
-                              <Style />
+                              <Style>
+                                <TextAlign>Center</TextAlign>
+                              </Style>
                             </Paragraph>
                           </Paragraphs>
                           <rd:DefaultName>EndingDate</rd:DefaultName>
@@ -432,6 +450,7 @@
                               <Style>Solid</Style>
                               <Width>1pt</Width>
                             </RightBorder>
+                            <VerticalAlign>Middle</VerticalAlign>
                             <PaddingLeft>2pt</PaddingLeft>
                             <PaddingRight>2pt</PaddingRight>
                             <PaddingTop>2pt</PaddingTop>
@@ -450,10 +469,14 @@
                               <TextRuns>
                                 <TextRun>
                                   <Value>=Fields!TotalMarks.Value</Value>
-                                  <Style />
+                                  <Style>
+                                    <FontWeight>Bold</FontWeight>
+                                  </Style>
                                 </TextRun>
                               </TextRuns>
-                              <Style />
+                              <Style>
+                                <TextAlign>Center</TextAlign>
+                              </Style>
                             </Paragraph>
                           </Paragraphs>
                           <rd:DefaultName>TotalMarks</rd:DefaultName>
@@ -481,6 +504,7 @@
                               <Style>Solid</Style>
                               <Width>1pt</Width>
                             </RightBorder>
+                            <VerticalAlign>Middle</VerticalAlign>
                             <PaddingLeft>2pt</PaddingLeft>
                             <PaddingRight>2pt</PaddingRight>
                             <PaddingTop>2pt</PaddingTop>
@@ -505,12 +529,14 @@
               <TablixMembers>
                 <TablixMember>
                   <KeepWithGroup>After</KeepWithGroup>
+                  <RepeatOnNewPage>true</RepeatOnNewPage>
                 </TablixMember>
                 <TablixMember>
                   <Group Name="Details" />
                 </TablixMember>
               </TablixMembers>
             </TablixRowHierarchy>
+            <LayoutDirection>RTL</LayoutDirection>
             <DataSetName>EmployeeCourses</DataSetName>
             <Top>0.05556in</Top>
             <Left>0.47089in</Left>
@@ -520,6 +546,8 @@
               <Border>
                 <Style>None</Style>
               </Border>
+              <TextAlign>Center</TextAlign>
+              <VerticalAlign>Middle</VerticalAlign>
             </Style>
           </Tablix>
         </ReportItems>
@@ -567,9 +595,9 @@
               </Paragraphs>
               <rd:DefaultName>Textbox6</rd:DefaultName>
               <Top>0.665in</Top>
-              <Left>5.05571in</Left>
+              <Left>4.19113in</Left>
               <Height>0.27867in</Height>
-              <Width>3.17812in</Width>
+              <Width>4.0427in</Width>
               <ZIndex>1</ZIndex>
               <Style>
                 <Border>
@@ -591,6 +619,7 @@
                       <Value>=Format(DateAdd("M", -1, Today), "yyyy/MM")</Value>
                       <Style>
                         <FontSize>14pt</FontSize>
+                        <FontWeight>Bold</FontWeight>
                       </Style>
                     </TextRun>
                   </TextRuns>
@@ -601,9 +630,9 @@
               </Paragraphs>
               <rd:DefaultName>Textbox2</rd:DefaultName>
               <Top>0.665in</Top>
-              <Left>4.05571in</Left>
+              <Left>4.31613in</Left>
               <Height>0.27867in</Height>
-              <Width>1in</Width>
+              <Width>0.875in</Width>
               <ZIndex>2</ZIndex>
               <Style>
                 <Border>
@@ -639,9 +668,9 @@
                 </Paragraph>
               </Paragraphs>
               <rd:DefaultName>Textbox4</rd:DefaultName>
-              <Top>1.04329in</Top>
+              <Top>1.04686in</Top>
               <Left>9.83142in</Left>
-              <Height>0.3285in</Height>
+              <Height>0.32493in</Height>
               <Width>1.11647in</Width>
               <ZIndex>3</ZIndex>
               <Style>
@@ -811,7 +840,6 @@
                       <Style>
                         <FontStyle>Normal</FontStyle>
                         <FontFamily>Times New Roman</FontFamily>
-                        <FontSize>9pt</FontSize>
                         <FontWeight>Bold</FontWeight>
                         <TextDecoration>None</TextDecoration>
                         <Color>#000000</Color>
@@ -934,7 +962,6 @@
                       <Style>
                         <FontStyle>Normal</FontStyle>
                         <FontFamily>Times New Roman</FontFamily>
-                        <FontSize>9pt</FontSize>
                         <FontWeight>Bold</FontWeight>
                         <TextDecoration>None</TextDecoration>
                         <Color>#000000</Color>
@@ -1008,9 +1035,9 @@
                 </Paragraph>
               </Paragraphs>
               <rd:DefaultName>Textbox4</rd:DefaultName>
-              <Top>1.04329in</Top>
+              <Top>1.04686in</Top>
               <Left>2.93071in</Left>
-              <Height>0.32849in</Height>
+              <Height>0.32492in</Height>
               <Width>2.28635in</Width>
               <ZIndex>9</ZIndex>
               <Style>
@@ -1057,7 +1084,6 @@
                       <Style>
                         <FontStyle>Normal</FontStyle>
                         <FontFamily>Times New Roman</FontFamily>
-                        <FontSize>9pt</FontSize>
                         <FontWeight>Bold</FontWeight>
                         <TextDecoration>None</TextDecoration>
                         <Color>#000000</Color>
@@ -1180,7 +1206,6 @@
                       <Style>
                         <FontStyle>Normal</FontStyle>
                         <FontFamily>Times New Roman</FontFamily>
-                        <FontSize>9pt</FontSize>
                         <FontWeight>Bold</FontWeight>
                         <TextDecoration>None</TextDecoration>
                         <Color>#000000</Color>
@@ -1254,9 +1279,9 @@
                 </Paragraph>
               </Paragraphs>
               <rd:DefaultName>Textbox4</rd:DefaultName>
-              <Top>1.04329in</Top>
+              <Top>1.04686in</Top>
               <Left>0.10454in</Left>
-              <Height>0.33882in</Height>
+              <Height>0.33525in</Height>
               <Width>1.36968in</Width>
               <ZIndex>13</ZIndex>
               <Style>
@@ -1303,7 +1328,6 @@
                       <Style>
                         <FontStyle>Normal</FontStyle>
                         <FontFamily>Times New Roman</FontFamily>
-                        <FontSize>9pt</FontSize>
                         <FontWeight>Bold</FontWeight>
                         <TextDecoration>None</TextDecoration>
                         <Color>#000000</Color>
@@ -1418,6 +1442,7 @@ ___________</Value>
                 </Paragraph>
               </Paragraphs>
               <rd:DefaultName>Textbox54</rd:DefaultName>
+              <Top>0in</Top>
               <Height>0.69792in</Height>
               <Width>1.625in</Width>
               <ZIndex>1</ZIndex>
@@ -1486,6 +1511,7 @@ ___________</Value>
                 </Paragraph>
               </Paragraphs>
               <rd:DefaultName>Textbox54</rd:DefaultName>
+              <Top>0in</Top>
               <Left>9.47914in</Left>
               <Height>0.25in</Height>
               <Width>1.46875in</Width>

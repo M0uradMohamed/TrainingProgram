@@ -18,11 +18,20 @@
     </div>
     <div class="dropdown col-auto">
         <button class="btn btn-secondary dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
-            بيان الدورات
+              بيان الدورات بدرجات المتدربين
         </button>
         <ul class="dropdown-menu">
             <li><a class="dropdown-item" asp-action="print" asp-route-id="@ViewBag.Employee.Id" asp-route-Type="2" asp-route-Export="1" target="_blank">PDF</a></li>
             <li><a class="dropdown-item" asp-action="print" asp-route-id="@ViewBag.Employee.Id" asp-route-Type="2" asp-route-Export="2" target="_blank">Excel</a></li>
+        </ul>
+    </div>
+    <div class="dropdown col-auto">
+        <button class="btn btn-secondary dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+            بيان الدورات بالاجتياز
+        </button>
+        <ul class="dropdown-menu">
+            <li><a class="dropdown-item" asp-action="print" asp-route-id="@ViewBag.Employee.Id" asp-route-Type="3" asp-route-Export="1" target="_blank">PDF</a></li>
+            <li><a class="dropdown-item" asp-action="print" asp-route-id="@ViewBag.Employee.Id" asp-route-Type="3" asp-route-Export="2" target="_blank">Excel</a></li>
         </ul>
     </div>
 </div>

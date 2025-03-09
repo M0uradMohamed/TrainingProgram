@@ -510,14 +510,7 @@ namespace TrainingProgram.Areas.Manage.Controllers
                   e.TotalMarks
               }).ToList<object>();
 
-                parameters.Add(new ReportParameter("Name", course?.Name));
-                parameters.Add(new ReportParameter("BeginningDate", course?.BeginningDate));
-                parameters.Add(new ReportParameter("EndingDate", course?.EndingDate));
-                parameters.Add(new ReportParameter("ImplementationPlace", course?.ImplementationPlace));
-                parameters.Add(new ReportParameter("DaysCount", $"{course?.DaysCount}"));
-                parameters.Add(new ReportParameter("TraineesCount", $"{trainees.Count()}"));
-
-                path = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot\\Reports\\traineeReporF54.rdlc");
+                path = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot\\Reports\\traineeReportF54.rdlc");
             }
             else if (Type == 3)
             {
