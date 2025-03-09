@@ -2611,7 +2611,7 @@
                     <TextRun>
                       <Value>=Parameters!BeginningDate.Value</Value>
                       <Style>
-                        <FontSize>9pt</FontSize>
+                        <FontSize>11pt</FontSize>
                         <FontWeight>Bold</FontWeight>
                       </Style>
                     </TextRun>
@@ -2725,7 +2725,7 @@
                     <TextRun>
                       <Value>=Parameters!EndingDate.Value</Value>
                       <Style>
-                        <FontSize>9pt</FontSize>
+                        <FontSize>11pt</FontSize>
                         <FontWeight>Bold</FontWeight>
                       </Style>
                     </TextRun>
