@@ -98,10 +98,18 @@
                   </TextRun>
                   <TextRun>
                     <Value xml:space="preserve">
-
 </Value>
                     <Style>
-                      <FontSize>14pt</FontSize>
+                      <FontSize>12pt</FontSize>
+                      <FontWeight>Bold</FontWeight>
+                      <TextDecoration>Underline</TextDecoration>
+                    </Style>
+                  </TextRun>
+                  <TextRun>
+                    <Value xml:space="preserve">
+</Value>
+                    <Style>
+                      <FontSize>12pt</FontSize>
                       <FontWeight>Bold</FontWeight>
                       <TextDecoration>None</TextDecoration>
                     </Style>
@@ -109,17 +117,16 @@
                   <TextRun>
                     <Value>=Parameters!firstInstructorCourseNotes.Value</Value>
                     <Style>
-                      <FontSize>14pt</FontSize>
+                      <FontSize>12pt</FontSize>
                       <FontWeight>Bold</FontWeight>
                       <TextDecoration>None</TextDecoration>
                     </Style>
                   </TextRun>
                   <TextRun>
                     <Value xml:space="preserve">
-
 </Value>
                     <Style>
-                      <FontSize>14pt</FontSize>
+                      <FontSize>12pt</FontSize>
                       <FontWeight>Bold</FontWeight>
                       <TextDecoration>None</TextDecoration>
                     </Style>
@@ -127,7 +134,7 @@
                   <TextRun>
                     <Value>=Parameters!secondInstructorCourseNotes.Value</Value>
                     <Style>
-                      <FontSize>14pt</FontSize>
+                      <FontSize>12pt</FontSize>
                       <FontWeight>Bold</FontWeight>
                       <TextDecoration>None</TextDecoration>
                     </Style>
@@ -137,7 +144,7 @@
 
 </Value>
                     <Style>
-                      <FontSize>14pt</FontSize>
+                      <FontSize>12pt</FontSize>
                       <FontWeight>Bold</FontWeight>
                       <TextDecoration>None</TextDecoration>
                     </Style>
@@ -149,7 +156,7 @@
             <rd:DefaultName>Textbox40</rd:DefaultName>
             <Top>2.25589in</Top>
             <Left>1.45984in</Left>
-            <Height>1.25in</Height>
+            <Height>0.6875in</Height>
             <Width>6.76159in</Width>
             <ZIndex>2</ZIndex>
             <Style>
@@ -170,15 +177,7 @@
               <Paragraph>
                 <TextRuns>
                   <TextRun>
-                    <Value>1</Value>
-                    <Style>
-                      <FontSize>14pt</FontSize>
-                      <FontWeight>Bold</FontWeight>
-                      <TextDecoration>None</TextDecoration>
-                    </Style>
-                  </TextRun>
-                  <TextRun>
-                    <Value>- مقترحات وملاحظات المتدربين:
+                    <Value>2- مقترحات وملاحظات المتدربين:
 </Value>
                     <Style>
                       <FontSize>14pt</FontSize>
@@ -199,7 +198,16 @@
                   <TextRun>
                     <Value>=Parameters!TraineesNotes.Value</Value>
                     <Style>
-                      <FontSize>14pt</FontSize>
+                      <FontSize>12pt</FontSize>
+                      <FontWeight>Bold</FontWeight>
+                      <TextDecoration>None</TextDecoration>
+                    </Style>
+                  </TextRun>
+                  <TextRun>
+                    <Value xml:space="preserve">
+</Value>
+                    <Style>
+                      <FontSize>12pt</FontSize>
                       <FontWeight>Bold</FontWeight>
                       <TextDecoration>None</TextDecoration>
                     </Style>
@@ -218,9 +226,9 @@
               </Paragraph>
             </Paragraphs>
             <rd:DefaultName>Textbox40</rd:DefaultName>
-            <Top>3.646in</Top>
-            <Left>1.45983in</Left>
-            <Height>1.25in</Height>
+            <Top>3.01283in</Top>
+            <Left>1.49048in</Left>
+            <Height>0.55208in</Height>
             <Width>6.76159in</Width>
             <ZIndex>3</ZIndex>
             <Style>
@@ -253,7 +261,16 @@
                   <TextRun>
                     <Value>=Parameters!RatingSpecialistNotes.Value</Value>
                     <Style>
-                      <FontSize>14pt</FontSize>
+                      <FontSize>12pt</FontSize>
+                      <FontWeight>Bold</FontWeight>
+                      <TextDecoration>None</TextDecoration>
+                    </Style>
+                  </TextRun>
+                  <TextRun>
+                    <Value xml:space="preserve">
+</Value>
+                    <Style>
+                      <FontSize>12pt</FontSize>
                       <FontWeight>Bold</FontWeight>
                       <TextDecoration>None</TextDecoration>
                     </Style>
@@ -272,9 +289,9 @@
               </Paragraph>
             </Paragraphs>
             <rd:DefaultName>Textbox40</rd:DefaultName>
-            <Top>5.11996in</Top>
-            <Left>1.45984in</Left>
-            <Height>1.25in</Height>
+            <Top>3.5927in</Top>
+            <Left>1.49906in</Left>
+            <Height>0.63542in</Height>
             <Width>6.76159in</Width>
             <ZIndex>4</ZIndex>
             <Style>
@@ -1317,7 +1334,7 @@
             </Style>
           </Textbox>
         </ReportItems>
-        <Height>6.43747in</Height>
+        <Height>4.24997in</Height>
         <Style>
           <Border>
             <Style>None</Style>
@@ -1537,7 +1554,7 @@
               </Paragraphs>
               <rd:DefaultName>Textbox34</rd:DefaultName>
               <Top>0.92091in</Top>
-              <Left>7.09627in</Left>
+              <Left>6.97127in</Left>
               <Height>0.25in</Height>
               <Width>1.2808in</Width>
               <ZIndex>4</ZIndex>
@@ -4120,7 +4137,7 @@
                     <TextRun>
                       <Value>مدير عام التدريب</Value>
                       <Style>
-                        <FontSize>12pt</FontSize>
+                        <FontSize>14pt</FontSize>
                         <FontWeight>Bold</FontWeight>
                       </Style>
                     </TextRun>
@@ -4134,7 +4151,7 @@
                     <TextRun>
                       <Value />
                       <Style>
-                        <FontSize>12pt</FontSize>
+                        <FontSize>14pt</FontSize>
                         <FontWeight>Bold</FontWeight>
                       </Style>
                     </TextRun>
@@ -4148,7 +4165,7 @@
                     <TextRun>
                       <Value>____________</Value>
                       <Style>
-                        <FontSize>12pt</FontSize>
+                        <FontSize>14pt</FontSize>
                         <FontWeight>Bold</FontWeight>
                       </Style>
                     </TextRun>
@@ -4162,7 +4179,7 @@
                     <TextRun>
                       <Value />
                       <Style>
-                        <FontSize>12pt</FontSize>
+                        <FontSize>14pt</FontSize>
                         <FontWeight>Bold</FontWeight>
                       </Style>
                     </TextRun>
@@ -4176,7 +4193,7 @@
                     <TextRun>
                       <Value />
                       <Style>
-                        <FontSize>12pt</FontSize>
+                        <FontSize>14pt</FontSize>
                         <FontWeight>Bold</FontWeight>
                       </Style>
                     </TextRun>
@@ -4189,7 +4206,7 @@
               <rd:DefaultName>Textbox54</rd:DefaultName>
               <Top>0.04167in</Top>
               <Left>0.02844in</Left>
-              <Height>0.91625in</Height>
+              <Height>1.04867in</Height>
               <Width>2.18997in</Width>
               <ZIndex>21</ZIndex>
               <Style>
@@ -4302,6 +4319,7 @@
             </Border>
           </Style>
         </PageFooter>
+        <TopMargin>0.25in</TopMargin>
         <Style />
       </Page>
     </ReportSection>

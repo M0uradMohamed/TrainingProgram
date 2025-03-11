@@ -176,40 +176,40 @@
             <TablixBody>
               <TablixColumns>
                 <TablixColumn>
-                  <Width>0.31182in</Width>
+                  <Width>0.40731in</Width>
                 </TablixColumn>
                 <TablixColumn>
-                  <Width>2.14157in</Width>
+                  <Width>2.13289in</Width>
                 </TablixColumn>
                 <TablixColumn>
-                  <Width>0.99923in</Width>
+                  <Width>0.99055in</Width>
                 </TablixColumn>
                 <TablixColumn>
-                  <Width>0.89476in</Width>
+                  <Width>0.88608in</Width>
                 </TablixColumn>
                 <TablixColumn>
-                  <Width>0.76614in</Width>
+                  <Width>0.75746in</Width>
                 </TablixColumn>
                 <TablixColumn>
-                  <Width>0.77029in</Width>
+                  <Width>0.76161in</Width>
                 </TablixColumn>
                 <TablixColumn>
-                  <Width>1.01393in</Width>
+                  <Width>1.00525in</Width>
                 </TablixColumn>
                 <TablixColumn>
-                  <Width>1.01393in</Width>
+                  <Width>1.00525in</Width>
                 </TablixColumn>
                 <TablixColumn>
-                  <Width>0.53075in</Width>
+                  <Width>0.52207in</Width>
                 </TablixColumn>
                 <TablixColumn>
-                  <Width>0.63115in</Width>
+                  <Width>0.62247in</Width>
                 </TablixColumn>
                 <TablixColumn>
-                  <Width>1.21875in</Width>
+                  <Width>1.21007in</Width>
                 </TablixColumn>
                 <TablixColumn>
-                  <Width>0.68135in</Width>
+                  <Width>0.5685in</Width>
                 </TablixColumn>
               </TablixColumns>
               <TablixRows>
@@ -1446,7 +1446,10 @@
                             <Paragraph>
                               <TextRuns>
                                 <TextRun>
-                                  <Value>=Fields!FirstInstructorName.Value</Value>
+                                  <Value>= Fields!FirstInstructorName.Value &amp; 
+  IIf(Not IsNothing(Fields!SecondInstructorName.Value) And Fields!SecondInstructorName.Value &lt;&gt; "", " - " &amp; Fields!SecondInstructorName.Value, "") &amp; 
+  IIf(Not IsNothing(Fields!ThirdInstructorName.Value) And Fields!ThirdInstructorName.Value &lt;&gt; "", " - " &amp; Fields!ThirdInstructorName.Value, "") &amp; 
+  IIf(Not IsNothing(Fields!ForthInstructorName.Value) And Fields!ForthInstructorName.Value &lt;&gt; "", " - " &amp; Fields!ForthInstructorName.Value, "")</Value>
                                   <Style>
                                     <FontWeight>Bold</FontWeight>
                                   </Style>
@@ -2084,8 +2087,9 @@
             <RepeatColumnHeaders>true</RepeatColumnHeaders>
             <DataSetName>Courses</DataSetName>
             <Top>0.01389in</Top>
+            <Left>0.10417in</Left>
             <Height>1.07555in</Height>
-            <Width>10.97367in</Width>
+            <Width>10.8695in</Width>
             <Style>
               <Border>
                 <Style>Solid</Style>
@@ -2134,7 +2138,7 @@
             </Paragraphs>
             <rd:DefaultName>Textbox54</rd:DefaultName>
             <Top>1.21097in</Top>
-            <Left>9.50492in</Left>
+            <Left>9.25492in</Left>
             <Height>0.25in</Height>
             <Width>1.46875in</Width>
             <ZIndex>1</ZIndex>
@@ -2169,7 +2173,7 @@
             </Paragraphs>
             <rd:DefaultName>Textbox54</rd:DefaultName>
             <Top>1.46791in</Top>
-            <Left>9.50492in</Left>
+            <Left>9.25492in</Left>
             <Height>0.25in</Height>
             <Width>1.46875in</Width>
             <ZIndex>2</ZIndex>
@@ -2555,7 +2559,7 @@ ___________</Value>
           </Style>
         </PageHeader>
         <PageFooter>
-          <Height>0.51042in</Height>
+          <Height>0.38542in</Height>
           <PrintOnFirstPage>true</PrintOnFirstPage>
           <PrintOnLastPage>true</PrintOnLastPage>
           <ReportItems>
@@ -2576,8 +2580,8 @@ ___________</Value>
                 </Paragraph>
               </Paragraphs>
               <rd:DefaultName>Textbox1</rd:DefaultName>
-              <Top>0.19097in</Top>
-              <Left>4.11127in</Left>
+              <Top>0.06597in</Top>
+              <Left>4.36127in</Left>
               <Height>0.25in</Height>
               <Width>2.25094in</Width>
               <Style>
@@ -2599,6 +2603,7 @@ ___________</Value>
         </PageFooter>
         <PageHeight>8.5in</PageHeight>
         <PageWidth>11in</PageWidth>
+        <TopMargin>0.25in</TopMargin>
         <Style />
       </Page>
     </ReportSection>

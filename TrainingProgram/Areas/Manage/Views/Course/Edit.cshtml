@@ -28,21 +28,16 @@
                 <label asp-for="Participants" class="control-label"></label>
                 <input asp-for="Participants" class="form-control" />
                 <span asp-validation-for="Participants" class="text-danger"></span>
-            </div>
             <div class="form-group">
                 <label asp-for="ImplementationPlace" class="control-label"></label>
                 <input asp-for="ImplementationPlace" class="form-control" />
                 <span asp-validation-for="ImplementationPlace" class="text-danger"></span>
             </div>
+            </div>
             <div class="form-group">
                 <label asp-for="DaysCount" class="control-label"></label>
                 <input asp-for="DaysCount" class="form-control" />
                 <span asp-validation-for="DaysCount" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="ImplementedDays" class="control-label"></label>
-                <input asp-for="ImplementedDays" class="form-control" />
-                <span asp-validation-for="ImplementedDays" class="text-danger"></span>
             </div>
             <div class="form-group">
                 <label asp-for="BeginningDate" class="control-label"></label>
@@ -60,9 +55,19 @@
                 <span asp-validation-for="TraineesNumber" class="text-danger"></span>
             </div>
             <div class="form-group">
+                <label asp-for="FundingEntity" class="control-label"></label>
+                <input asp-for="FundingEntity" class="form-control" />
+                <span asp-validation-for="FundingEntity" class="text-danger"></span>
+            </div>
+            <div class="form-group">
                 <label asp-for="Cost" class="control-label"></label>
                 <input asp-for="Cost" class="form-control" />
                 <span asp-validation-for="Cost" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="ImplementedDays" class="control-label"></label>
+                <input asp-for="ImplementedDays" class="form-control" />
+                <span asp-validation-for="ImplementedDays" class="text-danger"></span>
             </div>
             <div class="form-group">
                 <label asp-for="ImplementedCenter" class="control-label"></label>
@@ -100,38 +105,6 @@
                         }
                     }
                 </select>
-            </div>
-            <div class="form-group">
-                <label asp-for="TotalImplementationId" class="control-label"></label>
-                <select class="form-select" name="TotalImplementationId">
-                    @{
-                        if (Model.TotalImplementationId == null)
-                        {
-                            <option value="" selected>غير محدد</option>
-                        }
-                        else
-                        {
-                            <option value="">غير محدد</option>
-                        }
-                        foreach (var item in ViewBag.TotalImplementation)
-                        {
-                            if (Model.TotalImplementationId == item.Id)
-                            {
-                                <option value="@item.Id" selected>@item.Name</option>
-                            }
-                            else
-                            {
-                                <option value="@item.Id">@item.Name</option>
-                            }
-
-                        }
-                    }
-                </select>
-            </div>
-            <div class="form-group">
-                <label asp-for="RoomNumber" class="control-label"></label>
-                <input asp-for="RoomNumber" class="form-control" />
-                <span asp-validation-for="RoomNumber" class="text-danger"></span>
             </div>
             <div class="form-group">
                 <label asp-for="Material" class="control-label"></label>
@@ -190,9 +163,32 @@
                 </select>
             </div>
             <div class="form-group">
-                <label asp-for="Rating" class="control-label"></label>
-                <input asp-for="Rating" class="form-control" />
-                <span asp-validation-for="Rating" class="text-danger"></span>
+                <label asp-for="CourseNatureId" class="control-label"></label>
+                <select class="form-select" name="CourseNatureId">
+                    @{
+                        if (Model.CourseNatureId == null)
+                        {
+                            <option value="" selected>غير محدد</option>
+                        }
+                        else
+                        {
+                            <option value="">غير محدد</option>
+                        }
+                        foreach (var item in ViewBag.CourseNature)
+                        {
+
+                            if (Model.CourseNatureId == item.Id)
+                            {
+                                <option value="@item.Id" selected>@item.Name</option>
+                            }
+                            else
+                            {
+                                <option value="@item.Id">@item.Name</option>
+                            }
+
+                        }
+                    }
+                </select>
             </div>
             <div class="form-group">
                 <label asp-for="ImplementationMonth" class="control-label"></label>
@@ -223,14 +219,48 @@
                 </select>
             </div>
             <div class="form-group">
-                <label asp-for="ActualCost" class="control-label"></label>
-                <input asp-for="ActualCost" class="form-control" />
-                <span asp-validation-for="ActualCost" class="text-danger"></span>
-            </div>
-            <div class="form-group">
                 <label asp-for="Code" class="control-label"></label>
                 <input asp-for="Code" class="form-control" />
                 <span asp-validation-for="Code" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Link" class="control-label"></label>
+                <br />
+                <a href="@Model.Link" target="_blank">@Model.Link </a>
+                <input asp-for="Link" class="form-control" type="url" />
+                <span asp-validation-for="Link" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="TrainingSpecialistId" class="control-label"></label>
+                <select class="form-select" name="TrainingSpecialistId">
+                    @{
+                        if (Model.TrainingSpecialistId == null)
+                        {
+                            <option value="" selected>غير محدد</option>
+                        }
+                        else
+                        {
+                            <option value="">غير محدد</option>
+                        }
+                        foreach (var item in ViewBag.TrainingSpecialist)
+                        {
+                            if (Model.TrainingSpecialistId == item.Id)
+                            {
+                                <option value="@item.Id" selected>@item.Name</option>
+                            }
+                            else
+                            {
+                                <option value="@item.Id">@item.Name</option>
+                            }
+
+                        }
+                    }
+                </select>
+            </div>
+            <div class="form-group">
+                <label asp-for="RoomNumber" class="control-label"></label>
+                <input asp-for="RoomNumber" class="form-control" />
+                <span asp-validation-for="RoomNumber" class="text-danger"></span>
             </div>
             <div class="form-group">
                 <label asp-for="Check" class="control-label"></label>
@@ -261,6 +291,68 @@
                 </select>
             </div>
             <div class="form-group">
+                <label asp-for="TotalImplementationId" class="control-label"></label>
+                <select class="form-select" name="TotalImplementationId">
+                    @{
+                        if (Model.TotalImplementationId == null)
+                        {
+                            <option value="" selected>غير محدد</option>
+                        }
+                        else
+                        {
+                            <option value="">غير محدد</option>
+                        }
+                        foreach (var item in ViewBag.TotalImplementation)
+                        {
+                            if (Model.TotalImplementationId == item.Id)
+                            {
+                                <option value="@item.Id" selected>@item.Name</option>
+                            }
+                            else
+                            {
+                                <option value="@item.Id">@item.Name</option>
+                            }
+
+                        }
+                    }
+                </select>
+            </div>
+            <div class="form-group">
+                <label asp-for="Notes" class="control-label"></label>
+                <textarea asp-for="Notes" class="form-control" id="textAreaExample1" rows="4" wrap="hard"></textarea>
+                <span asp-validation-for="Notes" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="RatingSpecialist" class="control-label"></label>
+                <input asp-for="RatingSpecialist" class="form-control" />
+                <span asp-validation-for="RatingSpecialist" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="TraineesNotes" class="control-label"></label>
+                <textarea asp-for="TraineesNotes" class="form-control" id="textAreaExample1" rows="4" wrap="hard"></textarea>
+                <span asp-validation-for="TraineesNotes" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="RatingSpecialistNotes" class="control-label"></label>
+                <textarea asp-for="RatingSpecialistNotes" class="form-control" id="textAreaExample1" rows="4" wrap="hard"></textarea>
+                <span asp-validation-for="RatingSpecialistNotes" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Rating" class="control-label"></label>
+                <input asp-for="Rating" class="form-control" />
+                <span asp-validation-for="Rating" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="TraineesRating" class="control-label"></label>
+                <input asp-for="TraineesRating" class="form-control" />
+                <span asp-validation-for="TraineesRating" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="ActualCost" class="control-label"></label>
+                <input asp-for="ActualCost" class="form-control" />
+                <span asp-validation-for="ActualCost" class="text-danger"></span>
+            </div>
+            <div class="form-group">
                 <label asp-for="PdfFile" class="control-label"></label>
                 <br />
                 <span>@Model.PdfFile</span>
@@ -276,98 +368,6 @@
                 <input name="file" class="form-control" type="file" />
                 <input asp-for="PdfFile" name="PdfFile" class="form-control" type="text" hidden />
                 <span asp-validation-for="PdfFile" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="Link" class="control-label"></label>
-                <br />
-                <a href="@Model.Link" target="_blank">@Model.Link </a>
-                <input asp-for="Link" class="form-control" type="url" />
-                <span asp-validation-for="Link" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="RatingSpecialist" class="control-label"></label>
-                <input asp-for="RatingSpecialist" class="form-control" />
-                <span asp-validation-for="RatingSpecialist" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="Notes" class="control-label"></label>
-                <textarea asp-for="Notes" class="form-control" id="textAreaExample1" rows="4" wrap="hard"></textarea>
-                <span asp-validation-for="Notes" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="RatingSpecialistNotes" class="control-label"></label>
-                <textarea asp-for="RatingSpecialistNotes" class="form-control" id="textAreaExample1" rows="4" wrap="hard"></textarea>
-                <span asp-validation-for="RatingSpecialistNotes" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="TraineesNotes" class="control-label"></label>
-                <textarea asp-for="TraineesNotes" class="form-control" id="textAreaExample1" rows="4" wrap="hard"></textarea>
-                <span asp-validation-for="TraineesNotes" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="TraineesRating" class="control-label"></label>
-                <input asp-for="TraineesRating" class="form-control" />
-                <span asp-validation-for="TraineesRating" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="CourseNatureId" class="control-label"></label>
-                <select class="form-select" name="CourseNatureId">
-                    @{
-                        if (Model.CourseNatureId == null)
-                        {
-                            <option value="" selected>غير محدد</option>
-                        }
-                        else
-                        {
-                            <option value="">غير محدد</option>
-                        }
-                        foreach (var item in ViewBag.CourseNature)
-                        {
-
-                            if (Model.CourseNatureId == item.Id)
-                            {
-                                <option value="@item.Id" selected>@item.Name</option>
-                            }
-                            else
-                            {
-                                <option value="@item.Id">@item.Name</option>
-                            }
-
-                        }
-                    }
-                </select>
-            </div>
-            <div class="form-group">
-                <label asp-for="TrainingSpecialistId" class="control-label"></label>
-                <select class="form-select" name="TrainingSpecialistId">
-                    @{
-                        if (Model.TrainingSpecialistId == null)
-                        {
-                            <option value="" selected>غير محدد</option>
-                        }
-                        else
-                        {
-                            <option value="">غير محدد</option>
-                        }
-                        foreach (var item in ViewBag.TrainingSpecialist)
-                        {
-                            if (Model.TrainingSpecialistId == item.Id)
-                            {
-                                <option value="@item.Id" selected>@item.Name</option>
-                            }
-                            else
-                            {
-                                <option value="@item.Id">@item.Name</option>
-                            }
-
-                        }
-                    }
-                </select>
-            </div>
-            <div class="form-group">
-                <label asp-for="FundingEntity" class="control-label"></label>
-                <input asp-for="FundingEntity" class="form-control" />
-                <span asp-validation-for="FundingEntity" class="text-danger"></span>
             </div>
             <div class="form-group">
                 <input type="submit" value="Save" class="btn btn-primary" />

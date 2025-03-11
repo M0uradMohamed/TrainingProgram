@@ -590,15 +590,6 @@ namespace TrainingProgram.Areas.Manage.Controllers
                     courseRepository.Commit();
                 }
 
-                var courseInstructor = courseInstructorRepository.Get(expression: e => e.CourseId == course.Id, tracked: false).ToList();
-
-                foreach (var item in courseInstructor)
-                {
-                    courseInstructorRepository.Delete(item);
-                    courseInstructorRepository.Commit();
-
-                }
-
                 return RedirectToAction(nameof(Index));
             }
 
@@ -960,6 +951,7 @@ namespace TrainingProgram.Areas.Manage.Controllers
                 var path = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot\\Reports\\traineeReporF61.rdlc");
 
                 var report = new LocalReport();
+
                 report.ReportPath = path;
       
                 var parameters = new[] 

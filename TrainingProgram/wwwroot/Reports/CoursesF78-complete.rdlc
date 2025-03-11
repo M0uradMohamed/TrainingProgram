@@ -176,7 +176,7 @@
             <TablixBody>
               <TablixColumns>
                 <TablixColumn>
-                  <Width>0.36633in</Width>
+                  <Width>0.3455in</Width>
                 </TablixColumn>
                 <TablixColumn>
                   <Width>2.14157in</Width>
@@ -206,13 +206,13 @@
                   <Width>0.63115in</Width>
                 </TablixColumn>
                 <TablixColumn>
-                  <Width>1.21875in</Width>
+                  <Width>1.11458in</Width>
                 </TablixColumn>
                 <TablixColumn>
-                  <Width>0.50272in</Width>
+                  <Width>0.45064in</Width>
                 </TablixColumn>
                 <TablixColumn>
-                  <Width>1.12412in</Width>
+                  <Width>1.07204in</Width>
                 </TablixColumn>
               </TablixColumns>
               <TablixRows>
@@ -1505,7 +1505,10 @@
                             <Paragraph>
                               <TextRuns>
                                 <TextRun>
-                                  <Value>=Fields!FirstInstructorName.Value</Value>
+                                  <Value>= Fields!FirstInstructorName.Value &amp; 
+  IIf(Not IsNothing(Fields!SecondInstructorName.Value) And Fields!SecondInstructorName.Value &lt;&gt; "", " - " &amp; Fields!SecondInstructorName.Value, "") &amp; 
+  IIf(Not IsNothing(Fields!ThirdInstructorName.Value) And Fields!ThirdInstructorName.Value &lt;&gt; "", " - " &amp; Fields!ThirdInstructorName.Value, "") &amp; 
+  IIf(Not IsNothing(Fields!ForthInstructorName.Value) And Fields!ForthInstructorName.Value &lt;&gt; "", " - " &amp; Fields!ForthInstructorName.Value, "")</Value>
                                   <Style>
                                     <FontWeight>Bold</FontWeight>
                                   </Style>
@@ -2251,9 +2254,10 @@
             <LayoutDirection>RTL</LayoutDirection>
             <RepeatColumnHeaders>true</RepeatColumnHeaders>
             <DataSetName>Courses</DataSetName>
-            <Top>0.01389in</Top>
+            <Top>0.06598in</Top>
+            <Left>0.125in</Left>
             <Height>1.24221in</Height>
-            <Width>10.97367in</Width>
+            <Width>10.7445in</Width>
             <Style>
               <Border>
                 <Style>Solid</Style>
@@ -2302,7 +2306,7 @@
             </Paragraphs>
             <rd:DefaultName>Textbox54</rd:DefaultName>
             <Top>1.33597in</Top>
-            <Left>9.50492in</Left>
+            <Left>9.00492in</Left>
             <Height>0.25in</Height>
             <Width>1.46875in</Width>
             <ZIndex>1</ZIndex>
@@ -2337,7 +2341,7 @@
             </Paragraphs>
             <rd:DefaultName>Textbox54</rd:DefaultName>
             <Top>1.59291in</Top>
-            <Left>9.50492in</Left>
+            <Left>9.00492in</Left>
             <Height>0.25in</Height>
             <Width>1.46875in</Width>
             <ZIndex>2</ZIndex>
@@ -2767,6 +2771,7 @@ ___________</Value>
         </PageFooter>
         <PageHeight>8.5in</PageHeight>
         <PageWidth>11in</PageWidth>
+        <TopMargin>0.25in</TopMargin>
         <Style />
       </Page>
     </ReportSection>

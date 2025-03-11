@@ -447,11 +447,12 @@ namespace TrainingProgram.Areas.Manage.Controllers
                    e.ImplementationPlace,
                    e.DaysCount,
                    TrainingSpecialistName = e.TrainingSpecialist != null ? e.TrainingSpecialist.Name : "",
-                   FirstInstructorName = e.CoursesInstructors.Where(c => c.Position == Position.First).Select(e => e.Instructor != null ? e.Instructor.Name : "").FirstOrDefault(),
-                   SecondInstructorName = e.CoursesInstructors.Where(c => c.Position == Position.Second).Select(e => e.Instructor != null ? e.Instructor.Name : "").FirstOrDefault(),
-                   ThirdInstructorName = e.CoursesInstructors.Where(c => c.Position == Position.Third).Select(e => e.Instructor != null ? e.Instructor.Name : "").FirstOrDefault(),
-                   ForthInstructorName = e.CoursesInstructors.Where(c => c.Position == Position.Fourth).Select(e => e.Instructor != null ? e.Instructor.Name : "").FirstOrDefault(),
-
+                   FirstInstructorName = e.CoursesInstructors.Where(c => c.Position == Position.First).Select(e => e.Instructor != null ? e.Instructor.Name : null).FirstOrDefault(),
+                   SecondInstructorName = e.CoursesInstructors.Where(c => c.Position == Position.Second).Select(e => e.Instructor != null ? e.Instructor.Name : null).FirstOrDefault(),
+                   ThirdInstructorName = e.CoursesInstructors.Where(c => c.Position == Position.Third).Select(e => e.Instructor != null ? e.Instructor.Name : null).FirstOrDefault(),
+                   ForthInstructorName = e.CoursesInstructors.Where(c => c.Position == Position.Fourth).Select(e => e.Instructor != null ? e.Instructor.Name : null).FirstOrDefault(),
+                   e.RatingSpecialist,
+                   e.HoursNumber,
                }).FirstOrDefault();
 
             List<object>? trainees = null;
@@ -509,6 +510,12 @@ namespace TrainingProgram.Areas.Manage.Controllers
                   e.WrittenExam,
                   e.TotalMarks
               }).ToList<object>();
+                parameters.Add(new ReportParameter("Name", course?.Name));
+                parameters.Add(new ReportParameter("BeginningDate", course?.BeginningDate));
+                parameters.Add(new ReportParameter("EndingDate", course?.EndingDate));
+                parameters.Add(new ReportParameter("ImplementationPlace", course?.ImplementationPlace));
+                parameters.Add(new ReportParameter("DaysCount", $"{course?.DaysCount}"));
+                parameters.Add(new ReportParameter("TraineesCount", $"{trainees.Count()}"));
 
                 path = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot\\Reports\\traineeReportF54.rdlc");
             }
@@ -520,25 +527,36 @@ namespace TrainingProgram.Areas.Manage.Controllers
 
                   e.Employee.Name,
                   e.Employee.FoundationId,
+                  e.Employee.Job,
                   e.Employee.WorkPlace,
+                  e.WrittenExam,
+                  e.TotalMarks,
+                  Estimate = e.Estimate != null ? StaticData.estimate[e.Estimate.Value] : "",
+
                   e.AbsenceDays,
                   e.AttendanceAndDeparture,
                   e.AdherenceMark,
                   e.InteractionMark,
                   e.ActivitiesMark,
                   e.TotalEvaluation,
-                  e.WrittenExam,
-                  e.TotalMarks
               }).ToList<object>();
 
                 parameters.Add(new ReportParameter("Name", course?.Name));
                 parameters.Add(new ReportParameter("BeginningDate", course?.BeginningDate));
                 parameters.Add(new ReportParameter("EndingDate", course?.EndingDate));
                 parameters.Add(new ReportParameter("ImplementationPlace", course?.ImplementationPlace));
+                parameters.Add(new ReportParameter("ImplementedDays", course?.ImplementedDays));
                 parameters.Add(new ReportParameter("DaysCount", $"{course?.DaysCount}"));
+                parameters.Add(new ReportParameter("RatingSpecialist", $"{course?.RatingSpecialist}"));
+                parameters.Add(new ReportParameter("HoursNumber", $"{course?.HoursNumber}"));
                 parameters.Add(new ReportParameter("TraineesCount", $"{trainees.Count()}"));
+                parameters.Add(new ReportParameter("FirstInstructorName", $"{course?.FirstInstructorName}"));
+                parameters.Add(new ReportParameter("SecondInstructorName", $"{course?.SecondInstructorName}"));
+                parameters.Add(new ReportParameter("ThirdInstructorName", $"{course?.ThirdInstructorName}"));
+                parameters.Add(new ReportParameter("ForthInstructorName", $"{course?.ForthInstructorName}"));
 
-                path = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot\\Reports\\traineeReportF60.rdlc");
+
+                path = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot\\Reports\\traineeReporF60.rdlc");
             }
 
             var report = new LocalReport();
